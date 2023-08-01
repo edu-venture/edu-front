@@ -11,7 +11,7 @@ const messageBox = {
   alignItems: "center",
   justifyContent: "flex-start",
   padding: "0 20px",
-  margin: "10px",
+  margin: "20px 0",
 };
 
 const messageBoxDeco = {
@@ -44,7 +44,7 @@ const MessengerContainer = () => {
           width: "50vw",
         }}
       >
-        안녕하세요 저희는 EduVenture입니다. 데이터를 받아 표출
+        안녕하세요 저희는 EduVenture입니다.
       </p>
     </Box>
   );

@@ -1,6 +1,6 @@
 import { Paper } from "@mui/material";
-import StreamingTitle from "./StreamingTitle";
-import StreamingArea from "./StreamingArea";
+import MainStreamingTitle from "./MainStreamingTitle";
+import MainStreamingArea from "./MainStreamingArea";
 
 const streamingContainer = {
   borderRadius: "0px",
@@ -15,18 +15,13 @@ const streamingContainer = {
   backgroundColor: "#171A2B",
 };
 
-const Streaming = () => {
+const MainStreaming = () => {
   return (
-    <Paper
-      className="streamingContainer"
-      id="fade-up"
-      elevation={4}
-      sx={streamingContainer}
-    >
-      <StreamingTitle />
-      <StreamingArea />
+    <Paper className="streamingContainer" elevation={0} sx={streamingContainer}>
+      <MainStreamingTitle />
+      <MainStreamingArea />
     </Paper>
   );
 };
 
-export default Streaming;
+export default MainStreaming;
