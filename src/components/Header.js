@@ -1,42 +1,94 @@
-import { Tabs, Tab, Box } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Tabs,
+  Tab,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
 
-const headerContainer = {
-  display: "flex",
-  justifyContent: "space-between",
-  position: "sticky",
-  top: 0,
-  opacity: 0.7,
-  zIndex: "999",
-  backdropFilter: "blur(5px)",
-};
+const linkStyle = { textDecoration: "none", color: "inherit" };
+
+const NavigationTab = ({ label, to, onClick }) => (
+  <Link to={to || "#"} style={linkStyle} onClick={onClick}>
+    <Tab label={label} />
+  </Link>
+);
+
+const LectureMenuItem = ({ handleClose, to, children }) => (
+  <MenuItem
+    onClick={handleClose}
+    component={Link}
+    to={to}
+    sx={{ fontSize: "12px" }}
+  >
+    {children}
+  </MenuItem>
+);
+
+const LectureMenuItems = ({ handleClose }) => (
+  <>
+    <LectureMenuItem handleClose={handleClose} to="/lecture">
+      수업 정보
+    </LectureMenuItem>
+    <LectureMenuItem handleClose={handleClose} to="/streaming">
+      실시간 수업
+    </LectureMenuItem>
+    <LectureMenuItem handleClose={handleClose} to="/video">
+      수업 영상
+    </LectureMenuItem>
+  </>
+);
+
+const HeaderTabs = ({ handleMenuOpen }) => (
+  <Tabs textColor="secondary" indicatorColor="secondary">
+    <NavigationTab label="출 결" to="/attend" />
+    <NavigationTab label="수 업" onClick={handleMenuOpen} />
+    <NavigationTab label="차 량" to="/location" />
+    <NavigationTab label="수 납" to="/payment" />
+    <NavigationTab label="메 신 저" to="/messenger" />
+    <Tab label="사용자명 님" />
+  </Tabs>
+);
 
 const Header = () => {
+  const [menuAnchor, setMenuAnchor] = useState(null);
+  const isMenuOpen = Boolean(menuAnchor);
+
+  const handleMenuOpen = (event) => setMenuAnchor(event.currentTarget);
+  const handleMenuClose = () => setMenuAnchor(null);
+
   return (
-    <Box className="headerContainer" sx={headerContainer}>
-      <Tabs
-        textColor="secondary"
-        indicatorColor="secondary"
-        sx={{ width: "100%" }}
+    <AppBar
+      position="sticky"
+      color="default"
+      elevation={5}
+      sx={{
+        backgroundColor: "#ffffff",
+        opacity: 0.9,
+        boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <Toolbar
+        sx={{
+          justifyContent: "space-between",
+          margin: "-0.8vh 7vw",
+        }}
       >
-        <Link to="/">
-          <Tab value="로고" label="EduVenture" sx={{ flexGrow: 1 }} />
+        <Link to="/" style={linkStyle}>
+          <Typography sx={{ fontSize: "18px", color: "#5AC467" }}>
+            EduVenture
+          </Typography>
         </Link>
-        <Tab display="none" />
-        <Tab value="출결" label="출결" sx={{ flexGrow: 1 }} />
-        <Tab value="수업" label="수업" sx={{ flexGrow: 1 }} />
-        <Link to="/Location">
-          <Tab value="차량" label="차량" sx={{ flexGrow: 1 }} />
-        </Link>
-        <Link to="/Payment">
-          <Tab value="수납" label="수납" sx={{ flexGrow: 1 }} />
-        </Link>
-        <Link to="/messenger">
-          <Tab value="메신저" label="메신저" sx={{ flexGrow: 1 }} />
-        </Link>
-        <Tab value="사용자" label="사용자명 님" sx={{ flexGrow: 1 }} />
-      </Tabs>
-    </Box>
+        <HeaderTabs handleMenuOpen={handleMenuOpen} />
+        <Menu anchorEl={menuAnchor} open={isMenuOpen} onClose={handleMenuClose}>
+          <LectureMenuItems handleClose={handleMenuClose} />
+        </Menu>
+      </Toolbar>
+    </AppBar>
   );
 };
 

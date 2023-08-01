@@ -1,9 +1,9 @@
 import React from "react";
 
-const styles = (color) => ({
+const styles = (color, width) => ({
   container: {
     padding: 20,
-    width: 500,
+    width: width,
     height: 100,
     display: "flex",
     flexDirection: "column",
@@ -13,7 +13,7 @@ const styles = (color) => ({
   },
   subtitle: {
     fontSize: 20,
-    fontWeight: 200,
+    fontWeight: 100,
   },
   title: {
     fontSize: 40,
@@ -21,7 +21,7 @@ const styles = (color) => ({
   },
 });
 
-const Title = ({ subtitle, title, color = "171a2b" }) => {
+const Title = ({ subtitle, title, color = "171a2b", width = 500 }) => {
   const style = styles(color);
 
   return (
