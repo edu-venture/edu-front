@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -15,6 +15,8 @@ import Location from "./pages/Location";
 import Messenger from "./pages/Messenger";
 
 function App() {
+  const location = useLocation();
+
   useEffect(() => {
     AOS.init({
       duration: 2000,
@@ -23,14 +25,14 @@ function App() {
 
   return (
     <>
-      <Header />
+      {location.pathname !== "/streaming" && <Header />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Main />} />
         <Route path="/attend" element={<Attend />} />
         <Route path="/lecture" element={<Lecture />} />
-        <Route path="/Streaming" element={<Streaming />} />
+        <Route path="/streaming" element={<Streaming />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/location" element={<Location />} />
         <Route path="/messenger" element={<Messenger />} />
