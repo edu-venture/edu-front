@@ -13,6 +13,7 @@ import Streaming from "./pages/Streaming";
 import Payment from "./pages/Payment";
 import Location from "./pages/Location";
 import Messenger from "./pages/Messenger";
+import PaymentModal from "./components/Payment/PaymentModal";
 
 function App() {
   useEffect(() => {
@@ -33,7 +34,8 @@ function App() {
         <Route path="/Streaming" element={<Streaming />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/location" element={<Location />} />
-        <Route path="/messenger" element={<Messenger />} />
+        <Route path="/messenger/" element={<Messenger />} />
+        <Route path="/messenger/:id" element={<Messenger />} />
       </Routes>
     </>
   );
