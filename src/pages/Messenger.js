@@ -1,9 +1,41 @@
-import { Paper, Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // Add this if you haven't already done so
+import { Box, Paper } from "@mui/material";
+import { useParams } from "react-router-dom";
 import MessengerUser from "../components/Messenger/MessengerUser";
+import MessengerChat from "../components/Messenger/MessengerChat";
 
 const Messenger = () => {
-  const [selectedBox, setSelectedBox] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [chats, setChats] = useState([]);
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    setSelectedUser(id);
+    axios
+      .get("/MessengerUserData.json")
+      .then((response) => {
+        setUsers(response.data.User);
+      })
+      .catch((error) => {
+        console.error("There was an error retrieving the user data!", error);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    if (selectedUser) {
+      axios
+        .get(`/MessengerChatData.json?userId=${selectedUser}`)
+        .then((response) => {
+          setChats(response.data.Chat);
+        })
+        .catch((error) => {
+          console.error("There was an error retrieving the chat data!", error);
+        });
+    }
+  }, [selectedUser]);
 
   return (
     <Box
@@ -25,17 +57,20 @@ const Messenger = () => {
           background: "#F1F1F1",
         }}
       >
-        {/* 데이터 받아 map */}
-        {["사용자명1", "사용자명2", "사용자명3"].map((user, index) => (
+        {users.map((element, index) => (
           <MessengerUser
             key={index}
-            isSelected={selectedBox === index}
-            onSelect={() => setSelectedBox(index)}
-            user={user}
-          ></MessengerUser>
+            isSelected={selectedUser === element.id}
+            onSelect={() => setSelectedUser(element.id)}
+            user={element.name}
+            id={element.id}
+          />
         ))}
       </Paper>
-      <Paper sx={{ margin: 0 }}>채팅</Paper>
+
+      <Paper sx={{ margin: 0 }}>
+        <MessengerChat selectedUser={selectedUser} chats={chats} />
+      </Paper>
     </Box>
   );
 };

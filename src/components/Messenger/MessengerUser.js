@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const messageBox = {
   position: "relative",
@@ -32,19 +33,21 @@ const textContainer = {
   alignItems: "center",
 };
 
-const MessengerUser = ({ isSelected, onSelect, user }) => {
+const MessengerUser = ({ isSelected, onSelect, user, id }) => {
   return (
     <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={onSelect}>
       <div className="messageBoxDeco" style={messageBoxDeco} />
       <Box sx={textContainer}>
-        <p
-          style={{
-            color: "black",
-            margin: 0,
-          }}
-        >
-          <h3>{user}</h3>
-        </p>
+        <Link to={`/messenger/${id}`}>
+          <h3
+            style={{
+              color: "black",
+              margin: 0,
+            }}
+          >
+            {user}
+          </h3>
+        </Link>
       </Box>
     </Box>
   );
