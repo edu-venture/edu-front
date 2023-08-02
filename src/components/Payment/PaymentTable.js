@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import paymentData from "../../utils/paymentData.json";
 
 const tableContainerStyle = {
   maxHeight: "55%",
@@ -17,24 +18,32 @@ const tableContentStyle = {
   paddingBottom: "20px",
 };
 
-const PaymentTable = ({ rows }) => (
+const PaymentTable = () => (
   <TableContainer sx={tableContainerStyle}>
     <Table aria-label="simple table">
       <TableHead>
         <TableRow>
-          <TableCell align="left" sx={{ borderBottom: "none", pl: 10 }}>
+          <TableCell
+            align="left"
+            sx={{
+              borderBottom: "none",
+              pl: 15,
+              fontWeight: 700,
+              fontSize: "1.2rem",
+            }}
+          >
             상세 내역
           </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {rows.map(() => (
-          <TableRow>
+        {Object.entries(paymentData).map(([key, value], index) => (
+          <TableRow key={index}>
             <TableCell align="left" sx={{ ...tableContentStyle, pl: 15 }}>
-              항목1
+              {key}
             </TableCell>
             <TableCell align="right" sx={{ ...tableContentStyle, pr: 15 }}>
-              금액1
+              {value.amount.toLocaleString("ko-KR")}
             </TableCell>
           </TableRow>
         ))}

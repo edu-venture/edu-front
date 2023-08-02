@@ -1,5 +1,6 @@
 import React from "react";
 import { Paper } from "@mui/material";
+import PaymentModal from "./PaymentModal";
 
 const textBoxStyle = {
   height: "15%",
@@ -19,7 +20,7 @@ const TextBox = ({ academyName, month, amount }) => (
       {academyName}
       <br />
       <div style={{ fontSize: "2.5vw", fontWeight: "normal" }}>
-        {month} 교육비
+        {month} <PaymentModal /> 교육비
       </div>
     </span>
     <div style={{ fontSize: "2vw" }}>{amount}</div>
