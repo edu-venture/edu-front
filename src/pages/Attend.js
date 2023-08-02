@@ -1,6 +1,7 @@
 import React from "react";
 import AttendCard from "../components/Attend/AttendCard";
 import Title from "../components/Title";
+import AttendCalendar from "../components/Attend/AttendCalendar";
 
 const styles = {
   titleContainer: {
@@ -44,10 +45,11 @@ const Attend = () => {
           <AttendCard header="퇴실 시간" body="21:00" />
         </div>
       </div>
-      <div style={{ height: "1000px", background: "#DADADA" }}>
+      <div style={{ height: "900px", background: "#DADADA" }}>
         <div style={styles.titleContainer}>
           <Title subtitle="7월" title="출석부" />
         </div>
+        <AttendCalendar />
       </div>
     </div>
   );
