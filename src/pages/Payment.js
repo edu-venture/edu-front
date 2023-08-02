@@ -1,9 +1,9 @@
-import React from "react";
-import Header from "../components/Header";
+import React, { useState } from "react";
 import TextBox from "../components/Payment/TextBox";
 import PaymentTable from "../components/Payment/PaymentTable";
-import PaymentOption from "../components/Payment/PaymentOption";
+import PaymentModal from "../components/Payment/PaymentModal";
 import { Paper, Divider, Button } from "@mui/material";
+import paymentData from "../utils/paymentData.json";
 
 const paymentContainer = {
   position: "relative",
@@ -41,6 +41,7 @@ const payArea = {
 const payButton = {
   width: "100%",
   height: "35%",
+  top: "118px",
   position: "relative",
   backgroundColor: "black",
   color: "white",
@@ -50,16 +51,33 @@ const payButton = {
 };
 
 const Payment = () => {
+  const totalAmount = Object.values(paymentData).reduce((total, item) => {
+    return total + Number(item.amount);
+  }, 0);
+
+  const formattedTotalAmount = totalAmount.toLocaleString("ko-KR");
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <>
       <Paper className="paymentContainer" sx={paymentContainer}>
         <Paper className="paymentWhiteBox" sx={paymentWhiteBox}>
-          <TextBox academyName="[학원명]" month="7월" amount="240,000원" />
+          <TextBox
+            academyName="[학원명]"
+            month="7월"
+            amount={formattedTotalAmount}
+          >
+            <PaymentModal isOpen={isOpen} handleModal={handleModal} />
+          </TextBox>
           <Divider sx={divider} />
-          <PaymentTable rows={Array(30).fill()} />
+          <PaymentTable />
           <Divider sx={divider} />
           <Paper sx={payArea}>
-            <PaymentOption />
             <Button variant="contained" sx={payButton}>
               결제하기
             </Button>
