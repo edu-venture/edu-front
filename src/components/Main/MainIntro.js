@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import ChatBot from "./MainChatBot/ChatBot";
 
 const IntroContainer = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const MainIntro = () => {
         <ContentBox>이완재님 안녕하세요.</ContentBox>
         <ContentBox>이완재의 종합 관리 화면입니다.</ContentBox>
       </TextContainer>
+      <ChatBot />
     </IntroContainer>
   );
 };
