@@ -4,9 +4,10 @@ const StreamingArea = () => {
   return (
     <Paper
       className="whiteBox"
+      elevation={0}
       sx={{
         position: "absolute",
-        bottom: "0px",
+        bottom: 0,
         width: "90vw",
         height: "75vh",
         backgroundColor: "#f2f2f2",
@@ -17,12 +18,12 @@ const StreamingArea = () => {
       }}
     >
       <Paper
-        className="RealStreamingBox"
+        className="streamingBox"
         sx={{
           width: "50vw",
           height: "60vh",
           backgroundColor: "#323232",
-          //   borderRadius: "30px",
+          borderRadius: "0px",
         }}
       ></Paper>
     </Paper>

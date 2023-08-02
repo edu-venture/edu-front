@@ -9,7 +9,7 @@ const StyledChatHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2vw;
+  font-size: 18px;
 `;
 
 const ChatHeader = () => <StyledChatHeader>채 팅 하 기</StyledChatHeader>;
