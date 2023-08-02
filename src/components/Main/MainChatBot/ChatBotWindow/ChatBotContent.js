@@ -29,7 +29,8 @@ const TimeStamp = styled.span`
   font-size: 12px;
   position: absolute;
   color: #000;
-  left: ${(props) => (props.type === "user" ? "15px" : "5px")};
+  left: ${(props) => (props.type === "bot" ? "5px" : "unset")};
+  right: ${(props) => (props.type === "user" ? "-40px" : "unset")};
   bottom: -25px;
 `;
 
