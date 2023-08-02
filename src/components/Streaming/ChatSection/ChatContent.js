@@ -16,7 +16,7 @@ const MessageContainer = styled.div`
 
 const MessageBox = styled.div`
   background-color: #e6e6e6;
-  padding: 1vw 1.5vw 1.2vw;
+  padding: 15px 25px;
   border-radius: 30px;
   margin-bottom: 10px;
   position: relative;
@@ -24,13 +24,13 @@ const MessageBox = styled.div`
 
 const styles = {
   senderName: {
-    fontSize: "1vw",
+    fontSize: "15px",
   },
   messageText: {
-    fontSize: "0.9vw",
+    fontSize: "14px",
   },
   timeStamp: {
-    fontSize: "0.8vw",
+    fontSize: "13px",
     position: "absolute",
     right: "5px",
     bottom: "-25px",
