@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Add this if you haven't already done so
+import axios from "axios";
 import { Box, Paper } from "@mui/material";
 import { useParams } from "react-router-dom";
 import MessengerUser from "../components/Messenger/MessengerUser";
@@ -12,8 +12,13 @@ const Messenger = () => {
 
   const { id } = useParams();
 
-  useEffect(() => {
+  const changeUser = (id) => {
     setSelectedUser(id);
+    setChats([]);
+  };
+
+  useEffect(() => {
+    changeUser(id);
     axios
       .get("/MessengerUserData.json")
       .then((response) => {
@@ -29,7 +34,10 @@ const Messenger = () => {
       axios
         .get(`/MessengerChatData.json?userId=${selectedUser}`)
         .then((response) => {
-          setChats(response.data.Chat);
+          setChats((prevChats) => ({
+            ...prevChats,
+            [selectedUser]: response.data.Chat,
+          }));
         })
         .catch((error) => {
           console.error("There was an error retrieving the chat data!", error);
@@ -40,6 +48,7 @@ const Messenger = () => {
   return (
     <Box
       sx={{
+        overflow: "hidden",
         display: "grid",
         gridTemplateColumns: "2.5fr 7.5fr",
         height: "100vh",
@@ -55,21 +64,26 @@ const Messenger = () => {
           justifyContent: "flex-start",
           alignItems: "center",
           background: "#F1F1F1",
+          overflowY: "auto",
+          borderRight: "1px solid #ccc",
         }}
       >
         {users.map((element, index) => (
           <MessengerUser
             key={index}
             isSelected={selectedUser === element.id}
-            onSelect={() => setSelectedUser(element.id)}
+            onSelect={() => changeUser(element.id)}
             user={element.name}
             id={element.id}
           />
         ))}
       </Paper>
 
-      <Paper sx={{ margin: 0 }}>
-        <MessengerChat selectedUser={selectedUser} chats={chats} />
+      <Paper sx={{ margin: 0, overflowY: "auto" }}>
+        <MessengerChat
+          selectedUser={selectedUser}
+          chats={chats[selectedUser] || []}
+        />
       </Paper>
     </Box>
   );
