@@ -7,7 +7,7 @@ const BoxContainer = styled.div`
   margin: 80px auto 0;
   position: relative;
   background: #f2f2f2;
-  border-radius: ${(props) => props.borderRadius || "30px"};
+  border-radius: ${(props) => props.$borderRadius || "30px"};
 `;
 
 const Title = styled.p`
@@ -32,9 +32,9 @@ const Span = styled.span`
   padding: 10px 0;
 `;
 
-const LectureBox = ({ title, content, borderRadius }) => {
+const LectureBox = ({ title, content, $borderRadius }) => {
   return (
-    <BoxContainer borderRadius={borderRadius}>
+    <BoxContainer $borderRadius={$borderRadius}>
       <Title>{title}</Title>
       <Content>
         {content.map((line, index) => (

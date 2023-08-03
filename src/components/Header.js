@@ -43,8 +43,14 @@ const LectureMenuItems = ({ handleClose }) => (
   </>
 );
 
-const HeaderTabs = ({ handleMenuOpen }) => (
-  <Tabs textColor="secondary" indicatorColor="secondary">
+const HeaderTabs = ({ handleMenuOpen, value, onChange }) => (
+  <Tabs
+    textColor="secondary"
+    indicatorColor="secondary"
+    value={value}
+    onChange={onChange}
+    TabIndicatorProps={{ style: { height: 0 } }}
+  >
     <NavigationTab label="출 결" to="/attend" />
     <NavigationTab label="수 업" onClick={handleMenuOpen} />
     <NavigationTab label="차 량" to="/location" />
@@ -57,9 +63,13 @@ const HeaderTabs = ({ handleMenuOpen }) => (
 const Header = () => {
   const [menuAnchor, setMenuAnchor] = useState(null);
   const isMenuOpen = Boolean(menuAnchor);
+  const [value, setValue] = useState(0);
 
   const handleMenuOpen = (event) => setMenuAnchor(event.currentTarget);
   const handleMenuClose = () => setMenuAnchor(null);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <AppBar
@@ -83,7 +93,11 @@ const Header = () => {
             EduVenture
           </Typography>
         </Link>
-        <HeaderTabs handleMenuOpen={handleMenuOpen} />
+        <HeaderTabs
+          handleMenuOpen={handleMenuOpen}
+          value={value}
+          onChange={handleChange}
+        />
         <Menu anchorEl={menuAnchor} open={isMenuOpen} onClose={handleMenuClose}>
           <LectureMenuItems handleClose={handleMenuClose} />
         </Menu>

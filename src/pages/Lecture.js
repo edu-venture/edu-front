@@ -36,7 +36,7 @@ const Lecture = () => {
       <LectureBox
         title={noticeTitle}
         content={noticeContent}
-        borderRadius="30px 30px 0 0"
+        $borderRadius="30px 30px 0 0"
       />
     </div>
   );
