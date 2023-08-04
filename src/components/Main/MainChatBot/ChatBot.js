@@ -6,20 +6,27 @@ import { Stomp } from "@stomp/stompjs";
 
 const ChatBot = () => {
   const [showWindow, setShowWindow] = useState(false);
-  var stompClient = null;
-  const roomId = Math.random().toString();
+  const [roomId, setRoomId] = useState(null);
+  const [stompClient, setStompClient] = useState(null);
+  const [connected, setConnected] = useState(false);
 
   const connect = () => {
-    var socket = new SockJS("http://192.168.0.29:8081/ws");
-    stompClient = Stomp.over(() => socket);
-    stompClient.connect({}, function (frame) {
+    const newRoomId = Math.floor(Math.random() * 1000000).toString();
+    setRoomId(newRoomId);
+
+    let socket = new SockJS("http://192.168.0.29:8081/ws");
+    const newStompClient = Stomp.over(() => socket);
+    setStompClient(newStompClient);
+
+    newStompClient.connect({}, function (frame) {
       console.log("Connected: " + frame);
+      setConnected(true);
     });
   };
 
   const handleWindow = () => {
+    connect();
     setShowWindow(!showWindow);
-    if (!showWindow) connect();
   };
 
   return (
@@ -30,6 +37,7 @@ const ChatBot = () => {
           onClose={handleWindow}
           stompClient={stompClient}
           roomId={roomId}
+          connected={connected}
         />
       )}
     </>
