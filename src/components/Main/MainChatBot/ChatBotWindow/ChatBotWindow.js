@@ -28,7 +28,7 @@ const formatTime = () => {
   return `${ampm} ${hour}:${minute}`;
 };
 
-const ChatBotWindow = ({ onClose, stompClient, roomId }) => {
+const ChatBotWindow = ({ onClose, stompClient, roomId, connected }) => {
   const [chatLog, setChatLog] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const chatContentRef = useRef(null);
@@ -60,32 +60,32 @@ const ChatBotWindow = ({ onClose, stompClient, roomId }) => {
   };
 
   useEffect(() => {
-    if (stompClient) {
-      stompClient.subscribe(`/topic/public/${roomId}`, function (message) {
-        const receivedMessage = JSON.parse(message.body);
+    if (stompClient && connected) {
+      const subscription = stompClient.subscribe(
+        `/topic/public/${roomId}`,
+        function (message) {
+          const receivedMessage = message.body;
+          const botMessage = {
+            type: "bot",
+            name: "챗봇",
+            message: receivedMessage,
+            time: formatTime(),
+          };
+          setChatLog((prevChatLog) => [...prevChatLog, botMessage]);
+        }
+      );
 
-        const time = new Date();
-        let hour = time.getHours();
-        const minute = String(time.getMinutes()).padStart(2, "0");
-        const ampm = hour >= 12 ? "오후" : "오전";
-        hour = hour % 12 || 12;
-        hour = String(hour).padStart(2, "0");
-
-        const botMessage = {
-          type: "bot",
-          name: "챗봇",
-          message: receivedMessage.content,
-          time: `${ampm} ${hour}:${minute}`,
-        };
-
-        setChatLog((prevChatLog) => [...prevChatLog, botMessage]);
-      });
+      return () => {
+        subscription.unsubsribe();
+      };
     }
+  }, [stompClient, connected, roomId]);
 
+  useEffect(() => {
     if (chatContentRef.current) {
       chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
     }
-  }, [stompClient, chatLog, roomId]);
+  }, [chatLog]);
 
   return (
     <ChatWrapper>
