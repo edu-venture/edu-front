@@ -3,7 +3,7 @@ import { Paper } from "@mui/material";
 import PaymentModal from "./PaymentModal";
 
 const textBoxStyle = {
-  height: "15%",
+  height: "18%",
   display: "flex",
   flexDirection: "row",
   alignItems: "flex-end",

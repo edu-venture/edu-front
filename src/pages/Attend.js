@@ -45,7 +45,7 @@ const Attend = () => {
           <AttendCard header="퇴실 시간" body="21:00" />
         </div>
       </div>
-      <div style={{ height: "900px", background: "#DADADA" }}>
+      <div style={{ height: "800px", background: "#DADADA" }}>
         <div style={styles.titleContainer}>
           <Title subtitle="7월" title="출석부" />
         </div>

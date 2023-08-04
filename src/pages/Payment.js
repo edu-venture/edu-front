@@ -6,19 +6,18 @@ import { Paper, Divider, Button } from "@mui/material";
 import paymentData from "../utils/paymentData.json";
 
 const paymentContainer = {
-  position: "relative",
   width: "100vw",
-  height: "100vh",
+  height: "calc(100vh - 50px)",
   backgroundColor: "#4A4F6B",
   display: "flex",
-  flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
   borderRadius: "0px",
 };
 
 const paymentWhiteBox = {
-  position: "relative",
+  display: "flex",
+  flexDirection: "column",
   width: "85vw",
   height: "80%",
   backgroundColor: "#f2f2f2",
@@ -29,24 +28,14 @@ const divider = {
   borderStyle: "solid",
 };
 
-const payArea = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  alignItems: "center",
-  width: "100%",
-  height: "30%",
-};
-
 const payButton = {
   width: "100%",
-  height: "35%",
-  top: "118px",
+  height: "10%",
   position: "relative",
-  backgroundColor: "black",
+  backgroundColor: "#171A2B",
   color: "white",
   "&:hover": {
-    backgroundColor: "darkgrey",
+    backgroundColor: "#000",
   },
 };
 
@@ -77,11 +66,9 @@ const Payment = () => {
           <Divider sx={divider} />
           <PaymentTable />
           <Divider sx={divider} />
-          <Paper sx={payArea}>
-            <Button variant="contained" sx={payButton}>
-              결제하기
-            </Button>
-          </Paper>
+          <Button variant="contained" sx={payButton}>
+            결제하기
+          </Button>
         </Paper>
       </Paper>
     </>
