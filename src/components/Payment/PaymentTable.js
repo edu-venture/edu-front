@@ -10,7 +10,7 @@ import {
 import paymentData from "../../utils/paymentData.json";
 
 const tableContainerStyle = {
-  maxHeight: "55%",
+  flexGrow: 1,
 };
 
 const tableContentStyle = {

@@ -80,6 +80,7 @@ const Header = () => {
         backgroundColor: "#ffffff",
         opacity: 0.9,
         boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.1)",
+        height: "50px",
       }}
     >
       <Toolbar
