@@ -1,15 +1,16 @@
 import { Box } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const messageBox = {
-  position: "relative",
+  position: "relative", // <--- Add this
   backgroundColor: "#f2f2f2",
-  width: "100%",
+  width: "100vw",
   height: "12vh",
   display: "flex",
   alignItems: "center",
   padding: "0px",
+  cursor: "pointer",
 };
 
 const clickedMessageBox = {
@@ -18,12 +19,12 @@ const clickedMessageBox = {
 };
 
 const messageBoxDeco = {
-  position: "absolute",
-  left: "50px",
+  position: "relative",
   backgroundColor: "#5ac467",
   borderRadius: "50%",
   width: "50px",
   height: "50px",
+  left: "-30px",
 };
 
 const textContainer = {
@@ -33,21 +34,24 @@ const textContainer = {
   alignItems: "center",
 };
 
-const MessengerUser = ({ isSelected, onSelect, user, id }) => {
+const MessengerUser = ({ isSelected, user, id, onSelect }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (isSelected) {
+      onSelect(null);
+      navigate("/messenger");
+    } else {
+      onSelect(id);
+      navigate(`/messenger/${id}`);
+    }
+  };
+
   return (
-    <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={onSelect}>
-      <div className="messageBoxDeco" style={messageBoxDeco} />
+    <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={handleClick}>
       <Box sx={textContainer}>
-        <Link to={`/messenger/${id}`}>
-          <h3
-            style={{
-              color: "black",
-              margin: 0,
-            }}
-          >
-            {user}
-          </h3>
-        </Link>
+        <div className="messageBoxDeco" style={messageBoxDeco} />
+        <h3 style={{ color: "black", margin: 0 }}>{user}</h3>
       </Box>
     </Box>
   );
