@@ -1,0 +1,12 @@
+body {
+  overflow: auto;
+}
+
+a {
+  text-decoration: none;
+  color: #357b3d;
+}
+
+a:hover {
+  color: #5ac467;
+}
