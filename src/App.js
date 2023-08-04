@@ -12,9 +12,7 @@ import Lecture from "./pages/Lecture";
 import Streaming from "./pages/Streaming";
 import Payment from "./pages/Payment";
 import Messenger from "./pages/Messenger";
-import Kim from "./components/Location/Kim";
-// import PaymentModal from "./components/Payment/PaymentModal";
-// import Location from "./pages/Location";
+import Location from "./pages/Location";
 
 function App() {
   const location = useLocation();
@@ -36,7 +34,7 @@ function App() {
         <Route path="/lecture" element={<Lecture />} />
         <Route path="/streaming" element={<Streaming />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/location" element={<Kim />} />
+        <Route path="/location" element={<Location />} />
         <Route path="/messenger/" element={<Messenger />} />
         <Route path="/messenger/:id" element={<Messenger />} />
       </Routes>
