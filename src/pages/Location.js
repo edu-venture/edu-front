@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Title from "../components/Title";
-import Kim from "../components/Location/Kim";
+import Map from "../components/Location/Map";
 
 const LocationContainer = styled.div`
   width: 100%;
@@ -21,7 +21,7 @@ const Location = () => {
       <div style={styles.titleContainer}>
         <Title subtitle="실시간" title="차량 위치" />
       </div>
-      <Kim />
+      <Map />
     </LocationContainer>
   );
 };
