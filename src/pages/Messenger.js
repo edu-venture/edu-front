@@ -2,48 +2,40 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box, Paper } from "@mui/material";
 import { useParams } from "react-router-dom";
-import MessengerUser from "../components/Messenger/MessengerUser";
+import MessengerUserList from "../components/Messenger/MessengerUserList";
 import MessengerChat from "../components/Messenger/MessengerChat";
+import DefaultChatPage from "../components/Messenger/DefaultChatPage";
 
 const Messenger = () => {
-  const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [chats, setChats] = useState([]);
 
   const { id } = useParams();
 
-  const changeUser = (id) => {
-    setSelectedUser(id);
-    setChats([]);
-  };
-
   useEffect(() => {
-    changeUser(id);
     axios
       .get("/MessengerUserData.json")
       .then((response) => {
         setUsers(response.data.User);
       })
       .catch((error) => {
-        console.error("There was an error retrieving the user data!", error);
+        console.error(error);
       });
-  }, [id]);
 
-  useEffect(() => {
-    if (selectedUser) {
+    if (id) {
       axios
-        .get(`/MessengerChatData.json?userId=${selectedUser}`)
+        .get(`/MessengerChatData.json?userId=${id}`)
         .then((response) => {
           setChats((prevChats) => ({
             ...prevChats,
-            [selectedUser]: response.data.Chat,
+            [id]: response.data[id],
           }));
         })
         .catch((error) => {
-          console.error("There was an error retrieving the chat data!", error);
+          console.error(error);
         });
     }
-  }, [selectedUser]);
+  }, [id]);
 
   return (
     <Box
@@ -68,22 +60,11 @@ const Messenger = () => {
           borderRight: "1px solid #ccc",
         }}
       >
-        {users.map((element, index) => (
-          <MessengerUser
-            key={index}
-            isSelected={selectedUser === element.id}
-            onSelect={() => changeUser(element.id)}
-            user={element.name}
-            id={element.id}
-          />
-        ))}
+        <MessengerUserList users={users} />
       </Paper>
 
       <Paper sx={{ margin: 0, overflowY: "auto" }}>
-        <MessengerChat
-          selectedUser={selectedUser}
-          chats={chats[selectedUser] || []}
-        />
+        {id ? <MessengerChat chats={chats[id] || []} /> : <DefaultChatPage />}
       </Paper>
     </Box>
   );
