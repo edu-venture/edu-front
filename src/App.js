@@ -13,6 +13,8 @@ import Streaming from "./pages/Streaming";
 import Payment from "./pages/Payment";
 import Messenger from "./pages/Messenger";
 import Location from "./pages/Location";
+import VODStreaming from "./pages/VODStreaming";
+import VODStreamingDetail from "./pages/VODStreamingDetail";
 
 function App() {
   const location = useLocation();
@@ -37,6 +39,8 @@ function App() {
         <Route path="/location" element={<Location />} />
         <Route path="/messenger/" element={<Messenger />} />
         <Route path="/messenger/:id" element={<Messenger />} />
+        <Route path="/video" element={<VODStreaming></VODStreaming>}/>
+        <Route path="/video/detail" element={<VODStreamingDetail></VODStreamingDetail>}/>
       </Routes>
     </>
   );

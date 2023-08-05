@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import './scss/VODListItemStyled.scss';
+import styles from './css/VODListItemStyled.module.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ListItem = styled.div`
   width: 98%;
@@ -13,17 +14,23 @@ const ListItem = styled.div`
 
 
 const VODListItem = ({ lectureName, teacherName, viewCount, uploadDate }) => {
+  const navigate = useNavigate();
 
+  const goToDetail = () => {
+    navigate('/video/detail');
+  }
   
   return (
     <>
       <ListItem>
-        <div className='videoFrame'></div>
-        <div className='VODInfo'>
-          <div className='VODTitle'>
-            <p>[{lectureName}]</p>
-          </div>
-          <div className='teacher'>
+        <div className={styles.videoFrame} onClick={goToDetail}/>
+        <div className={styles.VODInfo}>
+          <Link to='/video/detail'>
+            <div className={styles.VODTitle}>
+              <p>[{lectureName}]</p>
+            </div>
+          </Link>
+          <div className={styles.teacher}>
             <p>[{teacherName}]</p>
           </div>
           <div className='cntAndUploadDate'>

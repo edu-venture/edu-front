@@ -9,7 +9,7 @@ const styles = {
   },
   teacherName: {
     padding: '40px 0 0 90px',
-    marginBottom: '0px'
+    margin: '0px'
   },
   lectureName: {
     margin: '0px',
