@@ -40,24 +40,25 @@ const Messenger = () => {
   return (
     <Box
       sx={{
-        overflow: "hidden",
         display: "grid",
-        gridTemplateColumns: "2.5fr 7.5fr",
-        height: "100vh",
+        gridTemplateColumns: "25% 75%",
         width: "100vw",
+        height: "calc(100vh - 50px)",
         margin: 0,
       }}
     >
       <Paper
         sx={{
           margin: 0,
+          width: "100%",
+          height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          alignItems: "center",
-          background: "#F1F1F1",
           overflowY: "auto",
-          borderRight: "1px solid #ccc",
+          background: "#f2f2f2",
+          // flexDirection: "column",
+          // justifyContent: "flex-start",
+          // alignItems: "center",
+          // borderRight: "1px solid #ccc",
         }}
       >
         <MessengerUserList users={users} />
