@@ -23,7 +23,7 @@ const downArrowAnimation = {
     "0%, 100%": { transform: "translateY(-10px)" },
     "50%": { transform: "translateY(10px)" },
   },
-  fontSize: "5em",
+  fontSize: "80px",
 };
 
 const Main = () => {

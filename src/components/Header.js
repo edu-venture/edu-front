@@ -18,7 +18,7 @@ const NavigationTab = ({ label, to, onClick }) => (
   </Link>
 );
 
-const LectureMenuItem = ({ handleClose, to, children }) => (
+const MenuItems = ({ handleClose, to, children }) => (
   <MenuItem
     onClick={handleClose}
     component={Link}
@@ -29,21 +29,12 @@ const LectureMenuItem = ({ handleClose, to, children }) => (
   </MenuItem>
 );
 
-const LectureMenuItems = ({ handleClose }) => (
-  <>
-    <LectureMenuItem handleClose={handleClose} to="/lecture">
-      수업 정보
-    </LectureMenuItem>
-    <LectureMenuItem handleClose={handleClose} to="/streaming">
-      실시간 수업
-    </LectureMenuItem>
-    <LectureMenuItem handleClose={handleClose} to="/video">
-      수업 영상
-    </LectureMenuItem>
-  </>
-);
-
-const HeaderTabs = ({ handleMenuOpen, value, onChange }) => (
+const HeaderTabs = ({
+  handleLectureMenuOpen,
+  handleUserMenuOpen,
+  value,
+  onChange,
+}) => (
   <Tabs
     textColor="secondary"
     indicatorColor="secondary"
@@ -52,21 +43,24 @@ const HeaderTabs = ({ handleMenuOpen, value, onChange }) => (
     TabIndicatorProps={{ style: { height: 0 } }}
   >
     <NavigationTab label="출 결" to="/attend" />
-    <NavigationTab label="수 업" onClick={handleMenuOpen} />
+    <NavigationTab label="수 업" onClick={handleLectureMenuOpen} />
     <NavigationTab label="차 량" to="/location" />
     <NavigationTab label="수 납" to="/payment" />
     <NavigationTab label="메 신 저" to="/messenger" />
-    <Tab label="사용자명 님" />
+    <NavigationTab label="사용자명 님" onClick={handleUserMenuOpen} />
   </Tabs>
 );
 
 const Header = () => {
-  const [menuAnchor, setMenuAnchor] = useState(null);
-  const isMenuOpen = Boolean(menuAnchor);
+  const [lectureMenuAnchor, setLectureMenuAnchor] = useState(null);
+  const [userMenuAnchor, setUserMenuAnchor] = useState(null);
   const [value, setValue] = useState(0);
 
-  const handleMenuOpen = (event) => setMenuAnchor(event.currentTarget);
-  const handleMenuClose = () => setMenuAnchor(null);
+  const handleLectureMenuOpen = (event) =>
+    setLectureMenuAnchor(event.currentTarget);
+  const handleLectureMenuClose = () => setLectureMenuAnchor(null);
+  const handleUserMenuOpen = (event) => setUserMenuAnchor(event.currentTarget);
+  const handleUserMenuClose = () => setUserMenuAnchor(null);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -95,12 +89,37 @@ const Header = () => {
           </Typography>
         </Link>
         <HeaderTabs
-          handleMenuOpen={handleMenuOpen}
+          handleLectureMenuOpen={handleLectureMenuOpen}
+          handleUserMenuOpen={handleUserMenuOpen}
           value={value}
           onChange={handleChange}
         />
-        <Menu anchorEl={menuAnchor} open={isMenuOpen} onClose={handleMenuClose}>
-          <LectureMenuItems handleClose={handleMenuClose} />
+        <Menu
+          anchorEl={lectureMenuAnchor}
+          open={Boolean(lectureMenuAnchor)}
+          onClose={handleLectureMenuClose}
+        >
+          <MenuItems handleClose={handleLectureMenuClose} to="/lecture">
+            수업 정보
+          </MenuItems>
+          <MenuItems handleClose={handleLectureMenuClose} to="/streaming">
+            실시간 수업
+          </MenuItems>
+          <MenuItems handleClose={handleLectureMenuClose} to="/video">
+            수업 영상
+          </MenuItems>
+        </Menu>
+        <Menu
+          anchorEl={userMenuAnchor}
+          open={Boolean(userMenuAnchor)}
+          onClose={handleUserMenuClose}
+        >
+          <MenuItems handleClose={handleUserMenuClose} to="/profile">
+            정보 수정
+          </MenuItems>
+          <MenuItems handleClose={handleUserMenuClose} to="/logout">
+            로그아웃
+          </MenuItems>
         </Menu>
       </Toolbar>
     </AppBar>

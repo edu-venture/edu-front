@@ -5,7 +5,7 @@ import ChatBot from "./MainChatBot/ChatBot";
 const IntroContainer = styled.div`
   display: flex;
   width: 100vw;
-  height: 85vh;
+  height: calc(100vh - 130px);
 `;
 
 const TextContainer = styled.div`
