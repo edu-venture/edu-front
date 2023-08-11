@@ -1,5 +1,4 @@
 node_modules
-<<<<<<< HEAD
 package.json
 package-lock.json
 public/favicon.ico
@@ -9,12 +8,10 @@ public/logo512.png
 public/manifest.json
 public/robots.txt
 src/App.css
-src/App.js
 src/App.test.js
 src/index.css
 src/index.js
 src/logo.svg
 src/reportWebVitals.js
 src/setupTests.js
-=======
->>>>>>> 2cdd0d2baec45d2158b861ae287256ca45588c7b
+

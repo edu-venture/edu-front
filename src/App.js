@@ -15,6 +15,8 @@ import Messenger from "./pages/Messenger";
 import Location from "./pages/Location";
 import VODStreaming from "./pages/VODStreaming";
 import VODStreamingDetail from "./pages/VODStreamingDetail";
+import AdminHeader from './components/AdminHeader';
+import StudentSelect from "./pages/StudentSelect";
 
 function App() {
   const location = useLocation();
@@ -27,7 +29,8 @@ function App() {
 
   return (
     <>
-      {location.pathname !== "/streaming" && <Header />}
+      {(!location.pathname.startsWith('/admin') && location.pathname !== "/streaming") && <Header />}
+      {location.pathname.startsWith('/admin') && <AdminHeader />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -39,8 +42,9 @@ function App() {
         <Route path="/location" element={<Location />} />
         <Route path="/messenger/" element={<Messenger />} />
         <Route path="/messenger/:id" element={<Messenger />} />
-        <Route path="/video" element={<VODStreaming></VODStreaming>}/>
-        <Route path="/video/detail" element={<VODStreamingDetail></VODStreamingDetail>}/>
+        <Route path="/video" element={<VODStreaming />}/>
+        <Route path="/video/detail" element={<VODStreamingDetail />}/>
+        <Route path="/admin/studentSelect" element={<StudentSelect />} />
       </Routes>
     </>
   );
