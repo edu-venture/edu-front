@@ -7,7 +7,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import paymentData from "../../utils/paymentData.json";
 
 const tableContainerStyle = {
   flexGrow: 1,
@@ -18,11 +17,11 @@ const tableContentStyle = {
   paddingBottom: "20px",
 };
 
-const PaymentTable = () => (
+const PaymentTable = ({ paymentData }) => (
   <TableContainer sx={tableContainerStyle}>
     <Table aria-label="simple table">
       <TableHead>
-        <TableRow>
+        <TableRow receipt={paymentData}>
           <TableCell
             align="left"
             sx={{
@@ -37,7 +36,7 @@ const PaymentTable = () => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {Object.entries(paymentData).map(([key, value], index) => (
+        {/* {Object.entries(paymentData).map(([key, value], index) => (
           <TableRow key={index}>
             <TableCell align="left" sx={{ ...tableContentStyle, pl: 15 }}>
               {key}
@@ -46,7 +45,21 @@ const PaymentTable = () => (
               {value.amount.toLocaleString("ko-KR")}
             </TableCell>
           </TableRow>
-        ))}
+        ))} */}
+        {paymentData?.item?.products?.map((paymentItem, index) => {
+          return (
+            <TableRow key={index} receipt={paymentData.item}>
+              <TableCell align="left" sx={{ ...tableContentStyle, pl: 15 }}>
+                <div key={paymentItem?.proNo}>{paymentItem?.proName}</div>
+              </TableCell>
+              <TableCell align="right" sx={{ ...tableContentStyle, pr: 15 }}>
+                <div key={paymentItem?.proNo}>
+                  {paymentItem?.proPrice.toLocaleString("ko-KR")}
+                </div>
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   </TableContainer>

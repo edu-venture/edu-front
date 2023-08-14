@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
 import MessengerUser from "./MessengerUser";
 import { useParams } from "react-router-dom";
 
@@ -12,17 +11,16 @@ const MessengerUserList = ({ users }) => {
   };
 
   return (
-    <Box>
+    <div style={{ width: "100%" }}>
       {users.map((user, index) => (
         <MessengerUser
           key={index}
-          user={user.name}
-          id={user.id}
+          user={user}
           isSelected={user.id === selectedUserId}
           onSelect={handleSelect}
         />
       ))}
-    </Box>
+    </div>
   );
 };
 

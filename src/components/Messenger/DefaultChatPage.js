@@ -5,11 +5,10 @@ const DefaultChatPage = () => {
     <div
       style={{
         width: "100%",
-        height: "100%",
         background: "#fff",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        marginTop: "45vh",
       }}
     >
       대화 상대를 선택하세요.

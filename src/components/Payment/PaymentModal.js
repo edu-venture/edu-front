@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Box, Button, Modal } from "@mui/material";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import PaymentModalLayout from "./Modal/PaymentModalLayout";
-
+/* 
+계층구조  최상위 --> 자식
+PaymentModal
+PaymentModalLayout
+PaymentRow
+PaymentDetailedRow
+*/
 const style = {
   position: "absolute",
   top: "50%",

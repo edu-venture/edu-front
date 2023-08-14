@@ -28,11 +28,15 @@ const textStyles = {
 };
 
 const Attend = () => {
+  const time = new Date();
+  const month = time.getMonth() + 1;
+  const today = time.getDate();
+
   return (
     <div>
       <div style={{ height: "500px", background: "#F9F9F9" }}>
         <div style={styles.titleContainer}>
-          <Title subtitle="7월 24일" title="출석 여부" />
+          <Title subtitle={`${month}월 ${today}일`} title="출석 여부" />
         </div>
         <div style={styles.textContainer}>
           <p style={textStyles}>
@@ -47,7 +51,7 @@ const Attend = () => {
       </div>
       <div style={{ height: "800px", background: "#DADADA" }}>
         <div style={styles.titleContainer}>
-          <Title subtitle="7월" title="출석부" />
+          <Title subtitle={`${month}월`} title="출석부" />
         </div>
         <AttendCalendar />
       </div>

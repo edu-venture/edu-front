@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import Maps from "./Maps";
+import MapAPI from "./MapAPI";
 
 const MapContainer = styled.div`
   background-color: #323232;
@@ -13,6 +13,7 @@ const MapContainer = styled.div`
 
 const Map = () => {
   const [cars, setCars] = useState([]);
+  const carNumber = cars.find((car) => car.carnumber === 1); // 차량 번호 확인
 
   useEffect(() => {
     axios
@@ -20,9 +21,11 @@ const Map = () => {
       .then((response) => setCars(response.data.items));
   }, []);
 
+  console.log(cars);
+
   return (
     <MapContainer>
-      <Maps cars={cars} />
+      {carNumber ? <MapAPI location={carNumber} /> : null}
     </MapContainer>
   );
 };
