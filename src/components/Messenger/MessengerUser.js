@@ -3,12 +3,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const messageBox = {
-  position: "relative", // <--- Add this
-  backgroundColor: "#f2f2f2",
-  width: "100vw",
-  height: "12vh",
+  width: "100%",
+  height: "10vh",
   display: "flex",
   alignItems: "center",
+  backgroundColor: "#f2f2f2",
   padding: "0px",
   cursor: "pointer",
 };
@@ -18,23 +17,22 @@ const clickedMessageBox = {
   backgroundColor: "#ffffff",
 };
 
+const textContainer = {
+  flex: 1,
+  display: "flex",
+  justifyContent: "left",
+  alignItems: "center",
+};
+
 const messageBoxDeco = {
-  position: "relative",
   backgroundColor: "#5ac467",
   borderRadius: "50%",
   width: "50px",
   height: "50px",
-  left: "-30px",
+  margin: "0px 30px",
 };
 
-const textContainer = {
-  flex: 1,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const MessengerUser = ({ isSelected, user, id, onSelect }) => {
+const MessengerUser = ({ isSelected, user, onSelect }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -42,8 +40,8 @@ const MessengerUser = ({ isSelected, user, id, onSelect }) => {
       onSelect(null);
       navigate("/messenger");
     } else {
-      onSelect(id);
-      navigate(`/messenger/${id}`);
+      onSelect(user.id);
+      navigate(`/messenger/${user.id}`);
     }
   };
 
@@ -51,7 +49,9 @@ const MessengerUser = ({ isSelected, user, id, onSelect }) => {
     <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={handleClick}>
       <Box sx={textContainer}>
         <div className="messageBoxDeco" style={messageBoxDeco} />
-        <h3 style={{ color: "black", margin: 0 }}>{user}</h3>
+        <p>
+          <b>{user.name}</b> {user.type}
+        </p>
       </Box>
     </Box>
   );

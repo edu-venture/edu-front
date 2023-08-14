@@ -9,6 +9,15 @@ const styles = {
   },
 };
 
+const getMonthWeek = () => {
+  const time = new Date();
+  const month = time.getMonth() + 1;
+  const today = time.getDate();
+  const firstDay = new Date(time.setDate(1)).getDay();
+  const week = Math.ceil((today + firstDay) / 7);
+  return `${month}월 ${week}주차`;
+};
+
 const Lecture = () => {
   const lectureTitle = "이번 주 수업";
   const lectureContent = [
@@ -29,7 +38,7 @@ const Lecture = () => {
       }}
     >
       <div style={styles.titleContainer}>
-        <Title subtitle="7월 4주차" title="수강 강좌" color="#ffffff" />
+        <Title subtitle={getMonthWeek()} title="수강 강좌" color="#ffffff" />
       </div>
       <LectureCalendar />
       <LectureBox title={lectureTitle} content={lectureContent} />
