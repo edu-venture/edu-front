@@ -14,6 +14,25 @@ const CalendarContainer = styled.div`
   border-radius: 30px;
 `;
 
+// const getWeek = () => {
+//   const days = ["일", "월", "화", "수", "목", "금", "토"];
+//   const current = new Date();
+//   const sundayTime = current.getTime() - 86400000 * current.getDay();
+//   const sunday = new Date(sundayTime);
+//   const week = [
+//     { date: sunday.toISOString().slice(8, 10), day: days[sunday.getDay()] },
+//   ];
+
+//   for (let i = 1; i < 7; i++) {
+//     sunday.setTime(sunday.getTime() + 86400000);
+//     week.push({
+//       date: sunday.toISOString().slice(8, 10),
+//       day: days[sunday.getDay()],
+//     });
+//   }
+//   return week;
+// };
+
 const LectureCalendar = () => {
   return (
     <CalendarContainer>
@@ -25,6 +44,13 @@ const LectureCalendar = () => {
           event={day.event}
         />
       ))}
+      {/* {week.map((item, index) => (
+        <LectureDayBox
+          key={index}
+          date={item.date}
+          day={item.day}
+        />
+      ))} */}
     </CalendarContainer>
   );
 };

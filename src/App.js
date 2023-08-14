@@ -13,8 +13,8 @@ import Streaming from "./pages/Streaming";
 import Payment from "./pages/Payment";
 import Messenger from "./pages/Messenger";
 import Location from "./pages/Location";
-import VODStreaming from "./pages/VODStreaming";
-import VODStreamingDetail from "./pages/VODStreamingDetail";
+import VODBoard from "./pages/VODBoard";
+import VODDetail from "./pages/VODDetail";
 import AdminHeader from './components/AdminHeader';
 import StudentSelect from "./pages/StudentSelect";
 
@@ -42,8 +42,8 @@ function App() {
         <Route path="/location" element={<Location />} />
         <Route path="/messenger/" element={<Messenger />} />
         <Route path="/messenger/:id" element={<Messenger />} />
-        <Route path="/video" element={<VODStreaming />}/>
-        <Route path="/video/detail" element={<VODStreamingDetail />}/>
+        <Route path="/video" element={<VODBoard />} />
+        <Route path="/video/detail/:id" element={<VODDetail />} />
         <Route path="/admin/studentSelect" element={<StudentSelect />} />
       </Routes>
     </>
