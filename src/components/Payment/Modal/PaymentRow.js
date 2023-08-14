@@ -11,12 +11,13 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PaymentDetailedRow from "./PaymentDetailedRow";
-const PaymentRow = ({ element }) => {
+
+const PaymentRow = ({ receipt }) => {
   const [open, setOpen] = useState(false);
-  const totalAmount = element.history.reduce(
-    (sum, record) => sum + record.amount,
-    0
-  );
+  // const totalAmount = receipt.history.reduce(
+  //   (sum, record) => sum + record.amount,
+  //   0
+  // );
 
   return (
     <>
@@ -31,11 +32,11 @@ const PaymentRow = ({ element }) => {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {element.name}
+          {receipt?.item?.payYear} {/* 년 데이터로 받자. */}
         </TableCell>
-        <TableCell align="right">{element.month}</TableCell>{" "}
+        <TableCell align="right">{receipt?.item?.payMonth}</TableCell>{" "}
         {/* 월 데이터로 받자. */}
-        <TableCell align="right">{totalAmount}</TableCell>
+        <TableCell align="right">{receipt?.item?.totalPrice}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
@@ -53,8 +54,11 @@ const PaymentRow = ({ element }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {element.history.map((historyRow, index) => (
-                    <PaymentDetailedRow key={index} historyRow={historyRow} />
+                  {receipt?.item?.products?.map((element) => (
+                    <PaymentDetailedRow
+                      key={element?.proNo}
+                      historyRow={element}
+                    />
                   ))}
                 </TableBody>
               </Table>

@@ -10,11 +10,12 @@ import axios from "axios";
 import PaymentRow from "./PaymentRow";
 
 const PaymentModalLayout = () => {
-  const [modalData, setModalData] = useState(null);
-
+  const [modalData, setModalData] = useState({});
+  const userNo = 1;
+  const issDate = "202308";
   useEffect(() => {
     axios
-      .get(process.env.PUBLIC_URL + "/paymentModal.json")
+      .get(`http://192.168.0.4:9093/payment/${userNo}/receipt/${issDate}`)
       .then((response) => {
         setModalData(response.data);
       })
@@ -22,8 +23,6 @@ const PaymentModalLayout = () => {
         console.error("Error fetching data: ", error);
       });
   }, []);
-
-  if (!modalData) return null;
 
   return (
     <TableContainer component={Paper}>
@@ -37,7 +36,7 @@ const PaymentModalLayout = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <PaymentRow key={modalData.name} element={modalData} />
+          <PaymentRow receipt={modalData} />
         </TableBody>
       </Table>
     </TableContainer>
