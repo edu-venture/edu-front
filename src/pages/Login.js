@@ -1,162 +1,120 @@
-import React from "react";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Paper,
-  Box,
-  Grid,
-  Typography,
-  createTheme,
-  ThemeProvider,
-} from "@mui/material";
-import { Transition } from "react-transition-group";
-import { Link } from "react-router-dom";
+import React, { useCallback, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import styles from "../components/Login/LoginStyled.module.css";
 
-const Login = () => {
-  const defaultTheme = createTheme();
+const Login = ({ setIsLogin }) => {
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState("");
+  const [userPw, setUserPw] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      const login = async () => {
+        const user = {
+          userId: userId,
+          userPw: userPw,
+        };
+        let response;
+        try {
+          response = await axios.post(
+            "http://192.168.0.220:9090/user/login",
+            user
+          );
 
-  const transitionStylesImg = {
-    entering: { opacity: 0 },
-    entered: { opacity: 1 },
-    exiting: { opacity: 0 },
-    exited: { opacity: 0 },
-  };
+          if (response.data && response.data.item.token) {
+            alert(`${response.data.item.userName}님 환영합니다.`);
+            sessionStorage.setItem("ACCESS_TOKEN", response.data.item.token);
+            sessionStorage.setItem("id", response.data.item.id);
+            sessionStorage.setItem("userId", response.data.item.userId);
+            sessionStorage.setItem("userName", response.data.item.userName);
+            sessionStorage.setItem("userType", response.data.item.userType);
 
-  const transitionStylesForm = {
-    entering: { transform: "translateX(-100%)" },
-    entered: { transform: "translateX(0)" },
-    exiting: { transform: "translateX(-100%)" },
-    exited: { transform: "translateX(-100%)" },
-  };
+            if (response.data.item.userJoinId) {
+              const student = {
+                id: response.data.item.userJoinId,
+              };
+
+              const studentresponse = await axios.post(
+                "http://192.168.0.220:9090/user/getstudent",
+                student
+              );
+
+              if (
+                studentresponse.data &&
+                studentresponse.data.item &&
+                studentresponse.data.item.userName
+              ) {
+                sessionStorage.setItem(
+                  "childName",
+                  studentresponse.data.item.userName
+                );
+              }
+            }
+
+            setIsLogin(true);
+            navigate("/");
+          }
+        } catch (e) {
+          console.log(e);
+          console.log("응답 실패", response);
+          if (e.response && e.response.data.errorMessage === "wrong pw") {
+            alert("비밀번호가 틀렸습니다.");
+            return;
+          } else if (
+            e.response &&
+            e.response.data.errorMessage === "id not exist"
+          ) {
+            alert("아이디가 존재하지 않습니다.");
+            return;
+          } else {
+            alert("알 수 없는 오류가 발생했습니다.");
+            return;
+          }
+        }
+      };
+      login();
+    },
+    [userId, userPw, navigate, setIsLogin]
+  );
+
+  const changeUserId = useCallback((e) => {
+    setUserId(e.target.value);
+  }, []);
+
+  const changeUserPw = useCallback((e) => {
+    setUserPw(e.target.value);
+  }, []);
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-
-        <Transition in={true} timeout={1000} appear>
-          {(state) => (
-            <Grid
-              item
-              xs={false}
-              sm={4}
-              md={7}
-              sx={{
-                backgroundImage: "url(/img/Logo.png)",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                opacity: 0,
-                transition: "opacity 1s ease-in-out",
-                ...transitionStylesImg[state],
-              }}
-            />
-          )}
-        </Transition>
-
-        <Transition in={true} timeout={1000} appear>
-          {(state) => (
-            <Grid
-              item
-              xs={12}
-              sm={8}
-              md={5}
-              component={Paper}
-              elevation={6}
-              square
-              sx={{
-                transition: "transform 1s ease-in-out",
-                ...transitionStylesForm[state],
-              }}
-            >
-              <Box
-                sx={{
-                  my: 8,
-                  mx: 4,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Avatar sx={{ m: 1, background: "black" }}>
-                  <LockOutlinedIcon sx={{ background: "black" }} />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                  Login
-                </Typography>
-                <Box
-                  component="form"
-                  noValidate
-                  onSubmit={handleSubmit}
-                  sx={{ mt: 1 }}
-                >
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="아이디 저장하기"
-                  />
-                  <Link to="/main">
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="success"
-                      fullWidth
-                      sx={{ mt: 3, mb: 2 }}
-                    >
-                      Sign In
-                    </Button>
-                  </Link>
-                  <Grid container>
-                    <Grid item xs>
-                      <Link href="#" variant="body2" color="#5AC467">
-                        비밀번호 찾기
-                      </Link>
-                    </Grid>
-                    <Grid item>
-                      <Link to="/register" variant="body2" color="#5AC467">
-                        회원가입
-                      </Link>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Box>
-            </Grid>
-          )}
-        </Transition>
-      </Grid>
-    </ThemeProvider>
+    <div className={styles.container}>
+      <div className={styles.top}></div>
+      <div className={styles.bottom}></div>
+      <div className={styles.center}>
+        <form onSubmit={onSubmit}>
+          <input
+            type="email"
+            placeholder="이메일을 입력하세요"
+            value={userId}
+            onChange={changeUserId}
+          />
+          <input
+            type="password"
+            placeholder="비밀번호를 입력하세요"
+            value={userPw}
+            onChange={changeUserPw}
+          />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <button type="button" onClick={() => navigate(-1)}>
+              뒤로 가기
+            </button>
+            <button type="submit">로그인</button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
+
 export default Login;
