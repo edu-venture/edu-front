@@ -31,35 +31,42 @@ const LectureMenuItem = ({ handleClose, to, children }) => (
 
 const LectureMenuItems = ({ handleClose }) => (
   <>
-    <LectureMenuItem handleClose={handleClose} to="/lecture">
-      수업 정보
+    <LectureMenuItem handleClose={handleClose} to="/admin/timetable">
+      주간 시간표
     </LectureMenuItem>
-    <LectureMenuItem handleClose={handleClose} to="/streaming">
+    <LectureMenuItem handleClose={handleClose} to="/admin/streaming">
       실시간 수업
     </LectureMenuItem>
-    <LectureMenuItem handleClose={handleClose} to="/video">
+    <LectureMenuItem handleClose={handleClose} to="/admin/video">
       수업 영상
+    </LectureMenuItem>
+    <LectureMenuItem handleClose={handleClose} to="/admin/notice">
+      수업 공지사항
     </LectureMenuItem>
   </>
 );
 
-const HeaderTabs = ({ handleMenuOpen, value, onChange }) => (
-  <Tabs
-    textColor="secondary"
-    indicatorColor="secondary"
-    value={value}
-    onChange={onChange}
-    TabIndicatorProps={{ style: { height: 0 } }}
-  >
-    <NavigationTab label="원 생" to="/admin/student" />
-    <NavigationTab label="수 업" onClick={handleMenuOpen} />
-    <NavigationTab label="수 납" to="/admin/payment" />
-    <NavigationTab label="메 신 저" to="/admin/messenger" />
-    <Tab label="관리자명 님" />
-  </Tabs>
-);
+const HeaderTabs = ({ handleMenuOpen, value, onChange }) => {
+  const userName = sessionStorage.getItem("userName");
 
-const Header = () => {
+  return (
+    <Tabs
+      textColor="secondary"
+      indicatorColor="secondary"
+      value={value}
+      onChange={onChange}
+      TabIndicatorProps={{ style: { height: 0 } }}
+    >
+      <NavigationTab label="원 생" to="/admin/student" />
+      <NavigationTab label="수 업" onClick={handleMenuOpen} />
+      <NavigationTab label="수 납" to="/admin/payment" />
+      <NavigationTab label="메 신 저" to="/admin/messenger" />
+      <Tab label={`${userName} 님`} />
+    </Tabs>
+  );
+};
+
+const AdminHeader = () => {
   const [menuAnchor, setMenuAnchor] = useState(null);
   const isMenuOpen = Boolean(menuAnchor);
   const [value, setValue] = useState(0);
@@ -106,4 +113,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default AdminHeader;
