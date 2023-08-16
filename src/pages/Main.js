@@ -27,6 +27,8 @@ const downArrowAnimation = {
 };
 
 const Main = () => {
+  const userType = sessionStorage.getItem("userType");
+
   useEffect(() => {
     AOS.refresh();
   }, []);
@@ -43,9 +45,23 @@ const Main = () => {
           sx={downArrowAnimation}
         />
         <div ref={myRef} />
-        <MainLecture />
-        <MainMessenger />
-        <MainStreaming />
+        {(userType === "student") | (userType === "parent") ? (
+          <>
+            <MainLecture />
+            <MainMessenger />
+            <MainStreaming />
+          </>
+        ) : (userType === "admin") | (userType === "teacher") ? (
+          <MainMessenger />
+        ) : (
+          <>
+            <KeyboardArrowDownRoundedIcon
+              onClick={moveScroll}
+              sx={downArrowAnimation}
+            />
+            <div ref={myRef} />
+          </>
+        )}
       </MainContainer>
       <Footer />
     </>
