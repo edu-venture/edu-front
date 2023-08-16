@@ -30,22 +30,22 @@ const TimeStamp = styled.div`
 
 const InputContainer = styled.div`
   width: 80%;
-  height: 60px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
   bottom: 0;
-  right: -4vw;
+  right: -2.5vw;
   padding: 10px;
   overflow: hidden;
 `;
 
 const InputMessage = styled.input`
-  width: 75%;
+  width: 80%;
   height: 80%;
   padding: 0 20px;
-  background-color: #f6f6f6;
+  background-color: #ededed;
   border-radius: 30px;
   font-size: 14px;
   border: none;
@@ -64,6 +64,7 @@ const SendButton = styled.button`
   justify-content: center;
   font-size: 15px;
   color: white;
+  margin-left: 15px;
 `;
 
 const formatTime = () => {

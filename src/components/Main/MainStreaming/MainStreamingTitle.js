@@ -13,7 +13,12 @@ const StreamingTitle = () => {
           gap: "15px",
         }}
       >
-        <Title subtitle="스트리밍" title="Live 수업" color="#ffffff" />
+        <Title
+          subtitle="스트리밍"
+          title="Live 수업"
+          color="#ffffff"
+          width="210px"
+        />
         <Link to="/streaming">
           <Button
             variant="contained"
