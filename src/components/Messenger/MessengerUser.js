@@ -32,7 +32,7 @@ const messageBoxDeco = {
   margin: "0px 30px",
 };
 
-const MessengerUser = ({ isSelected, user, onSelect }) => {
+const MessengerUser = ({ isSelected, userInfo, onSelect }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -40,8 +40,8 @@ const MessengerUser = ({ isSelected, user, onSelect }) => {
       onSelect(null);
       navigate("/messenger");
     } else {
-      onSelect(user.id);
-      navigate(`/messenger/${user.id}`);
+      onSelect(userInfo.id);
+      navigate(`/messenger/${userInfo.id}`);
     }
   };
 
@@ -49,9 +49,7 @@ const MessengerUser = ({ isSelected, user, onSelect }) => {
     <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={handleClick}>
       <Box sx={textContainer}>
         <div className="messageBoxDeco" style={messageBoxDeco} />
-        <p>
-          <b>{user.name}</b> {user.type}
-        </p>
+        <b>{userInfo.name}</b>
       </Box>
     </Box>
   );
