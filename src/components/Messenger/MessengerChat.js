@@ -82,35 +82,38 @@ const MessengerChat = ({ chats }) => {
   const [inputText, setInputText] = useState("");
   const [messages, setMessages] = useState(chats);
 
-  useEffect(() => {
-    setMessages(chats);
-  }, [chats]);
-
   const handleMessageSubmit = (e) => {
     e.preventDefault();
     const userMessage = {
-      type: "user",
-      name: "김한슬",
+      userType: "user",
       message: inputText,
-      time: formatTime(),
+      sended_at: formatTime(),
     };
     setMessages([...messages, userMessage]);
     setInputText("");
+  };
+
+  const formatSendedAt = (sendedAt) => {
+    const date = new Date(sendedAt);
+    const hour = date.getHours();
+    const minute = String(date.getMinutes()).padStart(2, "0");
+
+    return `${hour}:${minute}`;
   };
 
   return (
     <div>
       <MessagesWrapper>
         {messages.map((message, index) => (
-          <MessageContainer key={index} userType={message.type === "user"}>
-            <MessageText userType={message.type === "user"}>
+          <MessageContainer key={index} userType={message.userType === "user"}>
+            <MessageText userType={message.userType === "user"}>
               <div style={{ fontSize: "15px", fontWeight: "bolder" }}>
-                {message.name}
+                {message.content}
               </div>
               <div style={{ fontSize: "16px" }}>{message.message}</div>
             </MessageText>
-            <TimeStamp userType={message.type === "user"}>
-              {message.time}
+            <TimeStamp userType={message.userType === "user"}>
+              {message.sended_at}
             </TimeStamp>
           </MessageContainer>
         ))}
@@ -120,7 +123,7 @@ const MessengerChat = ({ chats }) => {
           <InputMessage
             type="text"
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={(e) => setInputText(e.target.value)} //여기를 naverChat으로 보내는 로직으로 바꾸어야 함.
           />
           <SendButton onClick={handleMessageSubmit}>보 내 기</SendButton>
         </InputContainer>

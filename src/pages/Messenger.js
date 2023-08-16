@@ -7,35 +7,81 @@ import MessengerChat from "../components/Messenger/MessengerChat";
 import DefaultChatPage from "../components/Messenger/DefaultChatPage";
 
 const Messenger = () => {
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [chats, setChats] = useState([]);
-
+  const [channel, setChannel] = useState([]);
   const { id } = useParams();
+  // useEffect(() => {       이 친구는.... 사실상 필요가 없습니다.... 유저가 필요할 때 주석을 풀어서 사용하세요....
+  // 유저 이름
+  //   axios
+  //     .get(
+  //       "https://dashboard-api.ncloudchat.naverncp.com/v1/api/members?filter={}",
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "x-project-id": "d30c0ab7-2e15-40dd-816c-89ae0b868caf",
+  //           "x-api-key": "bcea402a90cd3236d4cc69455887d5b0de4d2edb7f05610c",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setUsers(response.data);
+  //     })
+
+  //     .catch((error) => {
+  //       console.error("유저" + error);
+  //     });
+  // }, []);
 
   useEffect(() => {
+    // 채널
     axios
-      .get("/MessengerUserData.json")
+      .get(
+        "https://dashboard-api.ncloudchat.naverncp.com/v1/api/channels?filter={}",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-project-id": "d30c0ab7-2e15-40dd-816c-89ae0b868caf",
+            "x-api-key": "bcea402a90cd3236d4cc69455887d5b0de4d2edb7f05610c",
+          },
+        }
+      )
       .then((response) => {
-        setUsers(response.data.User);
+        setChannel(response.data);
       })
-      .catch((error) => {
-        console.error(error);
-      });
 
-    if (id) {
+      .catch((error) => {
+        console.error("채널" + error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // 채팅 내용
+    channel.forEach((channel) =>
       axios
-        .get(`/MessengerChatData.json?userId=${id}`)
+        .get(
+          `https://dashboard-api.ncloudchat.naverncp.com/v1/api/messages/${channel.id}?filter={}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-project-id": "d30c0ab7-2e15-40dd-816c-89ae0b868caf",
+              "x-api-key": "bcea402a90cd3236d4cc69455887d5b0de4d2edb7f05610c",
+            },
+          }
+        )
         .then((response) => {
           setChats((prevChats) => ({
             ...prevChats,
-            [id]: response.data[id],
+            [channel.id]: response.data,
           }));
         })
         .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [id]);
+          console.error("채팅" + error);
+        })
+    );
+  }, [channel]);
+
+  console.log(chats);
 
   return (
     <Box
@@ -55,13 +101,9 @@ const Messenger = () => {
           display: "flex",
           overflowY: "auto",
           background: "#f2f2f2",
-          // flexDirection: "column",
-          // justifyContent: "flex-start",
-          // alignItems: "center",
-          // borderRight: "1px solid #ccc",
         }}
       >
-        <MessengerUserList users={users} />
+        <MessengerUserList users={channel} />
       </Paper>
 
       <Paper sx={{ margin: 0, overflowY: "auto" }}>
