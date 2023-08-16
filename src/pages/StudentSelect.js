@@ -56,23 +56,28 @@ const SelectResultHead = styled.ul`
   padding: 20px 0;
   border: none;
   border-radius: 20px 20px 0 0;
+  position: sticky; 
+  top: 0;            
+  z-index: 10;
+  text-align: center;      
 `;
 
-const SelectResultItem = styled.ul`
+const SelectResultList = styled.ul`
   display: flex;
   justify-content: space-around;
   align-items: center;
   list-style: none;
   color: #171a2b;
   padding: 15px 0;
+  text-align: center;
 `;
 
-const SelectResultItemSection = styled.li`
-  text-align: center;
-  flex: 1;
+const SelectResultItem = styled.li`
+  flex: 0 0 auto;
 `;
 
 const StudentSelect = () => {
+<<<<<<< Updated upstream
   const [studentsData, setStudentsData] = useState([]); //학생 데이터
   const studentKeys = [
     "sid",
@@ -93,7 +98,76 @@ const StudentSelect = () => {
       .catch((error) => {
         console.log(error);
       });
+=======
+  const [allStudentsData, setAllStudentsData] = useState([]); // 모든 학생 데이터(원본 데이터)
+  const [studentsData, setStudentsData] = useState([]); // 화면에 표시될 학생 데이터
+  const [checkedStudents, setCheckedStudents] = useState({}); //체크된 학생 상태 관리
+  const [searchText, setSearchText] = useState(''); // 검색 텍스트 상태 관리
+  const studentKeys = ["sid", "division", "name", "grade", "parentsPhoneNumber", "studentPhoneNumber", "class"];
+  //SelectResultHead, SelectResultItem 컴포넌트에 width값 배열
+  const columnWidths = ['6%', '6%', '8%', '8%', '6%', '17%', '17%', '17%', '15%']; 
+
+
+  useEffect(() => {
+    axios.get('/SelectResultItems.json')
+    .then(response => {
+      setStudentsData(response.data.students);
+      setAllStudentsData(response.data.students);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+>>>>>>> Stashed changes
   }, []);
+
+  const checkboxChangeHandler = (sid, isChecked) => {
+    setCheckedStudents(prev => ({
+      ...prev,
+      [sid]: isChecked
+    }));
+  };
+
+  const deleteSelectedHandler = () => {
+    const newStudentsData = studentsData.filter(student => !checkedStudents[student.sid]); //체크되지 않은 상태의 학생
+    setStudentsData(newStudentsData);
+    setCheckedStudents({}); //체크 상태 초기화
+  };
+
+  const searchHandler = () => {
+    const criteria = document.getElementById('searchCriteria').value;
+    let filteredData;
+
+    switch(criteria) {
+      case 'all':
+        // 전체 검색 로직
+        filteredData = allStudentsData.filter(student => 
+          Object.values(student).some(value => value.toString().includes(searchText)));
+        break;
+      case 'division':
+        // 구분으로 검색
+        filteredData = allStudentsData.filter(student => student.division.includes(searchText));
+        break;
+      case 'name':
+        // 이름으로 검색
+        filteredData = allStudentsData.filter(student => student.name.includes(searchText));
+        break;
+      case 'grade':
+        // 학년으로 검색
+        filteredData = allStudentsData.filter(student => student.grade.includes(searchText));
+        break;
+      case 'class':
+        // 반으로 검색
+        filteredData = allStudentsData.filter(student => student.class.includes(searchText));
+        break;
+    }
+    setStudentsData(filteredData);
+  }
+
+  const handleKeyUp = (e) => {
+    if (e.keyCode === 13) { // 13은 엔터키의 keyCode입니다.
+      searchHandler();
+    }
+  }
 
   return (
     <Container>
@@ -105,6 +179,7 @@ const StudentSelect = () => {
           <Button>선택 삭제</Button>
           <Button>학생 등록</Button>
         </div>
+<<<<<<< Updated upstream
         <form
           style={{
             marginRight: "50px",
@@ -154,5 +229,61 @@ const StudentSelect = () => {
     </Container>
   );
 };
+=======
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <div style={{marginLeft: '50px'}}>
+            <Button onClick={deleteSelectedHandler}>선택 삭제</Button>
+            <Button>학생 등록</Button>
+          </div>
+          <div style={{marginRight: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <select id='searchCriteria' style={{marginRight: '10px', height: '45%', borderRadius: '20px'}}>
+              <option value='all'>전체</option>
+              <option value='division'>구분</option>
+              <option value='name'>이름</option>
+              <option value='grade'>학년</option>
+              <option value='class'>반</option>
+            </select>
+            <SearchStudentField value={searchText} onChange={(e) => setSearchText(e.target.value)} 
+                                onKeyUp={handleKeyUp} />
+            <SearchStudentButton typ e='button' onClick={searchHandler}>
+              <SearchIcon></SearchIcon>
+            </SearchStudentButton>
+          </div>
+        </div>
+        <SelectResultListWraper>
+          <SelectResultHead>
+              <li style={{width: '6%', flex: '0 0 auto'}}>선택</li>
+              <li style={{width: '6%', flex: '0 0 auto'}}>번호</li>
+              <li style={{width: '8%', flex: '0 0 auto'}}>구분</li>
+              <li style={{width: '8%', flex: '0 0 auto'}}>이름</li>
+              <li style={{width: '6%', flex: '0 0 auto'}}>학년</li>
+              <li style={{width: '17%', flex: '0 0 auto'}}>보호자 연락처</li>
+              <li style={{width: '17%', flex: '0 0 auto'}}>학생 연락처</li>
+              <li style={{width: '17%', flex: '0 0 auto'}}>반</li>
+              <li style={{width: '15%', flex: '0 0 auto'}}>수정/삭제</li>
+          </SelectResultHead>
+          {studentsData.length === 0 ? (
+             <div style={{textAlign: 'center', padding: '20px'}}>해당 검색결과를 찾을 수 없습니다</div>
+          ) : (studentsData.map(student => (
+            <SelectResultList key={student.sid}>
+              <li style={{width: columnWidths[0]}}>
+                <input type="checkbox"
+                        checked={!!checkedStudents[student.sid]}
+                        onChange={(e) => checkboxChangeHandler(student.sid, e.target.checked)}/>
+              </li>
+              {studentKeys.map((key, index) => (
+                <SelectResultItem key={key} style={{width: columnWidths[index + 1]}}>{student[key]}</SelectResultItem>
+              ))}
+              <li style={{display: 'flex',  justifyContent: 'center', alignItems: 'center', width: columnWidths[8]}}>
+                <div style={{cursor: 'pointer'}}>수정 /</div>
+                <div style={{paddingLeft: '5px', cursor: 'pointer'}}>삭제</div>
+              </li>
+           </SelectResultList>
+          )))}
+        </SelectResultListWraper>
+      </Container>
+  )
+}
+>>>>>>> Stashed changes
 
 export default StudentSelect;
