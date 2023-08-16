@@ -13,7 +13,7 @@ const InputMessage = styled.input`
   width: 70%;
   height: 65%;
   padding-left: 20px;
-  background-color: #f6f6f6;
+  background-color: #ededed;
   border-radius: 30px;
   font-size: 14px;
   border: none;
@@ -32,6 +32,7 @@ const SendButton = styled.button`
   justify-content: center;
   font-size: 14px;
   color: white;
+  margin-left: 5px;
 `;
 
 const ChatBotInput = ({

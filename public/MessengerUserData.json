@@ -1,8 +1,3 @@
 {
-  "User": [
-    { "id": "1", "name": "이완재", "type": "선생님" },
-    { "id": "2", "name": "전두하", "type": "선생님" },
-    { "id": "3", "name": "홍길동", "type": "실장님" },
-    { "id": "4", "name": "EduVenture", "type": "공식" }
-  ]
+  "User": [{ "id": "4", "name": "EduVenture", "type": "공식" }]
 }

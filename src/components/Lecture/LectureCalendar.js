@@ -5,8 +5,8 @@ import styled from "styled-components";
 
 const CalendarContainer = styled.div`
   width: 80%;
-  height: 200px;
-  margin: 0 auto;
+  height: 220px;
+  margin: 20px auto;
   display: flex;
   justify-content: space-between;
   align-items: center;

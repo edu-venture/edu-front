@@ -9,7 +9,7 @@ const StreamingArea = () => {
         position: "absolute",
         bottom: 0,
         width: "90vw",
-        height: "75vh",
+        height: "80vh",
         backgroundColor: "#f2f2f2",
         borderRadius: "30px 30px 0px 0px",
         display: "flex",
