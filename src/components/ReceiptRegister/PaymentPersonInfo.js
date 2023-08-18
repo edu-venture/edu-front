@@ -1,18 +1,24 @@
-import React from 'react';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 
 const Container = styled.div`
   width: 100%;
-  height: 15%;
   display: flex;
   justify-content: space-between;
   background: #FAFAFA;
+  align-items: stretch;
 `;
 
 const PaymentInfo = styled.div`
-  width: 33%;
-  margin-left: 50px;
+  flex: 1;
+  background: #FAFAFA;
+  padding: 10px 0 50px 50px; 
+  border-top: 3px solid #E3E3E3; 
+  border-bottom: 3px solid #E3E3E3;  
 `;
 
 const InfoHead = styled.p`
@@ -21,15 +27,22 @@ const InfoHead = styled.p`
 `;
 
 const TextInputField = styled.input`
-  border: 1px solid black;
-  border-radius: 20px;
+  border: 1px solid #E3E3E3;
+  border-radius: 8px;
   width: 80%;
-  height: 40%;
+  height: 43%;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 3rem;
+  font-size: 1rem;
+  font-weight: 500;
 `;
 
 
 
 const PaymentPersonInfo = () => {
+  const [selectedDate, setSelectedDate] = useState(null); //날짜 상태 관리
+
   return (
     <Container>
       <PaymentInfo>
@@ -42,7 +55,15 @@ const PaymentPersonInfo = () => {
       </PaymentInfo>
       <PaymentInfo>
         <InfoHead>청구연월</InfoHead>
-        <TextInputField type="text" />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            views={['year', 'month']}
+            inputFormat="yyyy-MM"
+            value={selectedDate}
+            onChange={setSelectedDate}
+            renderInput={(params) => <TextField {...params} variant="outlined" />}
+          />
+        </LocalizationProvider>
       </PaymentInfo>
     </Container>
   )
