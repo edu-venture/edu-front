@@ -34,7 +34,6 @@ const HeaderTabs = ({
   handleUserMenuOpen,
   value,
   onChange,
-  isLogin,
 }) => {
   const userName = sessionStorage.getItem("userName");
   // const userName = isLogin ? sessionStorage.getItem("userName") : null;
@@ -68,6 +67,7 @@ const UserHeader = ({ isLogin }) => {
   const handleLectureMenuOpen = (event) =>
     setLectureMenuAnchor(event.currentTarget);
   const handleLectureMenuClose = () => setLectureMenuAnchor(null);
+
   const handleUserMenuOpen = (event) => setUserMenuAnchor(event.currentTarget);
   const handleUserMenuClose = () => setUserMenuAnchor(null);
   const handleChange = (event, newValue) => {
@@ -76,7 +76,7 @@ const UserHeader = ({ isLogin }) => {
 
   const handleLogout = () => {
     sessionStorage.clear();
-    window.location.href = "http://localhost:3000";
+    window.location.href = "/";
   };
 
   return (

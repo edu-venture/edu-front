@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import Title from "../components/Title";
 import SearchIcon from "@mui/icons-material/Search";
+import Title from "../components/Title";
+import UserListItem from "../components/StudentSelect/UserListItem";
+import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
-  height: auto;
+  height: calc(100vh - 50px);
   overflow: hidden;
   position: relative;
 `;
@@ -56,6 +58,9 @@ const SelectResultHead = styled.ul`
   padding: 20px 0;
   border: none;
   border-radius: 20px 20px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   position: sticky; 
   top: 0;            
   z-index: 10;
@@ -76,6 +81,51 @@ const SelectResultItem = styled.li`
   flex: 0 0 auto;
 `;
 
+const getUserList = async (
+  page,
+  searchCondition,
+  searchKeyword,
+  setUserList,
+  setTotalPages,
+  setPageNumber,
+  setPageSize
+) => {
+  try {
+    const response = await axios.get(
+      "http://192.168.0.220:9090/user/user-list",
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+        },
+        params: {
+          page: page,
+          searchCondition: searchCondition,
+          searchKeyword: searchKeyword,
+        },
+      }
+    );
+    console.log(sessionStorage.getItem("userId"));
+    const user = {
+      userId: sessionStorage.getItem("userId"),
+    };
+    const userresponse = await axios.post(
+      "http://192.168.0.220:9090/user/getuser",
+      user
+    );
+    console.log(userresponse);
+    console.log(response);
+
+    if (response.data && response.data.pageItems.content) {
+      setUserList(() => response.data.pageItems.content);
+      setTotalPages(() => response.data.pageItems.totalPages);
+      setPageNumber(() => response.data.pageItems.pageable.pageNumber);
+      setPageSize(() => response.data.pageItems.pageable.pageSize);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const StudentSelect = () => {
 <<<<<<< Updated upstream
   const [studentsData, setStudentsData] = useState([]); //학생 데이터
@@ -89,6 +139,8 @@ const StudentSelect = () => {
     "class",
   ];
 
+  // const [userInfo, setUserInfo] = useState([]);
+  const navi = useNavigate();
   useEffect(() => {
     axios
       .get("/SelectResultItems.json")

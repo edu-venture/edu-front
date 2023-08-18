@@ -18,7 +18,6 @@ const styles = {
     padding: "20px 0px 20px 50px",
   },
   selectBox: {
-    border: "0.5px solid black",
     borderRadius: "10px",
     height: "27.5px",
     width: "100px",
@@ -33,7 +32,6 @@ const styles = {
     position: "relative",
   },
   searchInput: {
-    border: "0.5px solid black",
     borderRadius: "10px",
     width: "400px",
     height: "25px",
@@ -131,7 +129,7 @@ const AdminVod = () => {
           <SearchIcon sx={styles.searchIcon} />
         </Button>
         <Button
-          onClick={() => navigate("/admin/vodlist/create")}
+          onClick={() => navigate("/admin/video/create")}
           sx={styles.writeButton}
         >
           글쓰기

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../components/Login/LoginStyled.module.css";
 
 const Login = ({ setIsLogin }) => {
@@ -112,6 +112,15 @@ const Login = ({ setIsLogin }) => {
             <button type="submit">로그인</button>
           </div>
         </form>
+        <div
+          style={{
+            fontSize: "14px",
+            textAlign: "center",
+            marginTop: "25px",
+          }}
+        >
+          <Link to="/admin/join">선생님 혹은 관리자이신가요?</Link>
+        </div>
       </div>
     </div>
   );

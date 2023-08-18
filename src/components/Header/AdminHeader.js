@@ -18,7 +18,7 @@ const NavigationTab = ({ label, to, onClick }) => (
   </Link>
 );
 
-const LectureMenuItem = ({ handleClose, to, children }) => (
+const MenuItems = ({ handleClose, to = "#", children }) => (
   <MenuItem
     onClick={handleClose}
     component={Link}
@@ -29,24 +29,12 @@ const LectureMenuItem = ({ handleClose, to, children }) => (
   </MenuItem>
 );
 
-const LectureMenuItems = ({ handleClose }) => (
-  <>
-    <LectureMenuItem handleClose={handleClose} to="/admin/timetable">
-      주간 시간표
-    </LectureMenuItem>
-    <LectureMenuItem handleClose={handleClose} to="/admin/streaming">
-      실시간 수업
-    </LectureMenuItem>
-    <LectureMenuItem handleClose={handleClose} to="/admin/video">
-      수업 영상
-    </LectureMenuItem>
-    <LectureMenuItem handleClose={handleClose} to="/admin/notice">
-      수업 공지사항
-    </LectureMenuItem>
-  </>
-);
-
-const HeaderTabs = ({ handleMenuOpen, value, onChange }) => {
+const HeaderTabs = ({
+  handleClassMenuOpen,
+  handleUserMenuOpen,
+  value,
+  onChange,
+}) => {
   const userName = sessionStorage.getItem("userName");
 
   return (
@@ -58,23 +46,35 @@ const HeaderTabs = ({ handleMenuOpen, value, onChange }) => {
       TabIndicatorProps={{ style: { height: 0 } }}
     >
       <NavigationTab label="원 생" to="/admin/student" />
-      <NavigationTab label="수 업" onClick={handleMenuOpen} />
+      <NavigationTab label="수 업" onClick={handleClassMenuOpen} />
       <NavigationTab label="수 납" to="/admin/payment" />
       <NavigationTab label="메 신 저" to="/admin/messenger" />
-      <Tab label={`${userName} 님`} />
+      <NavigationTab
+        label={`${userName ? `${userName} 님` : "Teacher"}`}
+        onClick={handleUserMenuOpen}
+      />
     </Tabs>
   );
 };
 
-const AdminHeader = () => {
-  const [menuAnchor, setMenuAnchor] = useState(null);
-  const isMenuOpen = Boolean(menuAnchor);
+const AdminHeader = ({ isLogin }) => {
+  const [classMenuAnchor, setClassMenuAnchor] = useState(null);
+  const [userMenuAnchor, setUserMenuAnchor] = useState(null);
   const [value, setValue] = useState(0);
 
-  const handleMenuOpen = (event) => setMenuAnchor(event.currentTarget);
-  const handleMenuClose = () => setMenuAnchor(null);
+  const handleClassMenuOpen = (event) =>
+    setClassMenuAnchor(event.currentTarget);
+  const handleClassMenuClose = () => setClassMenuAnchor(null);
+
+  const handleUserMenuOpen = (event) => setUserMenuAnchor(event.currentTarget);
+  const handleUserMenuClose = () => setUserMenuAnchor(null);
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    window.location.href = "/";
   };
 
   return (
@@ -101,12 +101,36 @@ const AdminHeader = () => {
           </Typography>
         </Link>
         <HeaderTabs
-          handleMenuOpen={handleMenuOpen}
+          handleClassMenuOpen={handleClassMenuOpen}
+          handleUserMenuOpen={handleUserMenuOpen}
           value={value}
           onChange={handleChange}
+          isLogin={isLogin}
         />
-        <Menu anchorEl={menuAnchor} open={isMenuOpen} onClose={handleMenuClose}>
-          <LectureMenuItems handleClose={handleMenuClose} />
+        <Menu
+          anchorEl={classMenuAnchor}
+          open={Boolean(classMenuAnchor)}
+          onClose={handleClassMenuClose}
+        >
+          <MenuItems handleClose={handleClassMenuClose} to="/admin/timetable">
+            주간 시간표
+          </MenuItems>
+          <MenuItems handleClose={handleClassMenuClose} to="/admin/streaming">
+            실시간 수업
+          </MenuItems>
+          <MenuItems handleClose={handleClassMenuClose} to="/admin/video">
+            수업 영상
+          </MenuItems>
+          <MenuItems handleClose={handleClassMenuClose} to="/admin/notice">
+            수업 공지사항
+          </MenuItems>
+        </Menu>
+        <Menu
+          anchorEl={userMenuAnchor}
+          open={Boolean(userMenuAnchor)}
+          onClose={handleUserMenuClose}
+        >
+          <MenuItems handleClose={handleLogout}>로그아웃</MenuItems>
         </Menu>
       </Toolbar>
     </AppBar>
