@@ -3,12 +3,11 @@ import Title from "../components/Title";
 import { styled } from "styled-components";
 import AdminVodCreateListItem from "../components/AdminVod/AdminVodCreateListItem";
 import { Button } from "@mui/material";
-import FileUpload from "../components/AdminVod/FileUpload";
 
 const styles = {
   Container: {
     width: "100vw",
-    height: "auto",
+    height: "calc(100vh - 50px)",
     overflow: "hidden",
     backgroundColor: "#5AC467",
     position: "relative",
@@ -32,15 +31,14 @@ const styles = {
 };
 const ButtonContainer = styled.div`
   display: flex;
-
   width: 100%;
   margin-top: 20px;
   justify-content: flex-end;
 `;
 const ContentContainer = styled.div`
   width: 90%;
-  height: 100%;
-  margin: 40px auto 0 auto;
+  height: 80%;
+  margin: 50px auto 0 auto;
   background: #ececec;
   border-radius: 20px 20px 0 0;
   display: flex;
@@ -49,31 +47,24 @@ const ContentContainer = styled.div`
   justify-content: flex-start;
 `;
 
-const AdminVodCreate = () => {
+const NoticeCreate = () => {
   return (
     <div style={styles.Container}>
       <div style={styles.titleContainer}>
-        <Title subtitle="학생을 위한" title="수업 영상 등록" color="#ffffff" />
+        <Title
+          subtitle="7월 4주차"
+          title="수업 공지사항 등록"
+          color="#ffffff"
+        />
       </div>
       <ContentContainer>
-        <AdminVodCreateListItem contentName="수업 이름" />
         <AdminVodCreateListItem contentName="반" />
+        <AdminVodCreateListItem contentName="날짜" />
+        <AdminVodCreateListItem contentName="공지사항 제목" />
         <AdminVodCreateListItem
-          contentName="수업 내용"
-          customHeight="217px"
-          inputHeight="217px"
-        />
-        <FileUpload
-          contentName="수업 영상"
-          placeholder="이곳을 클릭하여 선택하거나 파일을 드래그하세요."
-        />
-        <FileUpload
-          contentName="썸네일 사진"
-          placeholder="이곳을 클릭하여 선택하거나 파일을 드래그하세요."
-        />
-        <FileUpload
-          contentName="수업 자료"
-          placeholder="이곳을 클릭하여 선택하거나 파일을 드래그하세요."
+          contentName="공지사항 내용"
+          customHeight="300px"
+          inputHeight="300px"
         />
         <ButtonContainer>
           <Button
@@ -99,4 +90,4 @@ const AdminVodCreate = () => {
   );
 };
 
-export default AdminVodCreate;
+export default NoticeCreate;

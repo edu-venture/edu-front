@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminVodListItem from "./AdminVodListItem";
 import styled from "styled-components";
 
@@ -15,9 +15,16 @@ const Container = styled.div`
 `;
 
 const AdminVodList = ({ vodData }) => {
+  const [videos, setVideos] = useState(vodData);
+
+  const handleVideoDelete = (deletedId) => {
+    const updatedVideos = videos.filter((video) => video.id !== deletedId);
+    setVideos(updatedVideos);
+  };
+
   return (
     <Container>
-      {vodData.map((item, index) => (
+      {videos.map((item, index) => (
         <AdminVodListItem
           key={index}
           id={item.id}
@@ -25,6 +32,7 @@ const AdminVodList = ({ vodData }) => {
           teacherName={item.teacherName}
           viewCount={item.viewCount}
           uploadDate={item.uploadDate}
+          handleDelete={handleVideoDelete}
         />
       ))}
     </Container>

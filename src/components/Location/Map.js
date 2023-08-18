@@ -17,7 +17,7 @@ const Map = () => {
 
   useEffect(() => {
     axios
-      .get("http://192.168.0.220:7070/igiveyougps")
+      .get("http://192.168.0.220:9090/igiveyougps")
       .then((response) => setCars(response.data.items));
   }, []);
 

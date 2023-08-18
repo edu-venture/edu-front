@@ -158,7 +158,7 @@ function ChangePassword() {
     >
       <TitleContainer>
         <Title
-          subtitle={`${sessionStorage.getItem("userName")} 님의`}
+          subtitle={`${sessionStorage.getItem("userName")}님의`}
           title="비밀번호 수정"
         />
       </TitleContainer>

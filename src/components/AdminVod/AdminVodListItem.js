@@ -32,11 +32,22 @@ const AdminVodListItem = ({
   teacherName,
   viewCount,
   uploadDate,
+  handleDelete,
 }) => {
   const navigate = useNavigate();
 
   const goToDetail = () => {
     navigate(`/video/detail/${id}`);
+  };
+
+  const onDelete = async () => {
+    try {
+      // await axios.delete("/videos/${id}");
+      console.log("동영상 삭제 완료");
+      handleDelete(id);
+    } catch (error) {
+      console.error("삭제 오류", error);
+    }
   };
 
   return (
@@ -57,7 +68,7 @@ const AdminVodListItem = ({
           </Button>
           <Button
             size="small"
-            onClick={() => console.log("Delete")} // TODO: 여기에 삭제 함수를 추가합니다.
+            onClick={onDelete} // TODO: 여기에 삭제 함수를 추가합니다.
             style={{ marginLeft: "5px" }}
           >
             삭제
