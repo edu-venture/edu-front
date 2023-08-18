@@ -19,11 +19,14 @@ import VODDetail from "./pages/VODDetail";
 import MyPage from "./pages/MyPage";
 import ChangePassword from "./pages/ChangePassword";
 import StudentSelect from "./pages/StudentSelect";
-<<<<<<< Updated upstream
 import Join from "./pages/Join";
-=======
-import ReceiptRegister from "./pages/ReceiptRegister";
->>>>>>> Stashed changes
+import Notice from "./pages/Notice";
+import AdminVod from "./pages/AdminVod";
+import AdminVodCreate from "./pages/AdminVodCreate";
+import StudentUpdate from "./pages/StudentUpdate";
+import NoticeCreate from "./pages/NoticeCreate";
+import NoticeUpdate from "./pages/NoticeUpdate";
+import AdminJoin from "./pages/AdminJoin";
 
 function App() {
   const userType = sessionStorage.getItem("userType");
@@ -71,18 +74,11 @@ function App() {
         <Route path="/location" element={<Location />} />
         <Route path="/messenger/" element={<Messenger />} />
         <Route path="/messenger/:id" element={<Messenger />} />
-<<<<<<< Updated upstream
         <Route path="/video" element={<VODBoard />} />
         <Route path="/video/detail/:id" element={<VODDetail />} />
         <Route path="/user/mypage" element={<MyPage />} />
         <Route path="/user/changePassword" element={<ChangePassword />} />
         <Route path="admin/*" element={<AdminRoutes />} />
-=======
-        <Route path="/video" element={<VODStreaming />}/>
-        <Route path="/video/detail" element={<VODStreamingDetail />}/>
-        <Route path="/admin/studentSelect" element={<StudentSelect />} />
-        <Route path="/admin/receiptRegister" element={<ReceiptRegister />} />
->>>>>>> Stashed changes
       </Routes>
     </>
   );
