@@ -54,13 +54,7 @@ const Main = () => {
         ) : (userType === "admin") | (userType === "teacher") ? (
           <MainMessenger />
         ) : (
-          <>
-            <KeyboardArrowDownRoundedIcon
-              onClick={moveScroll}
-              sx={downArrowAnimation}
-            />
-            <div ref={myRef} />
-          </>
+          <></>
         )}
       </MainContainer>
       <Footer />

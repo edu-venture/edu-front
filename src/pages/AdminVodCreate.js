@@ -3,6 +3,8 @@ import Title from "../components/Title";
 import { styled } from "styled-components";
 import AdminVodCreateListItem from "../components/AdminVod/AdminVodCreateListItem";
 import { Button } from "@mui/material";
+import FileUpload from "../components/AdminVod/FileUpload";
+
 const styles = {
   Container: {
     width: "100vw",
@@ -61,22 +63,16 @@ const AdminVodCreate = () => {
           customHeight="217px"
           inputHeight="217px"
         />
-        <AdminVodCreateListItem
+        <FileUpload
           contentName="수업 영상"
-          customHeight="73px"
-          inputHeight="73px"
           placeholder="이곳을 클릭하여 선택하거나 파일을 드래그하세요."
         />
-        <AdminVodCreateListItem
+        <FileUpload
           contentName="썸네일 사진"
-          customHeight="73px"
-          inputHeight="73px"
           placeholder="이곳을 클릭하여 선택하거나 파일을 드래그하세요."
         />
-        <AdminVodCreateListItem
+        <FileUpload
           contentName="수업 자료"
-          customHeight="73px"
-          inputHeight="73px"
           placeholder="이곳을 클릭하여 선택하거나 파일을 드래그하세요."
         />
         <ButtonContainer>
