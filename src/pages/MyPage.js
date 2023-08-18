@@ -75,8 +75,8 @@ const MyPage = () => {
           user
         );
         console.log(userresponse);
+        const userData = userresponse.data.item;
         if (userresponse.data && userresponse.data.item) {
-          const userData = userresponse.data.item;
           setInitialData(userData);
           setId(userData.id);
           setUserId(userData.userId);
@@ -93,7 +93,7 @@ const MyPage = () => {
           setUserSpecialNote(userData.userSpecialNote);
           setUserJoinId(userData.userJoinId);
         }
-        console.log(userresponse.data.item.userJoinId);
+        console.log(userData);
 
         if (userresponse.data.item.userJoinId) {
           const student = {
@@ -224,7 +224,7 @@ const MyPage = () => {
           subtitle={
             initialUseType === "student"
               ? `${initialUserName} 학생의`
-              : `${initialUserName} 님의`
+              : `${initialUserName}님의`
           }
           title="My Page"
         />
@@ -292,13 +292,23 @@ const MyPage = () => {
               {userType === "student" ? "학교" : "자녀 학교"}
             </label>
           </div>
-          <Input
-            type="text"
-            id="userSchool"
-            name="userSchool"
-            value={studentInfo.userSchool}
-            onChange={(e) => setUserSchool(e.target.value)}
-          />
+          {userType === "student" ? (
+            <Input
+              type="text"
+              id="userSchool"
+              name="userSchool"
+              value={userSchool}
+              onChange={(e) => setUserSchool(e.target.value)}
+            />
+          ) : (
+            <Input
+              type="text"
+              id="userSchool"
+              name="userSchool"
+              value={studentInfo.userSchool}
+              onChange={(e) => setUserSchool(e.target.value)}
+            />
+          )}
         </Container>
 
         <Container>
@@ -318,24 +328,50 @@ const MyPage = () => {
           <div className="label-wrapper">
             <label htmlFor="userAddress">주소</label>
           </div>
-          <Input
-            type="text"
-            id="userAddress"
-            name="userAddress"
-            value={userAddress}
-            onClick={openAddressSearch}
-            onChange={(e) => setUserAddress(e.target.value)}
-            placeholder="주소를 검색하세요"
-          />
-          <div>상세 주소</div>
-          <Input
-            type="text"
-            id="userAddressDetail"
-            name="userAddressDetail"
-            value={userAddressDetail}
-            onChange={(e) => setUserAddressDetail(e.target.value)}
-            placeholder="상세 주소를 입력하세요"
-          />
+          {userType === "student" ? (
+            <>
+              <Input
+                type="text"
+                id="userAddress"
+                name="userAddress"
+                value={userAddress}
+                onClick={openAddressSearch}
+                onChange={(e) => setUserAddress(e.target.value)}
+                placeholder="주소를 검색하세요"
+              />
+              <div>상세 주소</div>
+              <Input
+                type="text"
+                id="userAddressDetail"
+                name="userAddressDetail"
+                value={userAddressDetail}
+                onChange={(e) => setUserAddressDetail(e.target.value)}
+                placeholder="상세 주소를 입력하세요"
+              />
+            </>
+          ) : (
+            <>
+              <Input
+                type="text"
+                id="userAddress"
+                name="userAddress"
+                value={studentInfo.userAddress}
+                onClick={openAddressSearch}
+                onChange={(e) => setUserAddress(e.target.value)}
+                placeholder="주소를 검색하세요"
+              />
+              <div>상세 주소</div>
+              <Input
+                type="text"
+                id="userAddressDetail"
+                name="userAddressDetail"
+                value={studentInfo.userAddressDetail}
+                onChange={(e) => setUserAddressDetail(e.target.value)}
+                placeholder="상세 주소를 입력하세요"
+              />
+            </>
+          )}
+
           <div
             style={{
               marginTop: "35px",
