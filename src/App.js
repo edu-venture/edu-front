@@ -20,6 +20,13 @@ import MyPage from "./pages/MyPage";
 import ChangePassword from "./pages/ChangePassword";
 import StudentSelect from "./pages/StudentSelect";
 import Join from "./pages/Join";
+import Notice from "./pages/Notice";
+import AdminVod from "./pages/AdminVod";
+import AdminVodCreate from "./pages/AdminVodCreate";
+import StudentUpdate from "./pages/StudentUpdate";
+import NoticeCreate from "./pages/NoticeCreate";
+import NoticeUpdate from "./pages/NoticeUpdate";
+import AdminJoin from "./pages/AdminJoin";
 
 function App() {
   const userType = sessionStorage.getItem("userType");
@@ -33,18 +40,22 @@ function App() {
   }, []);
 
   const renderHeader = () => {
-    if (location.pathname === "/login" || location.pathname === "/streaming") {
+    if (
+      location.pathname === "/login" ||
+      location.pathname === "/streaming" ||
+      location.pathname === "/admin/join"
+    ) {
       return null;
     }
 
     if (
-      location.pathname.startsWith("/admin") ||
+      (isLogin && location.pathname.startsWith("/admin")) ||
       userType === "teacher" ||
       userType === "admin"
     ) {
       return <AdminHeader />;
-    } else if (isLogin || userType === "student" || userType === "parent") {
-      return <UserHeader isLogin={isLogin} />;
+    } else if ((isLogin && userType === "student") || userType === "parent") {
+      return <UserHeader />;
     } else {
       return <BasicHeader />;
     }
@@ -76,8 +87,16 @@ function App() {
 function AdminRoutes() {
   return (
     <Routes>
+      <Route path="join" element={<AdminJoin />} />
       <Route path="student" element={<StudentSelect />} />
+      <Route path="student/update" element={<StudentUpdate />} />
+      <Route path="student/update/:id" element={<StudentUpdate />} />
       <Route path="student/join" element={<Join />} />
+      <Route path="notice" element={<Notice />} />
+      <Route path="notice/create" element={<NoticeCreate />} />
+      <Route path="notice/update" element={<NoticeUpdate />} />
+      <Route path="video" element={<AdminVod />} />
+      <Route path="video/create" element={<AdminVodCreate />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
