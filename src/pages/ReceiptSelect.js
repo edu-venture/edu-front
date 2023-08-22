@@ -5,17 +5,17 @@ import SearchIcon from "@mui/icons-material/Search";
 import Title from "../components/Title";
 import ReceiptListItem from "../components/ReceiptSelect/ReceiptListItem";
 import { Link, useNavigate } from "react-router-dom";
-import TextField from '@mui/material/TextField';
-import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { styled as muiStyled } from '@mui/system';
+import TextField from "@mui/material/TextField";
+import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { styled as muiStyled } from "@mui/system";
 
 const Container = styled.div`
   width: 100%;
   height: calc(100vh - 50px);
   overflow: hidden;
   position: relative;
-  background: #4A4F6B;
+  background: #4a4f6b;
 `;
 
 const Button = styled.div`
@@ -69,7 +69,6 @@ const SelectResultHead = styled.ul`
   text-align: center;
 `;
 
-
 const getUserList = async (
   page,
   searchCondition,
@@ -81,7 +80,7 @@ const getUserList = async (
 ) => {
   try {
     const response = await axios.get(
-      "http://192.168.0.220:9090/user/user-list",
+      "http://192.168.0.220:8081/user/user-list",
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -98,7 +97,7 @@ const getUserList = async (
       userId: sessionStorage.getItem("userId"),
     };
     const userresponse = await axios.post(
-      "http://192.168.0.220:9090/user/getuser",
+      "http://192.168.0.220:8081/user/getuser",
       user
     );
     console.log(userresponse);
@@ -115,7 +114,7 @@ const getUserList = async (
   }
 };
 
-const   ReceiptSelect = () => {
+const ReceiptSelect = () => {
   const [selectedUserIds, setSelectedUserIds] = useState([]);
   const [userList, setUserList] = useState([]);
   const [page, setPage] = useState(0);
@@ -152,7 +151,7 @@ const   ReceiptSelect = () => {
       const deleteIdsaxios = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.220:9090/user/deleteselectusers",
+            "http://192.168.0.220:8081/user/deleteselectusers",
             { selectedUserIds },
             {
               headers: {
@@ -192,7 +191,7 @@ const   ReceiptSelect = () => {
     const searchAxios = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.0.220:9090/user/user-list",
+          "http://192.168.0.220:8081/user/user-list",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -223,7 +222,7 @@ const   ReceiptSelect = () => {
     <>
       <Container>
         <div style={{ padding: "20px 0px 20px 50px" }}>
-          <Title subtitle="[]월" title="수납 관리" color="#fff"/>
+          <Title subtitle="[]월" title="수납 관리" color="#fff" />
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ marginLeft: "50px" }}>
@@ -243,7 +242,7 @@ const   ReceiptSelect = () => {
             >
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
-                  views={['year', 'month']}
+                  views={["year", "month"]}
                   label="연도 - 월"
                   inputFormat="yyyy - MM"
                   value={value}

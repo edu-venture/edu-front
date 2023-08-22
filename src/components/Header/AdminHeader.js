@@ -47,7 +47,7 @@ const HeaderTabs = ({
     >
       <NavigationTab label="원 생" to="/admin/student" />
       <NavigationTab label="수 업" onClick={handleClassMenuOpen} />
-      <NavigationTab label="수 납" to="/admin/payment" />
+      <NavigationTab label="수 납" to="/admin/receipt" />
       <NavigationTab label="메 신 저" to="/admin/messenger" />
       <NavigationTab
         label={`${userName ? `${userName} 님` : "Teacher"}`}

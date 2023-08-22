@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 const styles = {
   Container: {
     width: "100vw",
-    height: '100vh',
+    height: "100vh",
     backgroundColor: "#5AC467",
     position: "relative",
   },
@@ -43,7 +43,7 @@ const InputWrapper = styled.div`
 const InputTitle = styled.div`
   border: none;
   border-radius: 20px;
-  background: #7F7F7F;
+  background: #7f7f7f;
   padding: 10px 20px;
   color: #fff;
   width: 8%;
@@ -78,13 +78,11 @@ const ContentContainer = styled.div`
   justify-content: flex-start;
 `;
 
-
-
 const StreamingCreate = () => {
   const navigate = useNavigate();
-  
+
   const buttonClickHandler = () => {
-    navigate('/admin/streaming/create/setting');
+    navigate("/admin/streaming/create/setting");
   };
 
   return (
@@ -111,12 +109,13 @@ const StreamingCreate = () => {
           <InputField />
         </InputWrapper>
         <ButtonContainer>
-          <Button sx={styles.button} onClick={buttonClickHandler}>채널 생성</Button>
+          <Button sx={styles.button} onClick={buttonClickHandler}>
+            채널 생성
+          </Button>
         </ButtonContainer>
       </ContentContainer>
     </div>
   );
-
-}
+};
 
 export default StreamingCreate;

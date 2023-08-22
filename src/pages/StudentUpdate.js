@@ -47,7 +47,7 @@ const StudentUpdate = () => {
     try {
       console.log("과목리스트 가져온다");
       const response = await axios.get(
-        "http://192.168.0.220:9090/course/course-list"
+        "http://192.168.0.220:8081/course/course-list"
       );
       console.log("응답에 리스트 담겨있나?", response.data.items);
       if (response.data.items) {
@@ -65,7 +65,7 @@ const StudentUpdate = () => {
         id: id,
       };
       const userresponse = await axios.post(
-        "http://192.168.0.220:9090/user/getuser",
+        "http://192.168.0.220:8081/user/getuser",
         user
       );
       const userData = userresponse.data.item;
@@ -101,7 +101,7 @@ const StudentUpdate = () => {
           id: userresponse.data.item.userJoinId,
         };
         const parentresponse = await axios.post(
-          "http://192.168.0.220:9090/user/getstudent",
+          "http://192.168.0.220:8081/user/getstudent",
           parent
         );
         console.log("여긴 부모야~", parentresponse);
@@ -149,7 +149,7 @@ const StudentUpdate = () => {
         };
         console.log("수정 요청할거임", userDTO);
         try {
-          await axios.put("http://192.168.0.220:9090/user/update", userDTO);
+          await axios.put("http://192.168.0.220:8081/user/update", userDTO);
           alert("학생 정보가 수정되었습니다.");
           navi(-1);
         } catch (e) {

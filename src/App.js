@@ -27,7 +27,12 @@ import StudentUpdate from "./pages/StudentUpdate";
 import NoticeCreate from "./pages/NoticeCreate";
 import NoticeUpdate from "./pages/NoticeUpdate";
 import AdminJoin from "./pages/AdminJoin";
-// import Teacher from "./pages/Teacher";
+import Teacher from "./pages/Teacher";
+import StreamingBoard from "./pages/StreamingBoard";
+import StreamingCreate from "./pages/StreamingCreate";
+import StreamingSetting from "./pages/StreamingSetting";
+import ReceiptSelect from "./pages/ReceiptSelect";
+import ReceiptRegister from "./pages/ReceiptRegister";
 
 function App() {
   const userType = sessionStorage.getItem("userType");
@@ -90,16 +95,23 @@ function AdminRoutes() {
     <Routes>
       <Route path="join" element={<AdminJoin />} />
       <Route path="student" element={<StudentSelect />} />
+      <Route path="student/join" element={<Join />} />
       <Route path="student/update" element={<StudentUpdate />} />
       <Route path="student/update/:id" element={<StudentUpdate />} />
-      <Route path="student/join" element={<Join />} />
+      <Route path="streaming" element={<StreamingBoard />} />
+      <Route path="streaming/create" element={<StreamingCreate />} />
+      <Route path="streaming/create/setting" element={<StreamingSetting />} />
+      <Route path="video" element={<AdminVod />} />
+      <Route path="video/create" element={<AdminVodCreate />} />
       <Route path="notice" element={<Notice />} />
       <Route path="notice/create" element={<NoticeCreate />} />
       <Route path="notice/update" element={<NoticeUpdate />} />
       <Route path="notice/update/:id" element={<NoticeUpdate />} />
-      <Route path="video" element={<AdminVod />} />
-      <Route path="video/create" element={<AdminVodCreate />} />
-      {/* <Route path="teacher" element={<Teacher />} /> */}
+      <Route path="receipt" element={<ReceiptSelect />} />
+      <Route path="receipt/register" element={<ReceiptRegister />} />
+      <Route path="messenger" element={<Messenger />} />
+      <Route path="messenger/:id" element={<Messenger />} />
+      <Route path="teacher" element={<Teacher />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

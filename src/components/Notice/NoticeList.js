@@ -11,7 +11,7 @@ const NoticeList = () => {
       console.log("엑시오스 들어간다");
       // const response = await axios.get('/NoticeTest.json');
       const response = await axios.get(
-        "http://192.168.0.220:9090/notice/notice-list"
+        "http://192.168.0.220:8081/notice/notice-list"
       );
 
       console.log(response);
@@ -29,7 +29,7 @@ const NoticeList = () => {
   const deleteNotice = async (noticeNo) => {
     try {
       await axios.delete(
-        `http://192.168.0.220:9090/notice/delete/${noticeNo}`,
+        `http://192.168.0.220:8081/notice/delete/${noticeNo}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
