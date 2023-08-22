@@ -37,7 +37,7 @@ const EmojiButton = styled.div`
   font-size: 40px;
 `;
 
-const Emoji = ({ emoji }) => {
+const Emoji = ({ emoji, onEmojiClick }) => {
   const handleClick = (e) => {
     confetti({
       particleCount: 100,
@@ -49,17 +49,18 @@ const Emoji = ({ emoji }) => {
       },
       shapes: ["circle"],
     });
+    onEmojiClick(emoji);
   };
 
   return <EmojiButton onClick={handleClick}>{emoji}</EmojiButton>;
 };
 
-const EmojiSection = ({ title, emojis }) => (
+const EmojiSection = ({ title, emojis, onEmojiClick }) => (
   <EmojiGroup>
     <EmojiTitle>{title}</EmojiTitle>
     <EmojiButtonGroup>
       {emojis.map((emoji) => (
-        <Emoji emoji={emoji} key={emoji} />
+        <Emoji emoji={emoji} key={emoji} onEmojiClick={onEmojiClick} />
       ))}
     </EmojiButtonGroup>
   </EmojiGroup>
