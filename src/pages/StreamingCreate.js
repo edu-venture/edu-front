@@ -2,10 +2,12 @@ import React from "react";
 import Title from "../components/Title";
 import { styled } from "styled-components";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router";
 
 const styles = {
   Container: {
     width: "100vw",
+    height: '100vh',
     backgroundColor: "#5AC467",
     position: "relative",
   },
@@ -65,7 +67,9 @@ const ButtonContainer = styled.div`
 `;
 const ContentContainer = styled.div`
   width: 90%;
+  height; 100%;
   margin: 50px auto 0 auto;
+  padding-bottom: 50px; 
   background: #ececec;
   border-radius: 20px 20px 0 0;
   display: flex;
@@ -77,6 +81,12 @@ const ContentContainer = styled.div`
 
 
 const StreamingCreate = () => {
+  const navigate = useNavigate();
+  
+  const buttonClickHandler = () => {
+    navigate('/admin/streaming/create/setting');
+  };
+
   return (
     <div style={styles.Container}>
       <div style={styles.titleContainer}>
@@ -101,7 +111,7 @@ const StreamingCreate = () => {
           <InputField />
         </InputWrapper>
         <ButtonContainer>
-          <Button sx={styles.button}>채널 생성</Button>
+          <Button sx={styles.button} onClick={buttonClickHandler}>채널 생성</Button>
         </ButtonContainer>
       </ContentContainer>
     </div>
