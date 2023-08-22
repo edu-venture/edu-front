@@ -26,7 +26,7 @@ const AdminVodList = ({ vodData }) => {
     <Container>
       {videos.map((item, index) => (
         <AdminVodListItem
-          key={index}
+          key={item.id}
           id={item.id}
           lectureName={`[${item.className}] ${item.lectureName}`}
           teacherName={item.teacherName}
@@ -38,5 +38,4 @@ const AdminVodList = ({ vodData }) => {
     </Container>
   );
 };
-
 export default AdminVodList;
