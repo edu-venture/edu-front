@@ -14,12 +14,19 @@ const Container = styled.div`
   justify-content: center;
 `;
 
+<<<<<<< Updated upstream
 const AdminVodList = ({ vodData }) => {
   return (
     <Container>
       {vodData.map((item, index) => (
+=======
+const AdminVodList = ({ vodData, handleVideoDelete }) => {
+  return (
+    <Container>
+      {vodData.map((item) => (
+>>>>>>> Stashed changes
         <AdminVodListItem
-          key={index}
+          key={item.id}
           id={item.id}
           lectureName={`[${item.className}] ${item.lectureName}`}
           teacherName={item.teacherName}
@@ -30,5 +37,4 @@ const AdminVodList = ({ vodData }) => {
     </Container>
   );
 };
-
 export default AdminVodList;

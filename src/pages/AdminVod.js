@@ -97,14 +97,19 @@ const AdminVod = () => {
         );
       } else if (searchOption === "강사명") {
         return item.teacherName.includes(searchText);
-      } else if (searchOption === "강의명") {
+      } else {
+        // "강의명" 혹은 그 외의 경우
         return item.lectureName.includes(searchText);
       }
-      return false;
     });
 
     setDisplayedVodData(filteredVodData);
   }, [searchOption, searchText]);
+
+  const handleVideoDelete = (id) => {
+    const updatedVideos = displayedVodData.filter((video) => video.id !== id);
+    setDisplayedVodData(updatedVideos);
+  };
 
   return (
     <div style={styles.container}>
@@ -114,7 +119,7 @@ const AdminVod = () => {
       <div style={styles.searchContainer}>
         <select
           style={styles.selectBox}
-          vale={searchOption}
+          value={searchOption}
           onChange={handleSelectChange}
         >
           <option style={{ textAlign: "center" }}>전체</option>
@@ -137,7 +142,10 @@ const AdminVod = () => {
           글쓰기
         </Button>
       </div>
-      <AdminVodList vodData={displayedVodData} />
+      <AdminVodList
+        vodData={displayedVodData}
+        handleVideoDelete={handleVideoDelete}
+      />
     </div>
   );
 };
