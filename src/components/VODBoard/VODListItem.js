@@ -9,7 +9,6 @@ const ListItem = styled.div`
   align-items: center;
   background: #ffffff;
   margin: 20px auto;
-  display: flex;
 `;
 
 const VideoFrame = styled.div`
@@ -21,7 +20,7 @@ const VideoFrame = styled.div`
 `;
 
 const VODListItem = ({
-  id,
+  key,
   lectureName,
   teacherName,
   viewCount,
@@ -30,14 +29,14 @@ const VODListItem = ({
   const navigate = useNavigate();
 
   const goToDetail = () => {
-    navigate(`/video/detail/${id}`);
+    navigate(`/video/detail/${key}`);
   };
 
   return (
     <ListItem>
       <VideoFrame onClick={goToDetail} />
       <div>
-        <Link to={`/video/detail/${id}`}>
+        <Link to={`/video/detail/${key}`}>
           <div style={{ fontSize: "25px" }}>{lectureName}</div>
         </Link>
         <div style={{ marginTop: "40px", fontSize: "20px" }}>

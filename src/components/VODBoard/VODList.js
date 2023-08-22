@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import VODListItem from "./VODListItem";
-import vodData from "../../utils/vodData.json";
+import axios from "axios";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -15,17 +15,43 @@ const Container = styled.div`
   justify-content: center;
 `;
 
+
 const VODList = () => {
+  const [VODList, setVODList] = useState([]);
+
+  useEffect(() => {
+    const getVODList = async () => {
+      try {
+        const response = await axios.get(
+          'http://192.168.0.213:8081/vod/list',
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+            }
+          }
+        );
+        console.log(response);
+  
+        if(response.data.items && 
+          setVODList(response.data.items));
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getVODList();
+  }, []);
+  
+
   return (
     <Container>
-      {vodData.map((item, index) => (
+      {
+      VODList.map((item) => (
         <VODListItem
-          key={index}
-          id={item.id}
-          lectureName={`[${item.className}] ${item.lectureName}`}
-          teacherName={item.teacherName}
-          viewCount={item.viewCount}
-          uploadDate={item.uploadDate}
+          key={item.id}
+          lectureName={item.title}
+          teacherName={item.writer}
+          viewCount={item.hits}
+          uploadDate={item.regDate}
         />
       ))}
     </Container>
