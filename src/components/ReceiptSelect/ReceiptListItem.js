@@ -52,7 +52,7 @@ const ReceiptListItem = ({ user, reloadUserList, handleCheckboxChange }) => {
           id: userJoinId,
         };
         const studentresponse = await axios.post(
-          "http://192.168.0.220:9090/user/getstudent",
+          "http://192.168.0.220:8081/user/getstudent",
           student
         );
 
@@ -72,7 +72,7 @@ const ReceiptListItem = ({ user, reloadUserList, handleCheckboxChange }) => {
       const deleteUserAxios = async () => {
         try {
           const response = await axios.delete(
-            `http://192.168.0.220:9090/user/user/${id}`,
+            `http://192.168.0.220:8081/user/user/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(
@@ -113,8 +113,8 @@ const ReceiptListItem = ({ user, reloadUserList, handleCheckboxChange }) => {
         color: "#171A2B",
         padding: "20px 0",
         textAlign: "center",
-        background: '#fff',
-        margin: '5px auto'
+        background: "#fff",
+        margin: "5px auto",
       }}
     >
       <li style={{ ...liStyle, width: "4%" }}>

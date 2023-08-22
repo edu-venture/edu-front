@@ -19,7 +19,7 @@ const Login = ({ setIsLogin }) => {
         let response;
         try {
           response = await axios.post(
-            "http://192.168.0.220:9090/user/login",
+            "http://192.168.0.220:8081/user/login",
             user
           );
           console.log();
@@ -38,7 +38,7 @@ const Login = ({ setIsLogin }) => {
               };
 
               const studentresponse = await axios.post(
-                "http://192.168.0.220:9090/user/getstudent",
+                "http://192.168.0.220:8081/user/getstudent",
                 student
               );
 

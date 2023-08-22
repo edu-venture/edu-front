@@ -69,7 +69,7 @@ const NoticeUpdate = () => {
       console.log("코스리스트갖고오는엑시오스 들어간다");
       // const response = await axios.get('/NoticeTest.json');
       const response = await axios.get(
-        "http://192.168.0.220:9090/course/course-list"
+        "http://192.168.0.220:8081/course/course-list"
       );
       console.log(response);
       console.log("위에껀 리스폰스");
@@ -90,7 +90,7 @@ const NoticeUpdate = () => {
           noticeNo: noticeNo,
         };
         const userresponse = await axios.post(
-          "http://192.168.0.220:9090/notice/getnotice",
+          "http://192.168.0.220:8081/notice/getnotice",
           noticeDTO
         );
         console.log(userresponse);
@@ -124,7 +124,7 @@ const NoticeUpdate = () => {
         };
         try {
           const response = await axios.put(
-            "http://192.268.0.220:9090/notice/noticeupdate",
+            "http://192.268.0.220:8081/notice/noticeupdate",
             noticeDTO
           );
           console.log(response);

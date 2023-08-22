@@ -76,7 +76,7 @@ const getUserList = async (
 ) => {
   try {
     const response = await axios.get(
-      "http://192.168.0.220:9090/user/user-list",
+      "http://192.168.0.220:8081/user/user-list",
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -93,7 +93,7 @@ const getUserList = async (
       userId: sessionStorage.getItem("userId"),
     };
     const userresponse = await axios.post(
-      "http://192.168.0.220:9090/user/getuser",
+      "http://192.168.0.220:8081/user/getuser",
       user
     );
     console.log(userresponse);
@@ -147,7 +147,7 @@ const StudentSelect = () => {
       const deleteIdsaxios = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.220:9090/user/deleteselectusers",
+            "http://192.168.0.220:8081/user/deleteselectusers",
             { selectedUserIds },
             {
               headers: {
@@ -187,7 +187,7 @@ const StudentSelect = () => {
     const searchAxios = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.0.220:9090/user/user-list",
+          "http://192.168.0.220:8081/user/user-list",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

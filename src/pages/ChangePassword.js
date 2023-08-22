@@ -90,7 +90,7 @@ function ChangePassword() {
         };
         try {
           const response = await axios.put(
-            "http://192.168.0.220:9090/user/updatepassword",
+            "http://192.168.0.220:8081/user/updatepassword",
             userDTO
           );
           console.log(response);

@@ -52,7 +52,7 @@ const UserListItem = ({ user, reloadUserList, handleCheckboxChange }) => {
           id: userJoinId,
         };
         const studentresponse = await axios.post(
-          "http://192.168.0.220:9090/user/getstudent",
+          "http://192.168.0.220:8081/user/getstudent",
           student
         );
 
@@ -72,7 +72,7 @@ const UserListItem = ({ user, reloadUserList, handleCheckboxChange }) => {
       const deleteUserAxios = async () => {
         try {
           const response = await axios.delete(
-            `http://192.168.0.220:9090/user/user/${id}`,
+            `http://192.168.0.220:8081/user/user/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(

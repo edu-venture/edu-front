@@ -39,7 +39,7 @@ const Join = () => {
       console.log("코스리스트갖고오는엑시오스 들어간다");
       // const response = await axios.get('/NoticeTest.json');
       const response = await axios.get(
-        "http://192.168.0.220:9090/course/course-list"
+        "http://192.168.0.220:8081/course/course-list"
       );
       console.log(response);
       console.log("위에껀 리스폰스");
@@ -76,7 +76,7 @@ const Join = () => {
       const chk = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.220:9090/user/id-check",
+            "http://192.168.0.220:8081/user/id-check",
             { userId: studentEmail }
           );
 
@@ -102,7 +102,7 @@ const Join = () => {
       const chk = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.220:9090/user/id-check",
+            "http://192.168.0.220:8081/user/id-check",
             { userId: parentEmail }
           );
 
@@ -223,7 +223,7 @@ const Join = () => {
         try {
           console.log(joinDTO);
           console.log("성공");
-          await axios.post("http://192.168.0.220:9090/user/join", joinDTO);
+          await axios.post("http://192.168.0.220:8081/user/join", joinDTO);
         } catch (e) {
           console.log(e);
         }
