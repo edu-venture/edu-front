@@ -24,11 +24,15 @@ const EmojiContainer = styled.div`
   justify-content: space-around;
 `;
 
-const VideoSection = () => {
+const VideoSection = ({ addEmojiMessage }) => {
   const 응원하기 = ["🍊", "🍎", "🥝", "🍈"];
   const 반응하기 = ["🎉", "😂", "👍🏻", "✋🏻"];
 
   const navigate = useNavigate();
+
+  const handleEmojiClick = (emoji, type) => {
+    addEmojiMessage(emoji, type);
+  };
 
   return (
     <VideoEmojiWrapper>
@@ -45,8 +49,16 @@ const VideoSection = () => {
         />
       </VideoContainer>
       <EmojiContainer>
-        <EmojiSection title="응 원 하 기" emojis={응원하기} />
-        <EmojiSection title="반 응 하 기" emojis={반응하기} />
+        <EmojiSection
+          title="응 원 하 기"
+          emojis={응원하기}
+          onEmojiClick={(emoji) => handleEmojiClick(emoji, "응원하기")}
+        />
+        <EmojiSection
+          title="반 응 하 기"
+          emojis={반응하기}
+          onEmojiClick={(emoji) => handleEmojiClick(emoji, "반응하기")}
+        />
       </EmojiContainer>
     </VideoEmojiWrapper>
   );

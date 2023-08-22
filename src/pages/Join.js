@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "../components/Join/JoinStyled.module.css";
 import axios from "axios";
 import DaumAddress from "../components/Join/daumAddress";
@@ -29,6 +29,34 @@ const Join = () => {
   const [schoolList, setSchoolList] = useState([]);
   const [chkStuEmail, setChkStuEmail] = useState(false);
   const [chkParEmail, setChkParEmail] = useState(false);
+
+  const [courseList, setCourseList] = useState([]);
+  const [couNo, setCouNo] = useState("");
+  const [claName, setClaName] = useState("");
+
+  const getCourseList = async () => {
+    try {
+      console.log("코스리스트갖고오는엑시오스 들어간다");
+      // const response = await axios.get('/NoticeTest.json');
+      const response = await axios.get(
+        "http://192.168.0.220:9090/course/course-list"
+      );
+      console.log(response);
+      console.log("위에껀 리스폰스");
+      if (response.data && response.data.items) {
+        setCourseList(response.data.items);
+      }
+      console.log("이건 코스리스트");
+      console.log(courseList);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getCourseList();
+    console.log(courseList);
+  }, []);
 
   const changeStuEmail = (e) => {
     setStudentEmail(e.target.value);
@@ -161,6 +189,7 @@ const Join = () => {
 
       const join = async () => {
         const userDTO = {
+          couNo: couNo,
           userId: studentEmail,
           userPw: studentTel.slice(-4),
           userName: studentName,
@@ -175,6 +204,7 @@ const Join = () => {
           userSpecialNote: significant,
         };
         const parentDTO = {
+          couNo: couNo,
           userId: parentEmail,
           userPw: parentTel.slice(-4),
           userName: parentName,
@@ -348,8 +378,35 @@ const Join = () => {
               onChange={(e) => setSignificant(e.target.value)}
             ></textarea>
 
-            <label>수강 과목</label>
-            <input type="text"></input>
+            <label>반</label>
+            <select
+              name="selectclass"
+              style={{
+                margin: "10px 200px 25px 0px",
+                width: "415px",
+                height: "40px",
+                borderRadius: "10px",
+                border: "none",
+                fontSize: "large",
+                whiteSpace: "pre-line",
+                textAlign: "center",
+              }}
+              value={claName}
+              onChange={(e) => {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                setClaName(e.target.value);
+                setCouNo(selectedOption.id);
+              }}
+            >
+              <option value="" disabled selected>
+                반 선택
+              </option>
+              {courseList.map((course, index) => (
+                <option key={index} value={course.claName} id={course.couNo}>
+                  {course.claName}
+                </option>
+              ))}
+            </select>
 
             <label>주소</label>
             <DaumAddress setAddress={setAddress} />

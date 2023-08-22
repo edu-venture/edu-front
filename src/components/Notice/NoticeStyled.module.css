@@ -90,12 +90,6 @@
   font-size: x-large;
   color: black;
   font-weight: bolder;
-  cursor: pointer;
-}
-
-.noticeListItemTitle:hover {
-  transition: 0.3s;
-  color: #5ac467;
 }
 
 .noticeListItemTitleBtns {

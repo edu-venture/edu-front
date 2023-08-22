@@ -39,51 +39,84 @@ const StudentUpdate = () => {
   const [school, setSchool] = useState("");
   const [userJoinId, setUserJoinId] = useState("");
 
-  useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const user = {
-          id: id,
-        };
-        const userresponse = await axios.post(
-          "http://192.168.0.220:9090/user/getuser",
-          user
-        );
-        if (userresponse.data && userresponse.data.item) {
-          const userData = userresponse.data.item;
-          console.log("userData", userData);
+  const [courseList, setCourseList] = useState([]);
+  const [couNo, setCouNo] = useState("");
+  const [claName, setClaName] = useState("");
 
-          setStudentName(userData.userName);
-          setStudentTel(userData.userTel);
-          setStudentEmail(userData.userId);
-          setAddress(userData.userAddress);
-          setDetailAddress(userData.userAddressDetail);
-          setBusNum(userData.userBus);
-          setCounsel(userData.userConsultContent);
-          setSignificant(userData.userSpecialNote);
-          setBirth(userData.userBirth);
-          setSchool(userData.userSchool);
-          setUserJoinId(userData.userJoinId);
-        }
-        if (userresponse.data.item.userJoinId) {
-          const parent = {
-            id: userresponse.data.item.userJoinId,
-          };
-          const parentresponse = await axios.post(
-            "http://192.168.0.220:9090/user/getstudent",
-            parent
-          );
-          console.log("parent", parentresponse);
-          if (parentresponse.data && parentresponse.data.item) {
-            setParentInfo(parentresponse.data.item);
-          }
-        }
-      } catch (e) {
-        console.log(e);
+  const getCourseList = async () => {
+    try {
+      console.log("과목리스트 가져온다");
+      const response = await axios.get(
+        "http://192.168.0.220:9090/course/course-list"
+      );
+      console.log("응답에 리스트 담겨있나?", response.data.items);
+      if (response.data.items) {
+        setCourseList(response.data.items);
+        await getUserInfo(response.data.items);
       }
-    };
-    getUserInfo();
-  }, [id, studentEmail]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getUserInfo = async (courseListFromServer) => {
+    try {
+      const user = {
+        id: id,
+      };
+      const userresponse = await axios.post(
+        "http://192.168.0.220:9090/user/getuser",
+        user
+      );
+      const userData = userresponse.data.item;
+      console.log("여긴 학생이야~", userresponse);
+      console.log("userData 받아옴", userData);
+
+      if (userresponse.data && userresponse.data.item) {
+        setStudentName(userData.userName);
+        setStudentTel(userData.userTel);
+        setStudentEmail(userData.userId);
+        setAddress(userData.userAddress);
+        setDetailAddress(userData.userAddressDetail);
+        setBusNum(userData.userBus);
+        setCounsel(userData.userConsultContent);
+        setSignificant(userData.userSpecialNote);
+        setBirth(userData.userBirth);
+        setSchool(userData.userSchool);
+        setUserJoinId(userData.userJoinId);
+        setCouNo(userData.couNo);
+
+        const selectedCourse = courseListFromServer.find(
+          (course) => course.couNo === userData.couNo
+        );
+        console.log("같은 반 번호 찾음?", selectedCourse);
+
+        if (selectedCourse) {
+          setClaName(selectedCourse.claName);
+        }
+      }
+
+      if (userresponse.data.item.userJoinId) {
+        const parent = {
+          id: userresponse.data.item.userJoinId,
+        };
+        const parentresponse = await axios.post(
+          "http://192.168.0.220:9090/user/getstudent",
+          parent
+        );
+        console.log("여긴 부모야~", parentresponse);
+        if (parentresponse.data && parentresponse.data.item) {
+          setParentInfo(parentresponse.data.item);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getCourseList();
+  }, []);
 
   const cancelJoin = (e) => {
     e.preventDefault();
@@ -95,7 +128,7 @@ const StudentUpdate = () => {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-
+      // mypage에 있는 couno를 여기
       const update = async () => {
         const userDTO = {
           id: id,
@@ -112,20 +145,23 @@ const StudentUpdate = () => {
           userType: "student",
           userConsultContent: counsel,
           userSpecialNote: significant,
+          couNo: couNo,
         };
-
+        console.log("수정 요청할거임", userDTO);
         try {
           await axios.put("http://192.168.0.220:9090/user/update", userDTO);
           alert("학생 정보가 수정되었습니다.");
           navi(-1);
         } catch (e) {
           alert("알 수 없는 에러 발생");
-          console.log(e);
+          console.log("완재야 여기가 문제다 지금" + e);
         }
       };
       update();
     },
     [
+      id,
+      userJoinId,
       studentEmail,
       studentTel,
       studentName,
@@ -139,7 +175,7 @@ const StudentUpdate = () => {
       parentTel,
       parentName,
       busNum,
-      navi,
+      couNo,
     ]
   );
 
@@ -286,7 +322,35 @@ const StudentUpdate = () => {
             ></textarea>
 
             <label>반 이름</label>
-            <input type="text"></input>
+            <select
+              name="selectclass"
+              style={{
+                margin: "10px 200px 25px 0px",
+                width: "415px",
+                height: "40px",
+                borderRadius: "10px",
+                border: "none",
+                fontSize: "large",
+                whiteSpace: "pre-line",
+                textAlign: "center",
+              }}
+              value={claName}
+              onChange={(e) => {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                console.log(selectedOption);
+                setClaName(e.target.value);
+                setCouNo(selectedOption.id);
+              }}
+            >
+              <option value="" disabled selected>
+                반 선택
+              </option>
+              {courseList.map((course, index) => (
+                <option key={index} value={course.claName} id={course.couNo}>
+                  {course.claName}
+                </option>
+              ))}
+            </select>
 
             <label>주소</label>
             <input

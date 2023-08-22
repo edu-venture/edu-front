@@ -11,8 +11,8 @@ const ChatWrapper = styled.div`
   flex-direction: column;
 `;
 
-const ChatSection = () => {
-  const [chatLog, setChatLog] = useState(chatData);
+const ChatSection = ({ initialChatLog = chatData }) => {
+  const [chatLog, setChatLog] = useState(initialChatLog);
   const [inputMessage, setInputMessage] = useState("");
   const chatContentRef = useRef(null);
 
@@ -23,6 +23,7 @@ const ChatSection = () => {
   };
 
   const handleSendMessage = () => {
+    const userName = sessionStorage.getItem("userName") || "익명";
     const time = new Date();
     let hour = time.getHours();
     const minute = String(time.getMinutes()).padStart(2, "0");
@@ -34,13 +35,17 @@ const ChatSection = () => {
     setChatLog([
       ...chatLog,
       {
-        name: "김한슬",
+        name: `${userName}`,
         message: inputMessage,
         time: `${ampm} ${hour}:${minute}`,
       },
     ]);
     setInputMessage("");
   };
+
+  useEffect(() => {
+    setChatLog(initialChatLog);
+  }, [initialChatLog]);
 
   useEffect(() => {
     if (chatContentRef.current) {

@@ -22,7 +22,7 @@ const Login = ({ setIsLogin }) => {
             "http://192.168.0.220:9090/user/login",
             user
           );
-
+          console.log();
           if (response.data && response.data.item.token) {
             alert(`${response.data.item.userName}님 환영합니다.`);
             sessionStorage.setItem("ACCESS_TOKEN", response.data.item.token);
@@ -30,6 +30,7 @@ const Login = ({ setIsLogin }) => {
             sessionStorage.setItem("userId", response.data.item.userId);
             sessionStorage.setItem("userName", response.data.item.userName);
             sessionStorage.setItem("userType", response.data.item.userType);
+            sessionStorage.setItem("userBus", response.data.item.userBus);
 
             if (response.data.item.userJoinId) {
               const student = {
@@ -46,10 +47,15 @@ const Login = ({ setIsLogin }) => {
                 studentresponse.data.item &&
                 studentresponse.data.item.userName
               ) {
-                sessionStorage.setItem(
-                  "childName",
-                  studentresponse.data.item.userName
-                );
+                response.data.item.userType === "student"
+                  ? sessionStorage.setItem(
+                      "parentName",
+                      studentresponse.data.item.userName
+                    )
+                  : sessionStorage.setItem(
+                      "childName",
+                      studentresponse.data.item.userName
+                    );
               }
             }
 

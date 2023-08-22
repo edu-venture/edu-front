@@ -50,7 +50,6 @@ const MyPage = () => {
   const [id, setId] = useState("");
   const [userJoinId, setUserJoinId] = useState(""); // 부모 (Join: 자식)
   const [userId, setUserId] = useState("");
-  // const [userPw, setUserPw] = useState("");
   const [userName, setUsername] = useState("");
   const [userType, setUserType] = useState("");
   const [userTel, setUserTel] = useState("");
@@ -64,55 +63,89 @@ const MyPage = () => {
   const [studentInfo, setStudentinfo] = useState({});
   const [initialData, setInitialData] = useState({});
 
-  useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const user = {
-          userId: sessionStorage.getItem("userId"),
-        };
-        const userresponse = await axios.post(
-          "http://192.168.0.220:9090/user/getuser",
-          user
-        );
-        console.log(userresponse);
-        const userData = userresponse.data.item;
-        if (userresponse.data && userresponse.data.item) {
-          setInitialData(userData);
-          setId(userData.id);
-          setUserId(userData.userId);
-          // setUserPw(userData.userPw);
-          setUserType(userData.userType);
-          setUsername(userData.userName);
-          setUserBirth(userData.userBirth);
-          setUserTel(userData.userTel);
-          setUserAddress(userData.userAddress);
-          setUserAddressDetail(userData.userAddressDetail);
-          setUserSchool(userData.userSchool);
-          setUserBus(userData.userBus);
-          setUserConsultContent(userData.userConsultContent);
-          setUserSpecialNote(userData.userSpecialNote);
-          setUserJoinId(userData.userJoinId);
-        }
-        console.log(userData);
+  const [courseList, setCourseList] = useState([]);
+  const [couNo, setCouNo] = useState("");
+  const [claName, setClaName] = useState("");
 
-        if (userresponse.data.item.userJoinId) {
-          const student = {
-            id: userresponse.data.item.userJoinId,
-          };
-          const studentresponse = await axios.post(
-            "http://192.168.0.220:9090/user/getstudent",
-            student
-          );
-
-          if (studentresponse.data && studentresponse.data.item) {
-            setStudentinfo(studentresponse.data.item);
-          }
-        }
-      } catch (e) {
-        console.log(e);
+  const getCourseList = async () => {
+    try {
+      console.log("리스트 가져온다");
+      const response = await axios.get(
+        "http://192.168.0.220:9090/course/course-list"
+      );
+      console.log("응답에 리스트 담겨있나?", response.data.items);
+      if (response.data.items) {
+        setCourseList(response.data.items);
+        await getUserInfo(response.data.items);
       }
-    };
-    getUserInfo();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getUserInfo = async (courseListFromServer) => {
+    try {
+      const user = {
+        userId: sessionStorage.getItem("userId"),
+      };
+      const userresponse = await axios.post(
+        "http://192.168.0.220:9090/user/getuser",
+        user
+      );
+
+      const userData = userresponse.data.item;
+      console.log("유저 정보 좀 보자", userData);
+
+      if (userresponse.data && userresponse.data.item) {
+        setInitialData(userData);
+        setId(userData.id);
+        setUserId(userData.userId);
+        setCouNo(userData.couNo);
+
+        console.log("반 리스트 있음?", courseList);
+
+        const selectedCourse = courseListFromServer.find(
+          (course) => course.couNo === userData.couNo
+        );
+        console.log("같은 반 번호 찾음?", selectedCourse);
+
+        if (selectedCourse) {
+          setClaName(selectedCourse.claName);
+        }
+
+        setUserType(userData.userType);
+        setUsername(userData.userName);
+        setUserBirth(userData.userBirth);
+        setUserTel(userData.userTel);
+        setUserAddress(userData.userAddress);
+        setUserAddressDetail(userData.userAddressDetail);
+        setUserSchool(userData.userSchool);
+        setUserBus(userData.userBus);
+        setUserConsultContent(userData.userConsultContent);
+        setUserSpecialNote(userData.userSpecialNote);
+        setUserJoinId(userData.userJoinId);
+      }
+
+      if (userresponse.data.item.userJoinId) {
+        const student = {
+          id: userresponse.data.item.userJoinId,
+        };
+        const studentresponse = await axios.post(
+          "http://192.168.0.220:9090/user/getstudent",
+          student
+        );
+
+        if (studentresponse.data && studentresponse.data.item) {
+          setStudentinfo(studentresponse.data.item);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getCourseList();
   }, []);
 
   const changeUserId = useCallback((e) => {
@@ -130,10 +163,10 @@ const MyPage = () => {
           id: id,
           userId: userId,
           userJoinId: userJoinId,
-          // userPw: userPw,
           userName: userName,
           userTel: userTel,
           userBirth: userBirth,
+          couNo: couNo,
           userSchool: userSchool,
           userAddress: userAddress,
           userAddressDetail: userAddressDetail,
@@ -166,11 +199,12 @@ const MyPage = () => {
       id,
       userId,
       userJoinId,
-      // userPw,
       userName,
       userTel,
       userBirth,
       userSchool,
+      couNo,
+      claName,
       userAddress,
       userAddressDetail,
       userConsultContent,
@@ -203,6 +237,15 @@ const MyPage = () => {
     setUserBirth(initialData.userBirth);
     setUserSchool(initialData.userSchool);
     setUserBus(initialData.userBus);
+    setCouNo(initialData.couNo);
+
+    const selectedCourse = courseList.items.find(
+      (course) => course.couNo === initialData.couNo
+    );
+    if (selectedCourse) {
+      setClaName(selectedCourse.claName);
+    }
+
     setUserConsultContent(initialData.userConsultContent);
     setUserSpecialNote(initialData.userSpecialNote);
     setUserJoinId(initialData.userJoinId);
@@ -236,6 +279,7 @@ const MyPage = () => {
         style={{
           display: "flex",
           justifyContent: "center",
+          marginLeft: "250px",
         }}
       >
         <Container>
@@ -324,7 +368,6 @@ const MyPage = () => {
             onChange={changeUserId}
             readOnly={true}
           />
-
           <div className="label-wrapper">
             <label htmlFor="userAddress">주소</label>
           </div>
@@ -371,6 +414,38 @@ const MyPage = () => {
               />
             </>
           )}
+
+          <div className="label-wrapper">
+            <label htmlFor="claName">반</label>
+          </div>
+          <select
+            name="selectclass"
+            style={{
+              margin: "10px 200px 25px 0px",
+              width: "415px",
+              height: "40px",
+              borderRadius: "10px",
+              border: "none",
+              fontSize: "large",
+              whiteSpace: "pre-line",
+              textAlign: "center",
+            }}
+            value={claName}
+            onChange={(e) => {
+              const selectedOption = e.target.options[e.target.selectedIndex];
+              setClaName(e.target.value);
+              setCouNo(selectedOption.id);
+            }}
+          >
+            <option value="" disabled selected>
+              반 선택
+            </option>
+            {courseList.map((course, index) => (
+              <option key={index} value={course.claName} id={course.couNo}>
+                {course.claName}
+              </option>
+            ))}
+          </select>
 
           <div
             style={{

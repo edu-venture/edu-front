@@ -63,7 +63,7 @@ const UserListItem = ({ user, reloadUserList, handleCheckboxChange }) => {
     };
 
     getUserInfo();
-  }, []);
+  }, [userJoinId]);
 
   const deleteBoard = useCallback(
     (e) => {

@@ -58,6 +58,7 @@ const HeaderTabs = ({
 };
 
 const AdminHeader = ({ isLogin }) => {
+  const userType = sessionStorage.getItem("userType");
   const [classMenuAnchor, setClassMenuAnchor] = useState(null);
   const [userMenuAnchor, setUserMenuAnchor] = useState(null);
   const [value, setValue] = useState(0);
@@ -130,6 +131,11 @@ const AdminHeader = ({ isLogin }) => {
           open={Boolean(userMenuAnchor)}
           onClose={handleUserMenuClose}
         >
+          {userType === "admin" && (
+            <MenuItems handleClose={handleUserMenuClose} to="/admin/teacher">
+              선생님 관리
+            </MenuItems>
+          )}
           <MenuItems handleClose={handleLogout}>로그아웃</MenuItems>
         </Menu>
       </Toolbar>
