@@ -27,6 +27,7 @@ import StudentUpdate from "./pages/StudentUpdate";
 import NoticeCreate from "./pages/NoticeCreate";
 import NoticeUpdate from "./pages/NoticeUpdate";
 import AdminJoin from "./pages/AdminJoin";
+// import Teacher from "./pages/Teacher";
 
 function App() {
   const userType = sessionStorage.getItem("userType");
@@ -49,12 +50,12 @@ function App() {
     }
 
     if (
-      (isLogin && location.pathname.startsWith("/admin")) ||
+      location.pathname.startsWith("/admin") ||
       userType === "teacher" ||
       userType === "admin"
     ) {
       return <AdminHeader />;
-    } else if ((isLogin && userType === "student") || userType === "parent") {
+    } else if (userType === "student" || userType === "parent") {
       return <UserHeader />;
     } else {
       return <BasicHeader />;
@@ -95,8 +96,10 @@ function AdminRoutes() {
       <Route path="notice" element={<Notice />} />
       <Route path="notice/create" element={<NoticeCreate />} />
       <Route path="notice/update" element={<NoticeUpdate />} />
+      <Route path="notice/update/:id" element={<NoticeUpdate />} />
       <Route path="video" element={<AdminVod />} />
       <Route path="video/create" element={<AdminVodCreate />} />
+      {/* <Route path="teacher" element={<Teacher />} /> */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
