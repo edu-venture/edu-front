@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import MessengerUser from "./MessengerUser";
 
-const MessengerUserList = ({ users, channel }) => {
+const MessengerUserList = ({ users }) => {
   const { id } = useParams();
-  console.log(id);
-  const [selectedUserId, setSelectedUserId] = useState(id);
+  // console.log(id);
+  // const [selectedUserId, setSelectedUserId] = useState(id);
 
-  const handleSelect = (userId) => {
-    setSelectedUserId(userId);
-  };
+  // const handleSelect = (userId) => {
+  //   setSelectedUserId(userId);
+  // };
 
   return (
     <div style={{ width: "100%" }}>
@@ -19,8 +19,8 @@ const MessengerUserList = ({ users, channel }) => {
             <MessengerUser
               userInfo={value}
               isSelected={value.id === id}
-              onSelect={handleSelect}
-              channel={channel}
+              // onSelect={handleSelect}
+              // channel={channel}
             />
           </div>
         );
