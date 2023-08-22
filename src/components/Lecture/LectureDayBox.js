@@ -18,7 +18,7 @@ const DayBoxContainer = styled.div`
 `;
 
 const DateText = styled.p`
-  font-size: 15px;
+  font-size: 18px;
   text-align: left;
   color: #171a2b;
   padding: 15px;
@@ -33,7 +33,7 @@ const EventContainer = styled.div`
 `;
 
 const EventText = styled.p`
-  font-size: 15px;
+  font-size: 18px;
   margin: 10px;
   text-align: left;
   color: #171a2b;

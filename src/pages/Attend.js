@@ -28,6 +28,9 @@ const textStyles = {
 };
 
 const Attend = () => {
+  const userType = sessionStorage.getItem("userType");
+  const userName = sessionStorage.getItem("userName");
+  const childName = sessionStorage.getItem("childName");
   const time = new Date();
   const month = time.getMonth() + 1;
   const today = time.getDate();
@@ -40,8 +43,11 @@ const Attend = () => {
         </div>
         <div style={styles.textContainer}>
           <p style={textStyles}>
-            오늘은 <span style={{ fontSize: 25 }}>[학생명]</span> 학생의
-            수업일입니다.
+            오늘은{" "}
+            <span style={{ fontSize: 25 }}>
+              {userType === "student" ? userName : childName}
+            </span>{" "}
+            학생의 수업일입니다.
           </p>
         </div>
         <div style={styles.timeCardContainer}>

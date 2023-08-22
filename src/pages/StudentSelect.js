@@ -1,20 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
-import styled from 'styled-components';
-import Title from '../components/Title';
-import SearchIcon from '@mui/icons-material/Search';
-
-
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+import styled from "styled-components";
+import SearchIcon from "@mui/icons-material/Search";
+import Title from "../components/Title";
+import UserListItem from "../components/StudentSelect/UserListItem";
+import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
-  height: auto;
+  height: calc(100vh - 50px);
   overflow: hidden;
   position: relative;
 `;
 
 const Button = styled.div`
-  background: #171A2B;
+  background: #171a2b;
   color: #fff;
   display: inline-block;
   border: none;
@@ -33,7 +33,7 @@ const SearchStudentField = styled.input`
 const SearchStudentButton = styled.button`
   border: none;
   border-radius: 50%;
-  background: #171A2B;
+  background: #171a2b;
   color: #fff;
 `;
 
@@ -44,7 +44,7 @@ const SelectResultListWraper = styled.div`
   height: 700px;
   overflow-y: auto;
   margin: 0 auto;
-  backgroud: #ECECEC;
+  backgroud: #ececec;
 `;
 
 const SelectResultHead = styled.ul`
@@ -52,86 +52,262 @@ const SelectResultHead = styled.ul`
   justify-content: space-around;
   align-items: center;
   list-style: none;
-  background: #171A2B;
+  background: #171a2b;
   color: #fff;
   margin: 0;
   padding: 20px 0;
   border: none;
   border-radius: 20px 20px 0 0;
-`;
-
-const SelectResultItem = styled.ul`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  list-style: none;
-  color: #171A2B;
-  padding: 15px 0;
-`;
-
-const SelectResultItemSection = styled.li`
+  position: sticky;
+  top: 0;
+  z-index: 10;
   text-align: center;
-  flex: 1;
+  margin: 16px 0;
 `;
+
+const getUserList = async (
+  page,
+  searchCondition,
+  searchKeyword,
+  setUserList,
+  setTotalPages,
+  setPageNumber,
+  setPageSize
+) => {
+  try {
+    const response = await axios.get(
+      "http://192.168.0.220:9090/user/user-list",
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+        },
+        params: {
+          page: page,
+          searchCondition: searchCondition,
+          searchKeyword: searchKeyword,
+        },
+      }
+    );
+    console.log(sessionStorage.getItem("userId"));
+    const user = {
+      userId: sessionStorage.getItem("userId"),
+    };
+    const userresponse = await axios.post(
+      "http://192.168.0.220:9090/user/getuser",
+      user
+    );
+    console.log(userresponse);
+    console.log(response);
+
+    if (response.data && response.data.pageItems.content) {
+      setUserList(() => response.data.pageItems.content);
+      setTotalPages(() => response.data.pageItems.totalPages);
+      setPageNumber(() => response.data.pageItems.pageable.pageNumber);
+      setPageSize(() => response.data.pageItems.pageable.pageSize);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const StudentSelect = () => {
-  const [studentsData, setStudentsData] = useState([]); //학생 데이터 
-  const studentKeys = ["sid", "division", "name", "grade", "parentsPhoneNumber", "studentPhoneNumber", "class"];
+  const [selectedUserIds, setSelectedUserIds] = useState([]);
+  const [userList, setUserList] = useState([]);
+  const [page, setPage] = useState(0);
+  const [searchCondition, setSearchCondition] = useState("all");
+  const [searchKeyword, setSearchKeyword] = useState("");
 
+  // const [userInfo, setUserInfo] = useState([]);
+  const navi = useNavigate();
   useEffect(() => {
-    axios.get('/SelectResultItems.json')
-    .then(response => {
-      setStudentsData(response.data.students);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  }, []);
+    getUserList(page, searchCondition, searchKeyword, setUserList);
+  }, [page, searchCondition, searchKeyword]);
+
+  const handleCheckboxChange = (id, isChecked) => {
+    // 체크박스가 체크되면 ID를 추가, 체크 해제되면 ID를 제거
+    if (isChecked) {
+      setSelectedUserIds((prevIds) => [...prevIds, id]);
+      console.log(selectedUserIds);
+    } else {
+      setSelectedUserIds((prevIds) =>
+        prevIds.filter((userId) => userId !== id)
+      );
+      console.log(selectedUserIds);
+    }
+  };
+  const reloadUserList = useCallback(() => {
+    getUserList(page, searchCondition, searchKeyword, setUserList);
+  }, [page, searchCondition, searchKeyword, setUserList]);
+
+  const handleSubmitSelectedUsers = useCallback(
+    (e) => {
+      console.log("보내려는selectuserids", selectedUserIds);
+      // 선택된 사용자 ID를 서버로 전송
+
+      const deleteIdsaxios = async () => {
+        try {
+          const response = await axios.post(
+            "http://192.168.0.220:9090/user/deleteselectusers",
+            { selectedUserIds },
+            {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem(
+                  "ACCESS_TOKEN"
+                )}`,
+              },
+            }
+          );
+          if (response.data && response.data.item.msg) {
+            alert(response.data.item.msg);
+            navi("/admin/student");
+            reloadUserList();
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      deleteIdsaxios();
+    },
+    [selectedUserIds, reloadUserList, navi]
+  );
+
+  const changeSearchCondition = (e) => {
+    setSearchCondition(() => e.target.value);
+  };
+
+  const changeSearchKeyword = (e) => {
+    setSearchKeyword(() => e.target.value);
+  };
+
+  const searchFormSubmit = (e) => {
+    e.preventDefault();
+
+    setPage(() => 0);
+
+    const searchAxios = async () => {
+      try {
+        const response = await axios.get(
+          "http://192.168.0.220:9090/user/user-list",
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+            },
+            params: {
+              page: page,
+              searchCondition: searchCondition,
+              searchKeyword: searchKeyword,
+            },
+          }
+        );
+
+        console.log(response);
+        if (response.data && response.data.pageItems.content) {
+          setUserList(() => response.data.pageItems.content);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    searchAxios();
+  };
 
   return (
+    <>
       <Container>
-        <div style={{padding: '20px 0px 20px 50px'}}>
-          <Title subtitle='[학원명]' title='학생 조회'/>
+        <div style={{ padding: "20px 0px 20px 50px" }}>
+          <Title subtitle="EduVenture" title="학생 조회" />
         </div>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <div style={{marginLeft: '50px'}}>
-            <Button>선택 삭제</Button>
-            <Button>학생 등록</Button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ marginLeft: "50px" }}>
+            <Button onClick={handleSubmitSelectedUsers}>선택 삭제</Button>
+            <Link to="/admin/student/join">
+              <Button>학생 등록</Button>
+            </Link>
           </div>
-          <form style={{marginRight: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <SearchStudentField />
-            <SearchStudentButton>
-              <SearchIcon></SearchIcon>
-            </SearchStudentButton>
+          <form id="searchForm" onSubmit={searchFormSubmit}>
+            <div
+              style={{
+                marginRight: "50px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <select
+                id="searchCriteria"
+                name="searchCondition"
+                value={searchCondition}
+                onChange={changeSearchCondition}
+                style={{
+                  marginRight: "10px",
+                  height: "45%",
+                  borderRadius: "20px",
+                }}
+              >
+                <option value="all">전체</option>
+                <option value="username">이름</option>
+                <option value="useremail">이메일</option>
+                <option value="userno">회원번호</option>
+                <option value="usertype">신분</option>
+                <option value="userbus">버스번호</option>
+                <option value="userTel">핸드폰번호</option>
+              </select>
+              <SearchStudentField
+                type="text"
+                name="searchKeyword"
+                value={searchKeyword}
+                onChange={changeSearchKeyword}
+              />
+              <SearchStudentButton type="submit" id="btnSearch">
+                <SearchIcon></SearchIcon>
+              </SearchStudentButton>
+            </div>
           </form>
         </div>
         <SelectResultListWraper>
           <SelectResultHead>
-              <li>선택</li>
-              <li>번호</li>
-              <li>구분</li>
-              <li>이름</li>
-              <li>학년</li>
-              <li>보호자 연락처</li>
-              <li>학생 연락처</li>
-              <li>반</li>
-              <li>수정/삭제</li>
+            <li style={{ width: "6%", flex: "0 0 auto" }}>선택</li>
+            <li style={{ width: "6%", flex: "0 0 auto" }}>번호</li>
+            <li style={{ width: "8%", flex: "0 0 auto" }}>이름</li>
+            <li style={{ width: "8%", flex: "0 0 auto" }}>신분</li>
+            <li style={{ width: "15%", flex: "0 0 auto" }}>이메일</li>
+            <li style={{ width: "10%", flex: "0 0 auto" }}>학생 연락처</li>
+
+            <li style={{ width: "10%", flex: "0 0 auto" }}>연관인 연락처</li>
+            <li style={{ width: "8%", flex: "0 0 auto" }}>나이</li>
+            <li style={{ width: "17%", flex: "0 0 auto", display: "none" }}>
+              주소
+            </li>
+            <li style={{ width: "17%", flex: "0 0 auto", display: "none" }}>
+              상세주소
+            </li>
+            <li style={{ width: "8%", flex: "0 0 auto" }}>버스번호</li>
+            <li style={{ width: "8%", flex: "0 0 auto", display: "none" }}>
+              joinuserid
+            </li>
+
+            <li style={{ width: "8%", flex: "0 0 auto" }}>학교</li>
+            <li style={{ width: "17%", flex: "0 0 auto", display: "none" }}>
+              등록일
+            </li>
+
+            <li style={{ width: "10%", flex: "0 0 auto" }}>수정/삭제</li>
           </SelectResultHead>
-          {studentsData && studentsData.map(student => (
-             <SelectResultItem key={student.sid}>
-             <li style={{marginLeft: '50px'}}><input type="checkbox" /></li>
-             {studentKeys.map(key => (
-                <SelectResultItemSection key={key}>{student[key]}</SelectResultItemSection>
+
+          {userList &&
+            userList.map((user) => (
+              <UserListItem
+                key={user.id}
+                user={user}
+                reloadUserList={reloadUserList}
+                handleCheckboxChange={handleCheckboxChange}
+              />
             ))}
-             <li style={{display: 'flex', marginRight: '50px'}}>
-               <div style={{cursor: 'pointer'}}>수정 /</div>
-               <div style={{paddingLeft: '5px', cursor: 'pointer'}}>삭제</div>
-             </li>
-           </SelectResultItem>
-          ))}
         </SelectResultListWraper>
       </Container>
-  )
-}
+    </>
+  );
+};
 
-export default StudentSelect
+export default StudentSelect;

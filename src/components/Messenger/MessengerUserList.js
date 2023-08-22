@@ -1,25 +1,30 @@
-import React, { useState } from "react";
-import MessengerUser from "./MessengerUser";
+import React from "react";
 import { useParams } from "react-router-dom";
+import MessengerUser from "./MessengerUser";
 
 const MessengerUserList = ({ users }) => {
   const { id } = useParams();
-  const [selectedUserId, setSelectedUserId] = useState(id);
+  // console.log(id);
+  // const [selectedUserId, setSelectedUserId] = useState(id);
 
-  const handleSelect = (userId) => {
-    setSelectedUserId(userId);
-  };
+  // const handleSelect = (userId) => {
+  //   setSelectedUserId(userId);
+  // };
 
   return (
     <div style={{ width: "100%" }}>
-      {users.map((user, index) => (
-        <MessengerUser
-          key={index}
-          user={user}
-          isSelected={user.id === selectedUserId}
-          onSelect={handleSelect}
-        />
-      ))}
+      {Object.entries(users).map(([, value]) => {
+        return (
+          <div key={value.id}>
+            <MessengerUser
+              userInfo={value}
+              isSelected={value.id === id}
+              // onSelect={handleSelect}
+              // channel={channel}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };

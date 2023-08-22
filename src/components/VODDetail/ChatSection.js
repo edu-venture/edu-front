@@ -133,6 +133,8 @@ const ReplySubmitButton = styled.button`
 `;
 
 const VODSectionChat = () => {
+  const userName = sessionStorage.getItem("userName");
+
   const [inputText, setInputText] = useState(""); //댓글입력필드값 상태
   const [comments, setComments] = useState([]); //댓글 모음 상태관리
   const commentId = useRef(1); //댓글 id값
@@ -215,7 +217,7 @@ const VODSectionChat = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  홍길동
+                  {userName}
                 </div>
                 <p style={{ fontSize: "20px" }}>{comment.text}</p>
                 <ReplyButton onClick={() => setShowReplyInput(comment.id)}>
@@ -253,7 +255,7 @@ const VODSectionChat = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    김영희
+                    {userName}
                   </div>
                   <p style={{ fontSize: "20px" }}>{reply.text}</p>
                 </Info>

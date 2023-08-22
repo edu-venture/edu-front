@@ -18,7 +18,7 @@ const NavigationTab = ({ label, to, onClick }) => (
   </Link>
 );
 
-const MenuItems = ({ handleClose, to, children }) => (
+const MenuItems = ({ handleClose, to = "#", children }) => (
   <MenuItem
     onClick={handleClose}
     component={Link}
@@ -34,24 +34,32 @@ const HeaderTabs = ({
   handleUserMenuOpen,
   value,
   onChange,
-}) => (
-  <Tabs
-    textColor="secondary"
-    indicatorColor="secondary"
-    value={value}
-    onChange={onChange}
-    TabIndicatorProps={{ style: { height: 0 } }}
-  >
-    <NavigationTab label="출 결" to="/attend" />
-    <NavigationTab label="수 업" onClick={handleLectureMenuOpen} />
-    <NavigationTab label="차 량" to="/location" />
-    <NavigationTab label="수 납" to="/payment" />
-    <NavigationTab label="메 신 저" to="/messenger" />
-    <NavigationTab label="사용자명 님" onClick={handleUserMenuOpen} />
-  </Tabs>
-);
+}) => {
+  const userName = sessionStorage.getItem("userName");
+  // const userName = isLogin ? sessionStorage.getItem("userName") : null;
 
-const Header = () => {
+  return (
+    <Tabs
+      textColor="secondary"
+      indicatorColor="secondary"
+      value={value}
+      onChange={onChange}
+      TabIndicatorProps={{ style: { height: 0 } }}
+    >
+      <NavigationTab label="출 결" to="/attend" />
+      <NavigationTab label="수 업" onClick={handleLectureMenuOpen} />
+      <NavigationTab label="차 량" to="/location" />
+      <NavigationTab label="수 납" to="/payment" />
+      <NavigationTab label="메 신 저" to="/messenger" />
+      <NavigationTab
+        label={`${userName ? `${userName} 님` : "Guest"}`}
+        onClick={handleUserMenuOpen}
+      />
+    </Tabs>
+  );
+};
+
+const UserHeader = ({ isLogin }) => {
   const [lectureMenuAnchor, setLectureMenuAnchor] = useState(null);
   const [userMenuAnchor, setUserMenuAnchor] = useState(null);
   const [value, setValue] = useState(0);
@@ -59,10 +67,16 @@ const Header = () => {
   const handleLectureMenuOpen = (event) =>
     setLectureMenuAnchor(event.currentTarget);
   const handleLectureMenuClose = () => setLectureMenuAnchor(null);
+
   const handleUserMenuOpen = (event) => setUserMenuAnchor(event.currentTarget);
   const handleUserMenuClose = () => setUserMenuAnchor(null);
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    window.location.href = "/";
   };
 
   return (
@@ -93,6 +107,7 @@ const Header = () => {
           handleUserMenuOpen={handleUserMenuOpen}
           value={value}
           onChange={handleChange}
+          isLogin={isLogin}
         />
         <Menu
           anchorEl={lectureMenuAnchor}
@@ -114,16 +129,20 @@ const Header = () => {
           open={Boolean(userMenuAnchor)}
           onClose={handleUserMenuClose}
         >
-          <MenuItems handleClose={handleUserMenuClose} to="/profile">
-            정보 수정
+          <MenuItems handleClose={handleUserMenuClose} to="/user/mypage">
+            사용자 수정
           </MenuItems>
-          <MenuItems handleClose={handleUserMenuClose} to="/logout">
-            로그아웃
+          <MenuItems
+            handleClose={handleUserMenuClose}
+            to="/user/changePassword"
+          >
+            비밀번호 수정
           </MenuItems>
+          <MenuItems handleClose={handleLogout}>로그아웃</MenuItems>
         </Menu>
       </Toolbar>
     </AppBar>
   );
 };
 
-export default Header;
+export default UserHeader;
