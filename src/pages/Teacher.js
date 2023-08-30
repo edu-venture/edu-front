@@ -38,9 +38,9 @@ const Teacher = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.7:8081/user/user-all-list"
+        "http://192.168.0.7:8081/user/type-list/teacher"
       );
-      console.log("유저 목록 왔다", response.data);
+      console.log("선생님 목록 왔다", response.data);
       if (response.data && response.data.items) {
         setUserList(response.data.items);
       }

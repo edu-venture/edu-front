@@ -45,6 +45,10 @@ const StudentList = ({
   fetchUsers,
   classData,
 }) => {
+  console.log(
+    "여기가 지금 StudentList에서 확인하는 type-list student",
+    userList
+  );
   return (
     <Container>
       <Table>
@@ -82,9 +86,9 @@ const StudentList = ({
                   id={user.id}
                   name={user.userName}
                   birth={user.userBirth}
-                  group={groupName}
+                  group={user?.courseDTO?.claName}
                   contact={user.userTel}
-                  parentContact={parentTel}
+                  parentContact={user.parentDTO.userTel}
                   bus={user.userBus}
                   selectedIds={selectedIds}
                   setSelectedIds={setSelectedIds}

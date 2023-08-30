@@ -39,7 +39,7 @@ const StudentSelect = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.7:8081/user/user-all-list"
+        "http://192.168.0.7:8081/user/type-list/student"
       );
       console.log("유저 목록 왔다", response.data);
       if (response.data && response.data.items) {
