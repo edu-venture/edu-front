@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const StyledTitle = styled.div`
@@ -40,16 +40,40 @@ const FileUpload = ({
   inputWidth,
   inputHeight,
   placeholder,
+  onFileChange,
+  file
 }) => {
-  const [fileName, setFileName] = useState("");
+  const [fileName, setFileName] = useState('');
+
+  useEffect(() => {
+    if (file) {
+      if (Array.isArray(file)) {
+        setFileName(file.map(f => f?.name).join(', '));
+      } else if (typeof file === 'string') {
+        setFileName(file.split('/').pop());
+      } else {
+        setFileName(file.name);
+      }
+    }
+  }, [file]);
+  
+  
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+    const files = e.target.files;
+  
+    // 여러 파일이 선택되었을 경우
+    if (files.length > 1) {
+      const fileArray = Array.from(files);
+      setFileName(fileArray.map(f => f.name).join(', '));  // 모든 파일 이름을 표시
+      onFileChange(fileArray);  // 파일 배열을 그대로 전달
+    } else if (files.length === 1) {
+      const file = files[0];
       setFileName(file.name);
+      onFileChange(file);
     }
   };
-
+  
   return (
     <>
       <StyledTitle customWidth={customWidth} customHeight={customHeight}>
@@ -59,6 +83,7 @@ const FileUpload = ({
         type="file"
         onChange={handleFileChange}
         id={`file-upload-${contentName}`}
+        multiple
       />
       <StyledLabel
         htmlFor={`file-upload-${contentName}`}

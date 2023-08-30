@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import VODListItem from "./VODListItem";
-import axios from "axios";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -16,31 +14,7 @@ const Container = styled.div`
 `;
 
 
-const VODList = () => {
-  const [VODList, setVODList] = useState([]);
-
-  useEffect(() => {
-    const getVODList = async () => {
-      try {
-        const response = await axios.get(
-          'http://192.168.0.213:8081/vod/list',
-          {
-            headers: {
-              Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
-            }
-          }
-        );
-        console.log(response);
-  
-        if(response.data.items && 
-          setVODList(response.data.items));
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    getVODList();
-  }, []);
-  
+const VODList = ({VODList}) => {
 
   return (
     <Container>
@@ -48,9 +22,11 @@ const VODList = () => {
       VODList.map((item) => (
         <VODListItem
           key={item.id}
+          id={item.id}
           lectureName={item.title}
           teacherName={item.writer}
           viewCount={item.hits}
+          thumbnail={item.saveThumb}
           uploadDate={item.regDate}
         />
       ))}

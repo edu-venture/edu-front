@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import AdminVodListItem from "./AdminVodListItem";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
   width: 90%;
@@ -14,25 +16,30 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const AdminVodList = ({ vodData }) => {
-  const [videos, setVideos] = useState(vodData);
+const AdminVodList = ({ VODList, setVODList }) => {
 
-  const handleVideoDelete = (deletedId) => {
-    const updatedVideos = videos.filter((video) => video.id !== deletedId);
-    setVideos(updatedVideos);
+
+  const handleVideoDelete = async (deletedId) => {
+    try {
+      setVODList(VODList.filter((item) => item.id !== deletedId));
+    } catch(error) {
+      console.log(error);
+    }
   };
 
   return (
     <Container>
-      {videos.map((item, index) => (
+      {
+      VODList.map((item) => (
         <AdminVodListItem
-          key={index}
+          key={item.id}
           id={item.id}
-          lectureName={`[${item.className}] ${item.lectureName}`}
-          teacherName={item.teacherName}
-          viewCount={item.viewCount}
-          uploadDate={item.uploadDate}
-          handleDelete={handleVideoDelete}
+          lectureName={item.title}
+          teacherName={item.writer}
+          viewCount={item.hits}
+          uploadDate={item.regDate}
+          thumbnail={item.saveThumb}
+          handleDeleteView={() => handleVideoDelete(item.id)}
         />
       ))}
     </Container>

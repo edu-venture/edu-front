@@ -32,6 +32,8 @@ const AdminVodCreateListItem = ({
   inputWidth,
   inputHeight,
   placeholder,
+  value,
+  onChange,
 }) => {
   return (
     <>
@@ -43,6 +45,8 @@ const AdminVodCreateListItem = ({
         inputHeight={inputHeight}
         type="text"
         placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
       />
     </>
   );
