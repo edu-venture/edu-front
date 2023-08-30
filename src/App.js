@@ -33,6 +33,7 @@ import StreamingCreate from "./pages/StreamingCreate";
 import StreamingSetting from "./pages/StreamingSetting";
 import ReceiptSelect from "./pages/ReceiptSelect";
 import ReceiptRegister from "./pages/ReceiptRegister";
+import ClassManagement from "./pages/ClassManagement";
 
 function App() {
   const userType = sessionStorage.getItem("userType");
@@ -49,6 +50,7 @@ function App() {
     if (
       location.pathname === "/login" ||
       location.pathname === "/streaming" ||
+      location.pathname === "/streaming/:id" ||
       location.pathname === "/admin/join"
     ) {
       return null;
@@ -76,6 +78,7 @@ function App() {
         <Route path="/attend" element={<Attend />} />
         <Route path="/lecture" element={<Lecture />} />
         <Route path="/streaming" element={<Streaming />} />
+        <Route path="/streaming/:id" element={<Streaming />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/location" element={<Location />} />
         <Route path="/messenger/" element={<Messenger />} />
@@ -112,6 +115,7 @@ function AdminRoutes() {
       <Route path="messenger" element={<Messenger />} />
       <Route path="messenger/:id" element={<Messenger />} />
       <Route path="teacher" element={<Teacher />} />
+      <Route path="classManagement" element={<ClassManagement />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

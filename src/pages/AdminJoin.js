@@ -7,6 +7,7 @@ const AdminJoin = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [userTel, setUserTel] = useState("");
   const [userPw, setUserPw] = useState("");
   const [chkUserPw, setChkUserPw] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
@@ -28,11 +29,12 @@ const AdminJoin = () => {
         userName: userName,
         userId: userEmail,
         userPw: userPw,
+        userTel: userTel,
         userType: "teacher",
       };
 
       try {
-        await axios.post("http://192.168.0.220:8081/user/adminjoin", memberDTO);
+        await axios.post("http://192.168.0.7:8081/user/adminjoin", memberDTO);
         alert("회원가입이 완료되었습니다.");
         navigate("/login");
       } catch (e) {
@@ -40,7 +42,7 @@ const AdminJoin = () => {
         alert("회원가입 중 오류가 발생했습니다.");
       }
     },
-    [userName, userEmail, userPw, chkUserPw, navigate]
+    [userName, userEmail, userPw, userTel, chkUserPw, navigate]
   );
 
   return (
@@ -65,6 +67,13 @@ const AdminJoin = () => {
             value={userEmail}
             name="userEmail"
             onChange={(e) => setUserEmail(e.target.value)}
+          />
+          <input
+            type="tel"
+            placeholder="연락처 입력"
+            value={userTel}
+            name="userTel"
+            onChange={(e) => setUserTel(e.target.value)}
           />
           <input
             type="password"
