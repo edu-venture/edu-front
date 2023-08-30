@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AttendCard from "../components/Attend/AttendCard";
 import Title from "../components/Title";
 import AttendCalendar from "../components/Attend/AttendCalendar";
+import styled from "styled-components";
+import axios from "axios";
 
 const styles = {
   titleContainer: {
@@ -27,6 +29,24 @@ const textStyles = {
   color: "#171a2b",
 };
 
+const ButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 70px;
+`;
+
+const StyledButton = styled.button`
+  width: 130px;
+  height: 50px;
+  background-color: #171a2b;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
 const Attend = () => {
   const userType = sessionStorage.getItem("userType");
   const userName = sessionStorage.getItem("userName");
@@ -35,9 +55,30 @@ const Attend = () => {
   const month = time.getMonth() + 1;
   const today = time.getDate();
 
+  /** 출석부 가져오기 함수 */
+  const getIsAttend = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.0.7:8081/attendance/attend",
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
+      console.log("출석 여부 잘 들어옴?", response);
+    } catch (e) {
+      console.log("개별학생 출석여부 안가져옴", e);
+    }
+  };
+
+  useEffect(() => {
+    getIsAttend();
+  }, []);
+
   return (
     <div>
-      <div style={{ height: "500px", background: "#F9F9F9" }}>
+      <div style={{ height: "600px", background: "#F9F9F9" }}>
         <div style={styles.titleContainer}>
           <Title subtitle={`${month}월 ${today}일`} title="출석 여부" />
         </div>
@@ -54,6 +95,9 @@ const Attend = () => {
           <AttendCard header="입실 시간" body="17:00" />
           <AttendCard header="퇴실 시간" body="21:00" />
         </div>
+        <ButtonContainer>
+          <StyledButton>입실하기</StyledButton>
+        </ButtonContainer>
       </div>
       <div style={{ height: "800px", background: "#DADADA" }}>
         <div style={styles.titleContainer}>
