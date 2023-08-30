@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Title from "../components/Title";
 import LectureBox from "../components/Lecture/LectureBox";
 import LectureCalendar from "../components/Lecture/LectureCalendar";
+import axios from "axios";
 
 const styles = {
   titleContainer: {
@@ -19,13 +20,36 @@ const getMonthWeek = () => {
 };
 
 const Lecture = () => {
-  const lectureTitle = "이번 주 수업";
-  const lectureContent = [
-    '고3 화목반 (이완재 선생님)의 “파이널 수능대비"',
-    '고3 주말반 (전두하 선생님)의 “쪽집게 특강"',
-  ];
+  const [lectures, setLectures] = useState([]);
+  const getTimetable = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.0.7:8081/timetable/student/list",
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
+      if (response.data && response.data.items) {
+        setLectures(response.data.items);
+        console.log("누고?", lectures);
+      }
+      console.log("시간표 잘 들어옴?", response);
+    } catch (e) {
+      console.log("개별 학생 시간표 가져오기", e);
+    }
+  };
 
-  const noticeTitle = "공지 사항";
+  useEffect(() => {
+    getTimetable();
+  }, []);
+
+  const lectureContent = lectures.map(
+    (lecture) =>
+      `${lecture.claName} (${lecture.timeTeacher} 선생님)의 "${lecture.timeTitle}"`
+  );
+
   const noticeContent = ["게시된 공지 사항이 없습니다."];
 
   return (
@@ -41,9 +65,9 @@ const Lecture = () => {
         <Title subtitle={getMonthWeek()} title="수강 강좌" color="#ffffff" />
       </div>
       <LectureCalendar />
-      <LectureBox title={lectureTitle} content={lectureContent} />
+      <LectureBox title="이번 주 수업" content={lectureContent} />
       <LectureBox
-        title={noticeTitle}
+        title="공지 사항"
         content={noticeContent}
         $borderRadius="30px 30px 0 0"
       />
