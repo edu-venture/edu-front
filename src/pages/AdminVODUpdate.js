@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Title from "../components/Title";
 import { styled } from "styled-components";
-import AdminVodCreateListItem from "../components/AdminVod/AdminVodCreateListItem";
+import AdminVODUpdateListItem from '../components/AdminVod/AdminVODUpdateListItem'
 import { Button } from "@mui/material";
 import FileUpload from "../components/AdminVod/FileUpload";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const styles = {
   Container: {
@@ -51,8 +51,10 @@ const ContentContainer = styled.div`
   justify-content: flex-start;
 `;
 
-const AdminVodCreate = () => {
-  const [vodData, setVodData] = useState({
+const AdminVODUpdate = () => {
+  const [postData, setPostData] = useState({});
+  const [fileList, setFileList] = useState([]);
+  const [vodData, setVodData] = useState({ 
     title: '', // 수업 이름
     writer: '', // 반
     content: '', // 수업 내용
@@ -62,6 +64,39 @@ const AdminVodCreate = () => {
   });
 
   const navigate = useNavigate();
+
+  const {id} = useParams();
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8081/vod/board/${id}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+          }
+        });
+        console.log(response.data.item.board);
+        console.log(response.data.item.boardFileList);
+        setPostData(response.data.item.board);
+        setFileList(response.data.item.boardFileList);
+        setVodData({
+          title: response.data.item.board.title,
+          writer: response.data.item.board.writer,
+          content: response.data.item.board.content,
+          videoFile: response.data.item.board.originPath,
+          thumbnail: response.data.item.board.originThumb,
+          fileList: response.data.item.boardFileList?.vodOriginName,
+        });
+        console.log(vodData);
+      } catch(error) {
+        console.log(error);
+      }
+    };
+
+    fetchPostData();
+  }, [id]);
+
 
   const handleCancelButton = () => {
     navigate(-1);
@@ -78,7 +113,7 @@ const AdminVodCreate = () => {
     if(key === 'fileList') {
       setVodData((prevData) => ({ 
         ...prevData,
-        fileList: [...prevData.fileList, file],
+        fileList: Array.isArray(prevData.fileList) ? [...prevData.fileList, file] : [file],
       }));
     } else {
       setVodData((prevData) => ({
@@ -91,6 +126,7 @@ const AdminVodCreate = () => {
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('boardDTO', new Blob([JSON.stringify({
+      id: id,
       title: vodData.title,
       writer: vodData.writer,
       content: vodData.content
@@ -106,7 +142,7 @@ const AdminVodCreate = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8081/vod/board', formData, {
+      const response = await axios.put(`http://localhost:8081/vod/board/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
@@ -117,18 +153,17 @@ const AdminVodCreate = () => {
       navigate('/admin/video');
     } catch(error) {
       console.log(error);
-      //console.log(Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`)
     }
   };
   return (
     <div style={styles.Container}>
       <div style={styles.titleContainer}>
-        <Title subtitle="학생을 위한" title="수업 영상 등록" color="#ffffff" />
+        <Title subtitle="학생을 위한" title="수업 영상 수정" color="#ffffff" />
       </div>
       <ContentContainer>
-        <AdminVodCreateListItem contentName="수업 이름" value={vodData.title} onChange={(value) => handleInputChange('title', value)} />
-        <AdminVodCreateListItem contentName="반" value={vodData.writer} onChange={(value) => handleInputChange('writer', value)}/>
-        <AdminVodCreateListItem
+        <AdminVODUpdateListItem contentName="수업 이름" value={vodData.title} onChange={(value) => handleInputChange('title', value)} />
+        <AdminVODUpdateListItem contentName="반" value={vodData.writer} onChange={(value) => handleInputChange('writer', value)}/>
+        <AdminVODUpdateListItem
           contentName="수업 내용"
           customHeight="217px"
           inputHeight="217px"
@@ -170,11 +205,11 @@ const AdminVodCreate = () => {
           >
             취소하기
           </Button>
-          <Button sx={styles.button} onClick={handleSubmit}>등록하기</Button>
+          <Button sx={styles.button} onClick={handleSubmit}>수정하기</Button>
         </ButtonContainer>
       </ContentContainer>
     </div>
   );
 };
 
-export default AdminVodCreate;
+export default AdminVODUpdate;

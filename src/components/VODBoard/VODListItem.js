@@ -20,30 +20,33 @@ const VideoFrame = styled.div`
 `;
 
 const VODListItem = ({
-  key,
+  id,
   lectureName,
   teacherName,
   viewCount,
   uploadDate,
+  thumbnail,
 }) => {
   const navigate = useNavigate();
 
   const goToDetail = () => {
-    navigate(`/video/detail/${key}`);
+    navigate(`/video/detail/${id}`);
   };
 
   return (
     <ListItem>
-      <VideoFrame onClick={goToDetail} />
+      <VideoFrame onClick={goToDetail}>
+        <img src={thumbnail} alt="Video Thumbnail" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </VideoFrame>  
       <div>
-        <Link to={`/video/detail/${key}`}>
+        <Link to={`/video/detail/${id}`}>
           <div style={{ fontSize: "25px" }}>{lectureName}</div>
         </Link>
         <div style={{ marginTop: "40px", fontSize: "20px" }}>
           {teacherName} 선생님
         </div>
         <div style={{ marginTop: "25px", color: "#323232" }}>
-          조회수 {viewCount}회 | {uploadDate}
+          조회수 {viewCount}회 | {uploadDate.slice(0, 10)}
         </div>
       </div>
     </ListItem>

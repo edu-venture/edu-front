@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "@emotion/styled";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
+import axios from "axios";
 
 const styles = {
   ExpandCircleDownRoundedIcon: {
@@ -66,7 +67,7 @@ const CommentContent = styled.div`
   align-items: center;
   background: #fff;
   border-radius: 50px;
-  margin: ${({ isReply }) => (isReply ? "10px 0 0 100px" : "0")};
+  margin: ${({ isReply }) => (isReply ? "20px 0 0 100px" : "0")};
 `;
 
 const Profile = styled.div`
@@ -132,63 +133,44 @@ const ReplySubmitButton = styled.button`
   font-size: 20px;
 `;
 
-const VODSectionChat = () => {
+const ChatSection = ({commentsList, setCommentsList, id}) => {
   const userName = sessionStorage.getItem("userName");
-
   const [inputText, setInputText] = useState(""); //댓글입력필드값 상태
-  const [comments, setComments] = useState([]); //댓글 모음 상태관리
-  const commentId = useRef(1); //댓글 id값
-  const replyId = useRef(1); //대댓글 id값
-  const [showReplyInput, setShowReplyInput] = useState(null); //현재 대댓글 입력을 표시하고 있는 댓글의 ID
   const [replyText, setReplyText] = useState(""); //대댓글 입력 상태
-  // const hasNestedComment = false;
+  const [showReplyInputFor, setShowReplyInputFor] = useState(null);
+
 
   /* 댓글 입력필드 핸들러  */
   const inputChangeHandler = (e) => {
     setInputText(e.target.value);
   };
 
-  /* 댓글 추가 함수 */
-  const addComment = (text) => {
-    const newComment = {
-      id: commentId.current,
-      text: text,
-      replies: [],
-    };
-    setComments([...comments, newComment]);
-    setInputText("");
-    commentId.current += 1;
-  };
+  //대댓글 입력창 토글
+  const toggleReplyInputField = (commentId) => {
+    setShowReplyInputFor(showReplyInputFor === commentId ? null : commentId);
+  }
 
-  /* 대댓글 추가 함수 */
-  const addReply = (commentId, text) => {
-    const updatedComments = comments.map((comment) => {
-      if (comment.id === commentId) {
-        const newReply = {
-          id: replyId.current,
-          text: text,
-        };
-        replyId.current += 1;
-        return { ...comment, replies: [...comment.replies, newReply] };
+  const onClickAddComment = async (commentId, commentContent) => {
+    try {
+      const response = await axios.post('http://localhost:8081/vod/comment', {
+        vodNo: id,
+        vodCmtParentNo: commentId || 0,
+        vodCmtContent: commentContent,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+        },
       }
-      return comment;
-    });
-    setComments(updatedComments);
-  };
-
-  const onEnterPress = (e) => {
-    if (e.keyCode === 13 && e.shiftKey === false) {
-      e.preventDefault();
-      addComment(inputText);
-    }
-  };
-
-  const onReplyEnterPress = (e, commentId) => {
-    if (e.keyCode === 13 && e.shiftKey === false) {
-      e.preventDefault();
-      addReply(commentId, replyText);
-      setReplyText("");
-      setShowReplyInput(null);
+      );
+      console.log('요청 성공!!!');
+      console.log(response.data.item.commentList);
+      setCommentsList(response.data.item.commentList);
+      setInputText('');
+      setReplyText('');
+      setShowReplyInputFor(null);
+    } catch(error) {
+      console.log(error);
     }
   };
 
@@ -198,15 +180,14 @@ const VODSectionChat = () => {
         <InputField
           value={inputText}
           onChange={inputChangeHandler}
-          onKeyDown={onEnterPress}
         />
         <ExpandCircleDownRoundedIcon
           style={styles.ExpandCircleDownRoundedIcon}
-          onClick={() => addComment(inputText)}
+          onClick={() => onClickAddComment(0, inputText)}
         />
       </InputWrapper>
       <CommentsWrapper>
-        {comments.map((comment) => (
+        {commentsList.map((comment) => (
           <CommentBox key={comment.id}>
             <CommentContent>
               <Profile />
@@ -219,34 +200,29 @@ const VODSectionChat = () => {
                 >
                   {userName}
                 </div>
-                <p style={{ fontSize: "20px" }}>{comment.text}</p>
-                <ReplyButton onClick={() => setShowReplyInput(comment.id)}>
+                <p style={{ fontSize: "20px" }}>{comment.vodCmtContent}</p>
+                <ReplyButton onClick={() => toggleReplyInputField(comment.id)}>
                   답글
                 </ReplyButton>
               </Info>
             </CommentContent>
 
-            {showReplyInput === comment.id && (
+            {showReplyInputFor === comment.id && (
               <ReplyInputWrapper>
                 <ReplyInput
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
-                  onKeyDown={(e) => onReplyEnterPress(e, comment.id)}
                 />
                 <ReplySubmitButton
-                  onClick={() => {
-                    addReply(comment.id, replyText);
-                    setReplyText("");
-                    setShowReplyInput(null);
-                  }}
+                  onClick={() => onClickAddComment(comment.id, replyText)}
                 >
                   등록
                 </ReplySubmitButton>
               </ReplyInputWrapper>
             )}
 
-            {comment.replies.map((reply) => (
-              <CommentContent isReply>
+            {comment.vodSonCmtList && comment.vodSonCmtList.map((reply) => (
+              <CommentContent key={reply.id} isReply>
                 <Profile isReply />
                 <Info>
                   <div
@@ -257,7 +233,7 @@ const VODSectionChat = () => {
                   >
                     {userName}
                   </div>
-                  <p style={{ fontSize: "20px" }}>{reply.text}</p>
+                  <p style={{ fontSize: "20px" }}>{reply.vodCmtContent}</p>
                 </Info>
               </CommentContent>
             ))}
@@ -268,4 +244,4 @@ const VODSectionChat = () => {
   );
 };
 
-export default VODSectionChat;
+export default ChatSection;

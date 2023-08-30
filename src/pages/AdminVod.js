@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Title from "../components/Title";
 import AdminVodList from "../components/AdminVod/AdminVodList";
-import vodData from "../utils/vodData.json";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const styles = {
   container: {
@@ -74,7 +74,34 @@ const styles = {
 const AdminVod = () => {
   const [searchOption, setSearchOption] = useState("전체");
   const [searchText, setSearchText] = useState("");
-  const [displayedVodData, setDisplayedVodData] = useState(vodData);
+  const [VODList, setVODList] = useState([]);
+  const [originalVODList, setOriginalVODList] = useState([]); //검색 필터링에 기준이 되는 상태값
+
+
+  useEffect(() => {
+    const getVODList = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:8081/vod/board-list',
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+            }
+          }
+        );
+  
+        if(response.data.items) {
+          console.log(response.data.items);
+          setVODList(response.data.items);
+          setOriginalVODList(response.data.items); 
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getVODList();
+  }, []);
+  
 
   const navigate = useNavigate();
 
@@ -86,29 +113,29 @@ const AdminVod = () => {
     setSearchText(event.target.value);
   };
 
-  useEffect(() => {
-    const filteredVodData = vodData.filter((item) => {
+  const handleSearch = () => {
+    console.log("Search Option: ", searchOption);
+    console.log("Search Text: ", searchText);
+    const filteredVodData = originalVODList.filter((item) => { 
+      if (!item.title || !item.writer) {
+        return false;
+      }
+
       if (searchOption === "전체") {
         return (
-          item.lectureName.includes(searchText) ||
-          item.teacherName.includes(searchText)
+          item.title.includes(searchText) ||
+          item.writer.includes(searchText)
         );
       } else if (searchOption === "강사명") {
-        return item.teacherName.includes(searchText);
-      } else {
-        // "강의명" 혹은 그 외의 경우
-        return item.lectureName.includes(searchText);
+        return item.writer.includes(searchText);
+      } else if (searchOption === "강의명") {
+        return item.title.includes(searchText);
       }
     });
 
-    setDisplayedVodData(filteredVodData);
-  }, [searchOption, searchText]);
-
-  const handleVideoDelete = (id) => {
-    const updatedVideos = displayedVodData.filter((video) => video.id !== id);
-    setDisplayedVodData(updatedVideos);
+    setVODList(filteredVodData);  // 필터링된 결과를 VODList에 저장
   };
-
+ 
   return (
     <div style={styles.container}>
       <div style={styles.titleContainer}>
@@ -130,8 +157,8 @@ const AdminVod = () => {
           value={searchText}
           onChange={handleInputChange}
         />
-        <Button type="submit" sx={styles.searchButton}>
-          <SearchIcon sx={styles.searchIcon} />
+        <Button sx={styles.searchButton}>
+          <SearchIcon sx={styles.searchIcon} onClick={handleSearch} />
         </Button>
         <Button
           onClick={() => navigate("/admin/video/create")}
@@ -140,10 +167,7 @@ const AdminVod = () => {
           글쓰기
         </Button>
       </div>
-      <AdminVodList
-        vodData={displayedVodData}
-        handleVideoDelete={handleVideoDelete}
-      />
+      <AdminVodList VODList={VODList} setVODList={setVODList} />
     </div>
   );
 };
