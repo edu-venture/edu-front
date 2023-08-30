@@ -41,17 +41,20 @@ const payButton = {
 
 const Payment = () => {
   const [paymentDataAxios, setPaymentDataAxios] = useState("");
-
-  const userNo = 1;
-  const issDate = "202308";
-
+  /** 사용자단 화면에 내야하는 납부서를 불러오는 Axios이다. */
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.0.4:9093/payment/${userNo}/bill/${issDate}`
+          "http://192.168.0.7:8081/payment/student/bill",
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+            },
+          }
         );
         setPaymentDataAxios(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -59,6 +62,7 @@ const Payment = () => {
     fetchData();
   }, []);
 
+  /** 아이엠포트 로직 */
   const onClickPayment = () => {
     const { IMP } = window;
     IMP.init("imp31057650");
@@ -88,7 +92,7 @@ const Payment = () => {
 
       // 검증을 위한 서버 요청
       axios
-        .post(`http://192.168.0.4:9093/iamport/verifyIamport/${imp_uid}`)
+        .post(`http://192.168.0.7:8081/iamport/verifyIamport/${imp_uid}`)
         .then((response) => {
           // 서버에서 받은 응답을 검증
           console.log(response);
@@ -98,7 +102,7 @@ const Payment = () => {
             alert("결제 및 결제검증완료");
             //결제 성공 시 비즈니스 로직
             axios
-              .post(`http://192.168.0.4:9093/iamport/payOk`, {
+              .post(`http://192.168.0.7:8081/iamport/payOk`, {
                 impUid: imp_uid,
                 payNo: paymentDataAxios.item.payNo,
               })
@@ -132,13 +136,16 @@ const Payment = () => {
       <Paper className="paymentContainer" sx={paymentContainer}>
         <Paper className="paymentWhiteBox" sx={paymentWhiteBox}>
           <TextBox
+            /** 여기는 전체적인 레이아웃을 확인할 수 있는 곳이다. */
             academyName={paymentDataAxios?.item?.payFrom}
             month={paymentDataAxios?.item?.issMonth + `월`} //달로 보내주세요.
             amount={paymentDataAxios?.item?.totalPrice.toLocaleString("ko-KR")}
           >
+            {/** 여기가 모달이다. */}
             <PaymentModal isOpen={isOpen} handleModal={handleModal} />
           </TextBox>
           <Divider sx={divider} />
+          {/** 여기가 상세내역이 들어오는 곳이다. */}
           <PaymentTable paymentData={paymentDataAxios} />
           <Divider sx={divider} />
           <Button variant="contained" sx={payButton} onClick={onClickPayment}>

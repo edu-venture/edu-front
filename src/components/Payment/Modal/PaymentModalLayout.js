@@ -11,11 +11,13 @@ import PaymentRow from "./PaymentRow";
 
 const PaymentModalLayout = () => {
   const [modalData, setModalData] = useState({});
-  const userNo = 1;
-  const issDate = "202308";
   useEffect(() => {
     axios
-      .get(`http://192.168.0.4:9093/payment/${userNo}/receipt/${issDate}`)
+      .get(`http://192.168.0.7:8081/payment/student/bill-list`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+        },
+      })
       .then((response) => {
         setModalData(response.data);
       })
@@ -23,6 +25,8 @@ const PaymentModalLayout = () => {
         console.error("Error fetching data: ", error);
       });
   }, []);
+
+  console.log("여긴modalData", modalData);
 
   return (
     <TableContainer component={Paper}>
@@ -36,6 +40,7 @@ const PaymentModalLayout = () => {
           </TableRow>
         </TableHead>
         <TableBody>
+          {/** 모달 영수증의 완전 세부 내용 */}
           <PaymentRow receipt={modalData} />
         </TableBody>
       </Table>

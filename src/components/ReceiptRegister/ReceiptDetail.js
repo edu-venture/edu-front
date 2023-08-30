@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
-import { createSvgIcon } from '@mui/material/utils';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
-  background: #FAFAFA;
+  background: #fafafa;
 `;
 
 const PaymentHeadWrapper = styled.div`
-  background: #FAFAFA;
+  background: #fafafa;
   width: 100%;
   padding: 10px 0;
   display: flex;
@@ -27,7 +27,7 @@ const PaymentHead = styled.div`
 `;
 
 const InputFieldWrapper = styled.div`
-  width: 100%
+  width: 100%;
   display: flex;
   align-items: center;
   overflow-y: auto;
@@ -55,7 +55,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const RegisterButton = styled.button`
-  background: #171A2B;
+  background: #171a2b;
   color: #fff;
   margin: 10px 20px 10px 10px;
   width: 150px;
@@ -66,7 +66,7 @@ const RegisterButton = styled.button`
 `;
 
 const CancelButton = styled.button`
-  background: #171A2B;
+  background: #171a2b;
   color: #fff;
   margin: 10px;
   width: 150px;
@@ -76,63 +76,100 @@ const CancelButton = styled.button`
   font-size: 1rem;
 `;
 
+const ReceiptDetail = ({ setTotalPrice, dataForm }) => {
+  const [postData, setPostData] = useState([{ detail: "", price: "" }]);
 
-const ReceiptDetail = ({setTotalPrice}) => {
+  const navigate = useNavigate();
 
-  const [inputFields, setInputFields] =  useState([{ detail: '', price: '' }]); // 초기 상태는 한 쌍의 인풋 필드
-  const navigete = useNavigate();
-
-  //인풋필드 한줄 추가 
   const addInputField = () => {
-    setInputFields([...inputFields, {}]); 
-  }
+    setPostData([...postData, { detail: "", price: "" }]);
+  };
 
-  //인풋필드 한줄 삭제 함수
   const removeInputField = (index) => {
-    const newFields = inputFields.filter((_, i) => i !== index);
-    setInputFields(newFields);
+    const newFields = postData.filter((_, i) => i !== index);
+    setPostData(newFields);
 
-    const totalPrice = newFields.reduce((sum, field) => sum + Number(field.price) || 0, 0);
-    setTotalPrice(totalPrice); //총액 업데이트
-  }
+    const totalPrice = newFields.reduce(
+      (sum, field) => sum + (Number(field.price) || 0),
+      0
+    );
+    setTotalPrice(totalPrice);
+  };
 
-  const detailChangeHandler = (index, value) => {
-    const newFields = [...inputFields]; //inputFields 배열을 복사하여 newFields라는 새로운 배열을 생성
-    newFields[index].detail = value; //newFields배열에 해당 인덱스에 detail프로퍼티를 매개변수의 밸류로 변환
-    setInputFields(newFields);
-  }
+  const changeHandler = (index, type, value) => {
+    const newFields = [...postData];
+    newFields[index][type] = value;
+    setPostData(newFields);
 
-  const priceChangeHandler = (index, value) => {
-    const newFields = [...inputFields]; //inputFields 배열을 복사하여 newFields라는 새로운 배열을 생성
-    newFields[index].price = value; //newFields배열에 해당 인덱스에 price프로퍼티를 매개변수의 밸류로 변환
-    setInputFields(newFields); 
+    if (type === "price") {
+      const totalPrice = newFields.reduce(
+        (sum, field) => sum + (Number(field.price) || 0),
+        0
+      );
+      setTotalPrice(totalPrice);
+    }
+  };
 
-    const totalPrice = newFields.reduce((sum, field) => sum + Number(field.price) || 0, 0);
-    setTotalPrice(totalPrice); //총액 업데이트
-  }
+  const postDataForm = {
+    ...dataForm,
+    productList: JSON.stringify(
+      postData.map((field) => ({
+        detail: field.detail,
+        price: Number(field.price) || 0,
+      }))
+    ),
+  };
+
+  console.log("body다", postDataForm);
+  /** 등록하기 요청 */
+  const postAxios = async () => {
+    try {
+      const response = await axios.post(
+        "http://192.168.0.7:8081/payment/admin/bill",
+        postDataForm,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
+      setPostData(response.data.productList || []);
+      if (response.status === 200) {
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error("여기 포스트 Axios error", error);
+    }
+  };
 
   return (
     <Container>
       <PaymentHeadWrapper>
         <PaymentHead>상세내역</PaymentHead>
         <PaymentHead>가격</PaymentHead>
-          <AddIcon onClick={addInputField} style={{marginRight: '38px'}}/>
+        <AddIcon onClick={addInputField} style={{ marginRight: "38px" }} />
       </PaymentHeadWrapper>
 
-      {inputFields.map((field, index) => (
+      {postData.map((field, index) => (
         <InputFieldWrapper key={index}>
-         <TextInputField value={field.detail} onChange={(e) => detailChangeHandler(index, e.target.value) }/>
-         <TextInputField value={field.price} onChange={(e) => priceChangeHandler(index, e.target.value)}/>
-         <RemoveCircleOutlineIcon onClick={() => removeInputField(index)}/>
-       </InputFieldWrapper>
-      ))};
-     
+          <TextInputField
+            value={field.detail}
+            onChange={(e) => changeHandler(index, "detail", e.target.value)}
+          />
+          <TextInputField
+            value={field.price}
+            onChange={(e) => changeHandler(index, "price", e.target.value)}
+          />
+          <RemoveCircleOutlineIcon onClick={() => removeInputField(index)} />
+        </InputFieldWrapper>
+      ))}
+
       <ButtonWrapper>
-        <CancelButton onClick={() => navigete(-1)}>취소하기</CancelButton>
-        <RegisterButton>등록하기</RegisterButton>
+        <CancelButton onClick={() => navigate(-1)}>취소하기</CancelButton>
+        <RegisterButton onClick={postAxios}>등록하기</RegisterButton>
       </ButtonWrapper>
     </Container>
-  )
-}
+  );
+};
 
-export default ReceiptDetail
+export default ReceiptDetail;

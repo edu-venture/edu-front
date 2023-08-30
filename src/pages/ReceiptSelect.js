@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Title from "../components/Title";
 import ReceiptList from "../components/ReceiptSelect/ReceiptList";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const styles = {
   titleContainer: {
@@ -70,13 +71,34 @@ const SearchInput = styled.input`
   border-radius: 20px;
 `;
 
-const Teacher = () => {
+const ReceiptSelect = () => {
   const [searchType, setSearchType] = useState("전체");
   const [searchText, setSearchText] = useState("");
+  const [originalUserInfo, setOriginalUserInfo] = useState([]); // 원본 데이터 상태
+  const [displayedUserInfo, setDisplayedUserInfo] = useState([]); // 표시될 데이터 상태
+  const [selectedIds, setSelectedIds] = useState([]);
 
-  const handleDelete = () => {
-    console.log("선택 항목 삭제");
+  /** 수납관리 전체 리스트 데이터 */
+  const getUserInfo = async () => {
+    try {
+      const resG = await axios.get(
+        "http://192.168.0.7:8081/payment/admin/bill-list",
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
+      setDisplayedUserInfo(resG.data.items);
+      setOriginalUserInfo(resG.data.items);
+    } catch (error) {
+      console.error("error ", error);
+    }
   };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value);
@@ -85,9 +107,58 @@ const Teacher = () => {
   const handleDropdownChange = (e) => {
     setSearchType(e.target.value);
   };
+  console.log("여긴수납관리 전체리스트 데이터 ", displayedUserInfo);
 
+  /** 검색 기능 함수 */
   const handleSearch = () => {
-    console.log(`검색 유형: ${searchType}, 검색어: ${searchText}`);
+    let filterSearchData;
+
+    if (searchType === "전체") {
+      filterSearchData = originalUserInfo.filter(
+        (item) =>
+          item.claName.includes(searchText) ||
+          item.userName.includes(searchText) ||
+          item.issMonth.includes(searchText) ||
+          item.couNo.toString().includes(searchText) ||
+          item.payNo.toString().includes(searchText) ||
+          item.parentTel.includes(searchText)
+      );
+    } else if (searchType === "이름") {
+      filterSearchData = originalUserInfo.filter((item) =>
+        item.userName.includes(searchText)
+      );
+    } else if (searchType === "반") {
+      filterSearchData = originalUserInfo.filter((item) =>
+        item.claName.includes(searchText)
+      );
+    } else if (searchType === "청구월") {
+      filterSearchData = originalUserInfo.filter((item) =>
+        item.issMonth.includes(searchText)
+      );
+    }
+
+    setDisplayedUserInfo(filterSearchData);
+  };
+
+  const handleDelete = async () => {
+    console.log("선택된 삭제 아이디들", selectedIds);
+    try {
+      const response = await axios.post(
+        "http://192.168.0.7:8081/payment/admin/bill/delete",
+        { payNo: selectedIds },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
+      if (response.data && response.data.item) {
+        alert("삭제가 완료되었습니다.");
+        getUserInfo(); // 삭제 및 청구서 목록 업데이트
+      }
+    } catch (error) {
+      console.log("삭제를 거절한다", error);
+    }
   };
 
   return (
@@ -110,9 +181,7 @@ const Teacher = () => {
             선택 삭제
           </button>
           <Link to="/admin/receipt/register">
-            <button style={styles.styleButton2} onClick={handleDelete}>
-              수납 등록
-            </button>
+            <button style={styles.styleButton2}>수납 등록</button>
           </Link>
         </>
         <div style={styles.searchContainer}>
@@ -120,7 +189,7 @@ const Teacher = () => {
             <option value="전체">전체</option>
             <option value="이름">이름</option>
             <option value="반">반</option>
-            <option value="청구년월">청구년월</option>
+            <option value="청구월">청구월</option>
           </Dropdown>
           <SearchInput
             placeholder="검색어 입력"
@@ -132,10 +201,14 @@ const Teacher = () => {
           </button>
         </div>
       </div>
-
-      <ReceiptList />
+      <ReceiptList
+        userInfo={displayedUserInfo}
+        selectedIds={selectedIds}
+        setSelectedIds={setSelectedIds}
+        getUserInfo={getUserInfo}
+      />
     </div>
   );
 };
 
-export default Teacher;
+export default ReceiptSelect;
