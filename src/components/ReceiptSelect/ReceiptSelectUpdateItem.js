@@ -76,7 +76,7 @@ const CancelButton = styled.button`
   font-size: 1rem;
 `;
 
-const ReceiptDetail = ({ setTotalPrice, dataForm }) => {
+const ReceiptSelectUpdateItem = ({ setTotalPrice, dataForm }) => {
   const [postData, setPostData] = useState([{ detail: "", price: "" }]);
 
   const navigate = useNavigate();
@@ -166,10 +166,10 @@ const ReceiptDetail = ({ setTotalPrice, dataForm }) => {
 
       <ButtonWrapper>
         <CancelButton onClick={() => navigate(-1)}>취소하기</CancelButton>
-        <RegisterButton onClick={postAxios}>등록하기</RegisterButton>
+        <RegisterButton onClick={postAxios}>수정하기</RegisterButton>
       </ButtonWrapper>
     </Container>
   );
 };
 
-export default ReceiptDetail;
+export default ReceiptSelectUpdateItem;

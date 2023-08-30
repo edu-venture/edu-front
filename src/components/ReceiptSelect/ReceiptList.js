@@ -36,7 +36,13 @@ const Th = styled.th`
 
 const Tbody = styled.tbody``;
 
-const ReceiptList = () => {
+const ReceiptList = ({
+  userInfo,
+  selectedIds,
+  setSelectedIds,
+  getUserInfo,
+}) => {
+  console.log("ReceiptList 넘어온 수납관리에 전체 리스트", userInfo);
   return (
     <Container>
       <Table>
@@ -55,15 +61,12 @@ const ReceiptList = () => {
           </tr>
         </Thead>
         <Tbody>
+          {/** 여긴 유저의 상세 내용을 표출하는 컴포넌트이다. */}
           <ReceiptItem
-            id="0001"
-            name="홍길동"
-            group="고3월금A반"
-            chargeMonth="2023-07"
-            chargeMoney="350,000"
-            parentContact="010-0000-0000"
-            paymentMethod="card"
-            state="결제 완료"
+            userInfo={userInfo}
+            selectedIds={selectedIds}
+            setSelectedIds={setSelectedIds}
+            getUserInfo={getUserInfo}
           />
         </Tbody>
       </Table>
