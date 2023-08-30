@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-const VideoPlayer = styled.div`
+const VideoPlayer = styled.video`
   position: relative;
   width: 80%;
   height: 650px;
@@ -9,7 +9,7 @@ const VideoPlayer = styled.div`
   margin: 0px auto;
 `;
 
-const VODSectionDetail = () => {
+const VODSectionDetail = ({videoDetail}) => {
   return (
     <main
       style={{
@@ -21,7 +21,7 @@ const VODSectionDetail = () => {
         flexDirection: "column",
       }}
     >
-      <VideoPlayer />
+      <VideoPlayer src={videoDetail.savePath} controls poster={videoDetail.saveThumb} style={{ height: '100%'}}/>
     </main>
   );
 };
