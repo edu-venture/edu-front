@@ -132,9 +132,17 @@ const AdminHeader = ({ isLogin }) => {
           onClose={handleUserMenuClose}
         >
           {userType === "admin" && (
-            <MenuItems handleClose={handleUserMenuClose} to="/admin/teacher">
-              선생님 관리
-            </MenuItems>
+            <>
+              <MenuItems handleClose={handleUserMenuClose} to="/admin/teacher">
+                선생님 관리
+              </MenuItems>
+              <MenuItems
+                handleClose={handleUserMenuClose}
+                to="/admin/classManagement"
+              >
+                반 관리
+              </MenuItems>
+            </>
           )}
           <MenuItems handleClose={handleLogout}>로그아웃</MenuItems>
         </Menu>
