@@ -45,5 +45,4 @@ const AdminVodList = ({ VODList, setVODList }) => {
     </Container>
   );
 };
-
 export default AdminVodList;

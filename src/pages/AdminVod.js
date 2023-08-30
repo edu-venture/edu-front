@@ -131,7 +131,6 @@ const AdminVod = () => {
       } else if (searchOption === "강의명") {
         return item.title.includes(searchText);
       }
-      return false;
     });
 
     setVODList(filteredVodData);  // 필터링된 결과를 VODList에 저장
