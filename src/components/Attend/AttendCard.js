@@ -2,18 +2,18 @@ import React from "react";
 
 const styles = {
   container: {
-    filter: "drop-shadow(0px 0px 5px rgba(0,0,0,0.1))",
+    filter: "drop-shadow(0px 0px 5px rgba(0,0,0,0.2))",
   },
   header: {
     width: 220,
     height: 65,
     borderRadius: "30px 30px 0 0",
-    background: "#d9d9d9",
+    background: "#4A4F6B",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     fontSize: 20,
-    color: "#171a2b",
+    color: "#ffffff",
   },
   body: {
     width: 220,
