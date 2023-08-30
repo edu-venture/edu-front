@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
 
 const ListItem = styled.div`
   width: 100%;
@@ -17,34 +17,26 @@ const VideoFrame = styled.div`
   height: 180px;
   margin: 0 50px 0 20px;
   background-color: #323232;
-  cursor: pointer;
+  // cursor: pointer;
 `;
 
-const StreamingListItem = ({
-  id,
-  lectureName,
-  teacherName,
-  viewer,
-  uploadDate,
-}) => {
-  const navigate = useNavigate();
+const StreamingListItem = ({ lectureName, teacherName, viewer }) => {
+  // const navigate = useNavigate();
 
-  const goToDetail = () => {
-    navigate(`/video/detail/${id}`);
-  };
+  // const goToDetail = () => {
+  //   navigate(`/video/detail/${id}`);
+  // };
 
   return (
     <ListItem>
-      <VideoFrame onClick={goToDetail} />
+      <VideoFrame />
       <div>
-        <Link to={`/video/detail/${id}`}>
-          <div style={{ fontSize: "25px" }}>{lectureName}</div>
-        </Link>
+        <div style={{ fontSize: "25px" }}>{lectureName}</div>
         <div style={{ marginTop: "40px", fontSize: "20px" }}>
           {teacherName} 선생님
         </div>
         <div style={{ marginTop: "25px", color: "#323232" }}>
-          수강중인 학생 {viewer} | {uploadDate}
+          {viewer}명 시청 중
         </div>
       </div>
     </ListItem>

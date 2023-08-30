@@ -1,46 +1,40 @@
 import Title from "../components/Title";
 import StreamingList from "../components/StreamingBoard/StreamingList";
-import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const styles = {
   titleContainer: {
     padding: "20px 0px 20px 50px",
-
+  },
+  styledButton: {
+    marginLeft: "110px",
+    padding: "12px 25px",
+    backgroundColor: "#ffffff",
+    color: "#171A2B",
+    border: "none",
+    borderRadius: "30px",
+    cursor: "pointer",
+    fontSize: "15px",
   },
 };
 
 const StreamingBoard = () => {
-  const navigate = useNavigate();
-
-  const buttonClickHandler = () => {
-    navigate('/admin/streaming/create');
-  }
-
-
   return (
     <div
       style={{
         width: "100vw",
-        height: "auto",
+        height: "calc(100vh - 50px)",
         overflow: "hidden",
         backgroundColor: "#5AC467",
         position: "relative",
       }}
     >
       <div style={styles.titleContainer}>
-        <Title subtitle="LIVE" title="실시간 수업 영상" color="#ffffff" />
-        <button 
-            style={{fontSize: "22px",
-                    width: "143px",
-                    height: "58px",
-                    backgroundColor: "#D3D3D3",
-                    borderRadius: "20px",
-                    color: "#000",
-                    margin: '50px 0 0 40px',
-                    cursor: 'pointer'
-                    }} onClick={buttonClickHandler}>수업 생성
-            </button>
+        <Title subtitle="진행 중인" title="실시간 강의" color="#ffffff" />
       </div>
+      <Link to="/admin/streaming/create">
+        <button style={styles.styledButton}>강의 시작</button>
+      </Link>
       <StreamingList />
     </div>
   );
