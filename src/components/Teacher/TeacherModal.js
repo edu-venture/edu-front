@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const ModalBackdrop = styled.div`
@@ -76,18 +77,6 @@ const ModalButtons = styled.div`
   }
 `;
 
-const ModalText = styled.div`
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  p {
-    margin: 0;
-    padding: 0;
-  }
-`;
-
 const InputContainer = styled.div`
   width: 400px;
   height: 40px;
@@ -116,15 +105,74 @@ const StyledInput = styled.input`
   border-radius: 20px;
   background: #ededed;
   font-size: 15px;
-  color: #171a2b;
+  color: #5a5a5a;
   outline: none;
   margin-left: 10px;
 `;
 
-const TeacherModal = ({ isOpen, onClose, type }) => {
+const StyledSelect = styled.select`
+  width: 250px;
+  height: 35px;
+  padding: 0 15px;
+  border: none;
+  border-radius: 20px;
+  background: #ededed;
+  font-size: 15px;
+  color: #171a2b;
+  outline: none;
+  margin-left: 10px;
+  appearance: none;
+  cursor: pointer;
+`;
+
+const TeacherModal = ({
+  isOpen,
+  onClose,
+  id,
+  name,
+  email,
+  contact,
+  approval,
+  // group,
+  fetchUsers,
+  classData,
+}) => {
+  // const [selectedCouNo, setSelectedCouNo] = useState(group || "");
+
   if (!isOpen) {
     return null;
   }
+
+  const handleApproval = async () => {
+    const userDTO = {
+      approval: "o",
+      id: id,
+      userId: email,
+      userName: name,
+      userTel: contact,
+      // couNo: selectedCouNo,
+      userType: "teacher",
+    };
+
+    try {
+      const response = await axios.put(
+        "http://192.168.0.7:8081/user/update",
+        userDTO
+      );
+
+      console.log("요청", response);
+
+      if (response.data && response.data.statusCode === 200) {
+        alert("승인이 완료되었습니다.");
+        fetchUsers();
+        onClose();
+      }
+    } catch (e) {
+      console.error(e);
+      alert("승인을 실패하였습니다.");
+      onClose();
+    }
+  };
 
   return (
     <ModalBackdrop>
@@ -133,40 +181,46 @@ const TeacherModal = ({ isOpen, onClose, type }) => {
           <ModalHeaderBtn onClick={onClose} />
         </ModalHeaderDiv>
         <ModalContent>
-          {type === "승인" || type === "수정" ? (
-            <>
-              <InputContainer>
-                <LabelDiv>이 름</LabelDiv>
-                <StyledInput />
-              </InputContainer>
-              <InputContainer>
-                <LabelDiv>연 락 처</LabelDiv>
-                <StyledInput />
-              </InputContainer>
-              <InputContainer>
-                <LabelDiv>반 배 정</LabelDiv>
-                <StyledInput />
-              </InputContainer>
-            </>
-          ) : (
-            <ModalText>
-              <p>선생님을 정말 삭제하시겠습니까?</p>
-            </ModalText>
-          )}
+          <InputContainer>
+            <LabelDiv>이 름</LabelDiv>
+            <StyledInput value={name} readOnly></StyledInput>
+          </InputContainer>
+          <InputContainer>
+            <LabelDiv>연 락 처</LabelDiv>
+            <StyledInput value={contact} readOnly></StyledInput>
+          </InputContainer>
+          {/* <InputContainer>
+            <LabelDiv>반 배 정</LabelDiv>
+            <StyledSelect
+              value={selectedCouNo}
+              onChange={(e) => setSelectedCouNo(e.target.value)}
+            >
+              {group && (
+                <option value={group} disabled>
+                  {classData.find((e) => e.claName === group)?.claName ||
+                    "반 선택"}
+                </option>
+              )}
+              {classData.map((element) => {
+                return (
+                  <option key={element.couNo} value={element.couNo}>
+                    {element.claName}
+                  </option>
+                );
+              })}
+            </StyledSelect>
+          </InputContainer> */}
         </ModalContent>
         <ModalButtons>
-          {type === "승인" ? (
-            <button onClick={onClose}>거절하기</button>
+          <button onClick={onClose}>취소하기</button>
+          {approval === "승인" ? (
+            <>
+              <button onClick={handleApproval}>수정하기</button>
+            </>
           ) : (
-            <button onClick={onClose}>취소하기</button>
-          )}
-
-          {type === "승인" ? (
-            <button onClick={onClose}>승인하기</button>
-          ) : type === "수정" ? (
-            <button onClick={onClose}>수정하기</button>
-          ) : (
-            <button onClick={onClose}>삭제하기</button>
+            <>
+              <button onClick={handleApproval}>승인하기</button>
+            </>
           )}
         </ModalButtons>
       </Modal>

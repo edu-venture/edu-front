@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import TeacherModal from "./TeacherModal";
+import axios from "axios";
 
 const Td = styled.td`
   height: 56px;
@@ -26,44 +27,99 @@ const Button = styled.button`
   margin: 0 5px;
 
   &:hover {
-    text-decoration: underline; /* Adding a hover effect */
+    text-decoration: underline;
   }
 `;
 
-const TeacherItem = ({ id, name, email, contact, group, approval }) => {
+const TeacherItem = ({
+  id,
+  name,
+  email,
+  contact,
+  // group,
+  approval,
+  selectedIds,
+  setSelectedIds,
+  fetchUsers,
+  classData,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [modalType, setModalType] = useState("");
 
-  const handleOpenModal = (type) => {
-    setModalType(type);
-    setIsOpen(true);
+  const handleCheckboxChange = (e) => {
+    if (e.target.checked) {
+      setSelectedIds((prevIds) => [...prevIds, id]);
+    } else {
+      setSelectedIds((prevIds) =>
+        prevIds.filter((selectedId) => selectedId !== id)
+      );
+    }
   };
 
+  const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => setIsOpen(false);
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.post(
+        "http://192.168.0.7:8081/user/deleteselectusers",
+        { selectedUserIds: [id] },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
+      if (response.data && response.data.item) {
+        alert(response.data.item.msg);
+        fetchUsers();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
       <tr>
         <Td>
-          <Checkbox />
+          <Checkbox
+            checked={selectedIds.includes(id)}
+            onChange={handleCheckboxChange}
+          />
         </Td>
         <Td>{id}</Td>
         <Td>{name}</Td>
         <Td>{email}</Td>
         <Td>{contact}</Td>
         <Td>{approval}</Td>
-        <Td>{group}</Td>
+        {/* <Td>{group}</Td> */}
         <Td>
-          <Button onClick={() => handleOpenModal("승인")}>승인</Button>/
-          <Button onClick={() => handleOpenModal("수정")}>수정</Button>/
-          <Button onClick={() => handleOpenModal("삭제")}>삭제</Button>
+          {approval === "승인" ? (
+            <>
+              <Button onClick={handleOpenModal}>수정</Button>/
+            </>
+          ) : (
+            <>
+              <Button onClick={handleOpenModal}>승인</Button>/
+            </>
+          )}
+          <Button onClick={handleDelete}>삭제</Button>
         </Td>
       </tr>
-      <TeacherModal
-        isOpen={isOpen}
-        onClose={handleCloseModal}
-        type={modalType}
-      />
+      {isOpen && (
+        <TeacherModal
+          isOpen={isOpen}
+          onClose={handleCloseModal}
+          id={id}
+          name={name}
+          email={email}
+          contact={contact}
+          approval={approval}
+          // group={group}
+          fetchUsers={fetchUsers}
+          classData={classData}
+        />
+      )}
     </>
   );
 };
