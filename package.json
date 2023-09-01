@@ -16,6 +16,7 @@
     "aos": "^2.3.4",
     "axios": "^1.4.0",
     "canvas-confetti": "^1.6.0",
+    "date-fns": "^2.30.0",
     "dayjs": "^1.11.9",
     "ncloudchat": "^1.0.43",
     "react": "^18.2.0",
