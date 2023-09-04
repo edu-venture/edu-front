@@ -6,7 +6,6 @@ import { LocalizationProvider, PickersDay } from "@mui/x-date-pickers";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { DayCalendarSkeleton } from "@mui/x-date-pickers/DayCalendarSkeleton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import attendData from "../../utils/attendData.json";
 
 const theme = createTheme({
   palette: {
@@ -18,7 +17,7 @@ const theme = createTheme({
 
 const today = dayjs();
 
-const DateCalendarServerRequest = () => {
+const AttendCalendar = ({ attendance }) => {
   const requestAbortController = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -39,22 +38,28 @@ const DateCalendarServerRequest = () => {
     }, 1000);
   };
 
+  const getAttendanceStatus = (date) => {
+    const attendanceItem = attendance.find(
+      (item) => item.attDate === date.format("YYYY-MM-DD")
+    );
+    return attendanceItem ? attendanceItem.attContent : undefined;
+  };
+
   const ServerDay = (props) => {
     const { day, outsideCurrentMonth, ...other } = props;
-    const attendanceStatus =
-      attendData.students[0].attendance[day.format("YYYY-MM-DD")];
+    const attendanceStatus = getAttendanceStatus(day);
+
+    let badgeContent;
+    if (attendanceStatus === "0") {
+      badgeContent = "⭕️";
+    } else if (attendanceStatus === "1") {
+      badgeContent = "⏰";
+    } else if (attendanceStatus === "2") {
+      badgeContent = "❌";
+    }
 
     return (
-      <Badge
-        overlap="circular"
-        badgeContent={
-          attendanceStatus === true
-            ? "⭕️"
-            : attendanceStatus === false
-            ? "❌"
-            : undefined
-        }
-      >
+      <Badge overlap="circular" badgeContent={badgeContent}>
         <PickersDay
           {...other}
           outsideCurrentMonth={outsideCurrentMonth}
@@ -85,4 +90,4 @@ const DateCalendarServerRequest = () => {
   );
 };
 
-export default DateCalendarServerRequest;
+export default AttendCalendar;

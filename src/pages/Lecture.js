@@ -21,36 +21,71 @@ const getMonthWeek = () => {
 
 const Lecture = () => {
   const [lectures, setLectures] = useState([]);
+  const [notices, setNotices] = useState([]);
+
   const getTimetable = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.7:8081/timetable/student/list",
+        "http://192.168.0.216:8081/timetable/student/list",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
           },
         }
       );
+      console.log("개별 시간표 들어왔다.", response);
       if (response.data && response.data.items) {
         setLectures(response.data.items);
-        console.log("누고?", lectures);
       }
-      console.log("시간표 잘 들어옴?", response);
     } catch (e) {
-      console.log("개별 학생 시간표 가져오기", e);
+      console.log("개별 시간표 안들어옴?", e);
+    }
+  };
+
+  const getNotices = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.0.216:8081/notice/course",
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
+      console.log("공지사항 들어왔다", response);
+      if (response.data && response.data.items) {
+        setNotices(response.data.items);
+      }
+    } catch (e) {
+      console.log("공지사항 안들어옴?", e);
     }
   };
 
   useEffect(() => {
     getTimetable();
+    getNotices();
   }, []);
 
-  const lectureContent = lectures.map(
-    (lecture) =>
-      `${lecture.claName} (${lecture.timeTeacher} 선생님)의 "${lecture.timeTitle}"`
-  );
+  const lectureContent = lectures
+    ? lectures.map(
+        (lecture) =>
+          `${lecture.claName} (${lecture.timeTeacher} 선생님)의 "${lecture.timeTitle}"`
+      )
+    : ["이번 주 수업이 없습니다."];
 
-  const noticeContent = ["게시된 공지 사항이 없습니다."];
+  const noticeContent = notices
+    ? notices.map((notice) => {
+        const userType = notice.userDTO.userType;
+        if (userType === "admin") {
+          return `<span style="color: green; font-size: 25px; font-weight: bolder;"}>${notice.noticeTitle}</span>
+          ${notice.claName}
+          <br/><br/>
+          ${notice.noticeContent}`;
+        } else {
+          return `${notice.claName} (${notice.userDTO.userName} 선생님) ${notice.noticeContent}`;
+        }
+      })
+    : ["게시된 공지 사항이 없습니다."];
 
   return (
     <div
@@ -64,7 +99,7 @@ const Lecture = () => {
       <div style={styles.titleContainer}>
         <Title subtitle={getMonthWeek()} title="수강 강좌" color="#ffffff" />
       </div>
-      <LectureCalendar />
+      <LectureCalendar lectures={lectures} />
       <LectureBox title="이번 주 수업" content={lectureContent} />
       <LectureBox
         title="공지 사항"
