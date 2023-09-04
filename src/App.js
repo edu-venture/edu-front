@@ -86,7 +86,7 @@ function App() {
         <Route path="/attend" element={<Attend />} />
         <Route path="/lecture" element={<Lecture />} />
         <Route path="/streaming" element={<Streaming />} />
-        <Route path="/streaming/:id" element={<Streaming />} />
+        <Route path="/streaming/:channelId" element={<Streaming />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/location" element={<Location />} />
         <Route path="/messenger/" element={<Messenger />} />
@@ -116,7 +116,7 @@ function AdminRoutes() {
       <Route path="student/update/:id" element={<StudentUpdate />} />
       <Route path="streaming" element={<StreamingBoard />} />
       <Route path="streaming/create" element={<StreamingCreate />} />
-      <Route path="streaming/create/setting" element={<StreamingSetting />} />
+      <Route path="streaming/setting" element={<StreamingSetting />} />
       <Route path="video" element={<AdminVod />} />
       <Route path="video/create" element={<AdminVodCreate />} />
       <Route path="video/update/:id" element={<AdminVodUpdate />} />
