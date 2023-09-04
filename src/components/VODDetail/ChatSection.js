@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import axios from "axios";
@@ -133,12 +133,18 @@ const ReplySubmitButton = styled.button`
   font-size: 20px;
 `;
 
-const ChatSection = ({commentsList, setCommentsList, id}) => {
+const ChatSection = ({ commentsList, setCommentsList, id }) => {
   const userName = sessionStorage.getItem("userName");
   const [inputText, setInputText] = useState(""); //댓글입력필드값 상태
   const [replyText, setReplyText] = useState(""); //대댓글 입력 상태
   const [showReplyInputFor, setShowReplyInputFor] = useState(null);
 
+  /** 엔터 키 방지 함수 */
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
 
   /* 댓글 입력필드 핸들러  */
   const inputChangeHandler = (e) => {
@@ -148,28 +154,28 @@ const ChatSection = ({commentsList, setCommentsList, id}) => {
   //대댓글 입력창 토글
   const toggleReplyInputField = (commentId) => {
     setShowReplyInputFor(showReplyInputFor === commentId ? null : commentId);
-  }
+  };
 
   const onClickAddComment = async (commentId, commentContent) => {
     try {
-      const response = await axios.post('http://localhost:8081/vod/comment', {
-        vodNo: id,
-        vodCmtParentNo: commentId || 0,
-        vodCmtContent: commentContent,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+      const response = await axios.post(
+        "http://192.168.0.216:8081/vod/comment",
+        {
+          vodNo: id,
+          vodCmtParentNo: commentId || 0,
+          vodCmtContent: commentContent,
         },
-      }
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
       );
-      console.log('요청 성공!!!');
-      console.log(response.data.item.commentList);
       setCommentsList(response.data.item.commentList);
-      setInputText('');
-      setReplyText('');
+      setInputText("");
+      setReplyText("");
       setShowReplyInputFor(null);
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -177,10 +183,7 @@ const ChatSection = ({commentsList, setCommentsList, id}) => {
   return (
     <ChatWrapper>
       <InputWrapper>
-        <InputField
-          value={inputText}
-          onChange={inputChangeHandler}
-        />
+        <InputField value={inputText} onChange={inputChangeHandler} />
         <ExpandCircleDownRoundedIcon
           style={styles.ExpandCircleDownRoundedIcon}
           onClick={() => onClickAddComment(0, inputText)}
@@ -198,7 +201,7 @@ const ChatSection = ({commentsList, setCommentsList, id}) => {
                     fontWeight: "bold",
                   }}
                 >
-                  {userName}
+                  {comment.userDTO.userName}
                 </div>
                 <p style={{ fontSize: "20px" }}>{comment.vodCmtContent}</p>
                 <ReplyButton onClick={() => toggleReplyInputField(comment.id)}>
@@ -212,6 +215,7 @@ const ChatSection = ({commentsList, setCommentsList, id}) => {
                 <ReplyInput
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
+                  onKeyPress={handleKeyPress}
                 />
                 <ReplySubmitButton
                   onClick={() => onClickAddComment(comment.id, replyText)}
@@ -221,22 +225,23 @@ const ChatSection = ({commentsList, setCommentsList, id}) => {
               </ReplyInputWrapper>
             )}
 
-            {comment.vodSonCmtList && comment.vodSonCmtList.map((reply) => (
-              <CommentContent key={reply.id} isReply>
-                <Profile isReply />
-                <Info>
-                  <div
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {userName}
-                  </div>
-                  <p style={{ fontSize: "20px" }}>{reply.vodCmtContent}</p>
-                </Info>
-              </CommentContent>
-            ))}
+            {comment.vodSonCmtList &&
+              comment.vodSonCmtList.map((reply) => (
+                <CommentContent key={reply.id} isReply>
+                  <Profile isReply />
+                  <Info>
+                    <div
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {reply.userDTO.userName}
+                    </div>
+                    <p style={{ fontSize: "20px" }}>{reply.vodCmtContent}</p>
+                  </Info>
+                </CommentContent>
+              ))}
           </CommentBox>
         ))}
       </CommentsWrapper>

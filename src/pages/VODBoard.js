@@ -2,66 +2,60 @@ import Title from "../components/Title";
 import SearchIcon from "@mui/icons-material/Search";
 import VODList from "../components/VODBoard/VODList";
 import { Button } from "@mui/material";
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import styled from "styled-components";
 
 const styles = {
+  container: {
+    width: "100vw",
+    height: "calc(100vh - 50px)",
+    overflow: "hidden",
+    backgroundColor: "#5AC467",
+    position: "relative",
+  },
   titleContainer: {
     padding: "20px 0px 20px 50px",
   },
-  selectBox: {
-    borderRadius: "10px",
-    height: "27.5px",
-    width: "100px",
+  buttonsAndSearchContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "start",
+    gap: "5px",
+  },
+  styleButton3: {
+    width: "80px",
+    height: "40px",
+    backgroundColor: "#ffffff",
     border: "none",
-    marginRight: "5px",
+    borderRadius: "30px",
+    cursor: "pointer",
+    fontSize: "15px",
   },
   searchContainer: {
     display: "flex",
-    flexDirection: "row",
-    marginLeft: "5vw",
     alignItems: "center",
-    position: "relative",
-  },
-  searchInput: {
-    borderRadius: "10px",
-    width: "400px",
-    height: "25px",
-    border: "none",
-  },
-  searchButton: {
-    width: "30px",
-    height: "30px",
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "#5AC467",
-    border: "none",
-    borderRadius: "50%",
-    padding: 0,
-    minWidth: 0,
-    marginLeft: "5px",
-  },
-  searchIcon: {
-    width: "30px",
-    color: "#5AC467",
-    fontSize: "30px",
-    boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.3)",
-    borderRadius: "50%",
-    background: "#ffffff",
-  },
-  writeButton: {
-    background: "#ffffff",
-    borderRadius: "10px",
-    position: "absolute",
-    right: "5.5vw",
-    top: "50%",
-    transform: "translateY(-50%)",
-    color: "black",
-    "&:hover": {
-      backgroundColor: "#e0e0e0",
-    },
+    marginLeft: "110px",
   },
 };
+
+const Dropdown = styled.select`
+  width: 90px;
+  height: 40px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+`;
+
+const SearchInput = styled.input`
+  width: 200px;
+  height: 40px;
+  margin: 0 5px;
+  border: none;
+  padding: 0 15px;
+  border-radius: 20px;
+`;
 
 const VODBoard = () => {
   const [searchOption, setSearchOption] = useState("전체");
@@ -73,18 +67,18 @@ const VODBoard = () => {
     const getVODList = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:8081/vod/board-list',
+          "http://192.168.0.216:8081/vod/board-list",
           {
             headers: {
-              Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
-            }
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+            },
           }
         );
         console.log(response);
-  
-        if(response.data.items) {
+
+        if (response.data.items) {
           setVODData(response.data.items);
-          setOriginalVODList(response.data.items); 
+          setOriginalVODList(response.data.items);
         }
       } catch (e) {
         console.log(e);
@@ -92,7 +86,6 @@ const VODBoard = () => {
     };
     getVODList();
   }, []);
-
 
   const handleSelectChange = (event) => {
     setSearchOption(event.target.value);
@@ -105,15 +98,14 @@ const VODBoard = () => {
   const handleSearch = () => {
     console.log("Search Option: ", searchOption);
     console.log("Search Text: ", searchText);
-    const filteredVodData = originalVODList.filter((item) => { 
+    const filteredVodData = originalVODList.filter((item) => {
       if (!item.title || !item.writer) {
         return false;
       }
 
       if (searchOption === "전체") {
         return (
-          item.title.includes(searchText) ||
-          item.writer.includes(searchText)
+          item.title.includes(searchText) || item.writer.includes(searchText)
         );
       } else if (searchOption === "강사명") {
         return item.writer.includes(searchText);
@@ -123,41 +115,28 @@ const VODBoard = () => {
       return false;
     });
 
-    setVODData(filteredVodData);  // 필터링된 결과를 VODList에 저장
+    setVODData(filteredVodData); // 필터링된 결과를 VODList에 저장
   };
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "auto",
-        overflow: "hidden",
-        backgroundColor: "#5AC467",
-        position: "relative",
-      }}
-    >
+    <div style={styles.container}>
       <div style={styles.titleContainer}>
         <Title subtitle="복습해봐요" title="지난 수업 영상" color="#ffffff" />
       </div>
       <div style={styles.searchContainer}>
-        <select
-          style={styles.selectBox}
-          value={searchOption}
-          onChange={handleSelectChange}
-        >
-          <option style={{ textAlign: "center" }}>전체</option>
-          <option style={{ textAlign: "center" }}>강사명</option>
-          <option style={{ textAlign: "center" }}>강의명</option>
-        </select>
-        <input
-          type="text"
-          style={styles.searchInput}
+        <Dropdown value={searchOption} onChange={handleSelectChange}>
+          <option value="전체">전체</option>
+          <option value="강사명">강사명</option>
+          <option value="강의명">강의명</option>
+        </Dropdown>
+        <SearchInput
+          placeholder="검색어 입력"
           value={searchText}
           onChange={handleInputChange}
         />
-        <Button sx={styles.searchButton}>
-          <SearchIcon sx={styles.searchIcon} onClick={handleSearch} />
-        </Button>
+        <button style={styles.styleButton3} onClick={handleSearch}>
+          검색
+        </button>
       </div>
       <VODList VODList={VODData} setVODList={setVODData} />
     </div>

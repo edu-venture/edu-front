@@ -3,23 +3,20 @@ import styled from "styled-components";
 
 const Container = styled.div`
   width: 90%;
-  height: 100%;
-  margin: 40px auto 0 auto;
+  height: 660px;
+  margin: 23px auto 0 auto;
   background: #ececec;
   border-radius: 20px 20px 0 0;
-  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  overflow-y: auto;
 `;
 
-
-const VODList = ({VODList}) => {
-
+const VODList = ({ VODList }) => {
   return (
     <Container>
-      {
-      VODList.map((item) => (
+      {VODList.map((item) => (
         <VODListItem
           key={item.id}
           id={item.id}
