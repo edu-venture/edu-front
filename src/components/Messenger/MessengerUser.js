@@ -32,26 +32,32 @@ const messageBoxDeco = {
   margin: "0px 30px",
 };
 
-const MessengerUser = ({ isSelected, userInfo = {}, onSelect = () => {} }) => {
+const MessengerUser = ({
+  isSelected,
+  channelInfo = {},
+  onSelect = () => {},
+}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (!userInfo || !userInfo.id) return; // userInfo나 userInfo.id가 없으면 아무것도 실행하지 않습니다.
+    if (!channelInfo || !channelInfo.id) return; // userInfo나 userInfo.id가 없으면 아무것도 실행하지 않습니다.
 
     if (isSelected) {
       onSelect(null);
       navigate("/messenger");
     } else {
-      onSelect(userInfo);
-      navigate(`/messenger/${userInfo.id}`);
+      onSelect(channelInfo);
+      navigate(`/messenger/${channelInfo.id}`);
     }
   };
+
+  console.log("너가 해결의 열쇠다.", channelInfo);
 
   return (
     <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={handleClick}>
       <Box sx={textContainer}>
         <div className="messageBoxDeco" style={messageBoxDeco} />
-        <b>{userInfo.name || ""}</b>{" "}
+        <b>{channelInfo.name || ""}</b>{" "}
         {/* userInfo.name이 없으면 빈 문자열을 출력합니다. */}
       </Box>
     </Box>
