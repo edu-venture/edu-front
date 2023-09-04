@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const Container = styled.div`
@@ -76,9 +76,32 @@ const CancelButton = styled.button`
   font-size: 1rem;
 `;
 
-const ReceiptSelectUpdateItem = ({ setTotalPrice, dataForm }) => {
-  const [postData, setPostData] = useState([{ detail: "", price: "" }]);
+const ReceiptSelectUpdateItem = ({
+  setTotalPrice,
+  dataForm,
+  userData,
+  payNo,
+}) => {
+  console.log("수정url을 위한 payNo", payNo);
+  const initialData =
+    userData?.productList?.map((item) => ({
+      detail: item?.productName,
+      price: item?.productPrice?.toString(),
+    })) || [];
 
+  const [postData, setPostData] = useState(initialData);
+
+  useEffect(() => {
+    if (userData?.productList) {
+      const updatedData = userData.productList.map((item) => ({
+        detail: item?.productName,
+        price: item?.productPrice?.toString(),
+      }));
+      setPostData(updatedData);
+    }
+  }, [userData]);
+
+  console.log("여기입니다 여기여기여기여기", userData);
   const navigate = useNavigate();
 
   const addInputField = () => {
@@ -90,7 +113,7 @@ const ReceiptSelectUpdateItem = ({ setTotalPrice, dataForm }) => {
     setPostData(newFields);
 
     const totalPrice = newFields.reduce(
-      (sum, field) => sum + (Number(field.price) || 0),
+      (sum, field) => sum + (Number(field?.price) || 0),
       0
     );
     setTotalPrice(totalPrice);
@@ -103,7 +126,7 @@ const ReceiptSelectUpdateItem = ({ setTotalPrice, dataForm }) => {
 
     if (type === "price") {
       const totalPrice = newFields.reduce(
-        (sum, field) => sum + (Number(field.price) || 0),
+        (sum, field) => sum + (Number(field?.price) || 0),
         0
       );
       setTotalPrice(totalPrice);
@@ -114,18 +137,19 @@ const ReceiptSelectUpdateItem = ({ setTotalPrice, dataForm }) => {
     ...dataForm,
     productList: JSON.stringify(
       postData.map((field) => ({
-        detail: field.detail,
-        price: Number(field.price) || 0,
+        detail: field?.detail,
+        price: Number(field?.price) || 0,
       }))
     ),
   };
 
   console.log("body다", postDataForm);
-  /** 등록하기 요청 */
-  const postAxios = async () => {
+
+  /** 수정하기로 바꾸자*/
+  const updateAxios = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.0.7:8081/payment/admin/bill",
+        `http://localhost:8081/payment/admin/bill/${payNo}`,
         postDataForm,
         {
           headers: {
@@ -133,12 +157,16 @@ const ReceiptSelectUpdateItem = ({ setTotalPrice, dataForm }) => {
           },
         }
       );
-      setPostData(response.data.productList || []);
+      setPostData(response?.data?.productList || []);
+
       if (response.status === 200) {
-        console.log(response.data);
+        console.log("이거 확인해보자 토탈값", response.data);
+      } else {
+        console.log("실패 후 데이터 확인", postDataForm);
       }
     } catch (error) {
       console.error("여기 포스트 Axios error", error);
+      console.log("실패 후 데이터 확인", postDataForm);
     }
   };
 
@@ -150,23 +178,24 @@ const ReceiptSelectUpdateItem = ({ setTotalPrice, dataForm }) => {
         <AddIcon onClick={addInputField} style={{ marginRight: "38px" }} />
       </PaymentHeadWrapper>
 
-      {postData.map((field, index) => (
-        <InputFieldWrapper key={index}>
-          <TextInputField
-            value={field.detail}
-            onChange={(e) => changeHandler(index, "detail", e.target.value)}
-          />
-          <TextInputField
-            value={field.price}
-            onChange={(e) => changeHandler(index, "price", e.target.value)}
-          />
-          <RemoveCircleOutlineIcon onClick={() => removeInputField(index)} />
-        </InputFieldWrapper>
-      ))}
+      {Array.isArray(postData) &&
+        postData.map((field, index) => (
+          <InputFieldWrapper key={index}>
+            <TextInputField
+              defaultValue={field?.detail}
+              onChange={(e) => changeHandler(index, "detail", e.target.value)}
+            />
+            <TextInputField
+              defaultValue={field?.price}
+              onChange={(e) => changeHandler(index, "price", e.target.value)}
+            />
+            <RemoveCircleOutlineIcon onClick={() => removeInputField(index)} />
+          </InputFieldWrapper>
+        ))}
 
       <ButtonWrapper>
         <CancelButton onClick={() => navigate(-1)}>취소하기</CancelButton>
-        <RegisterButton onClick={postAxios}>수정하기</RegisterButton>
+        <RegisterButton onClick={updateAxios}>수정하기</RegisterButton>
       </ButtonWrapper>
     </Container>
   );

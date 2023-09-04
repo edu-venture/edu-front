@@ -46,7 +46,7 @@ const Payment = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.0.7:8081/payment/student/bill",
+          "http://localhost:8081/payment/student/bill",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -54,7 +54,10 @@ const Payment = () => {
           }
         );
         setPaymentDataAxios(response.data);
-        console.log(response.data);
+        console.log(
+          "payment에서 받아오는 데이터 productList값.",
+          response.data.item
+        );
       } catch (error) {
         console.log(error);
       }
@@ -67,17 +70,18 @@ const Payment = () => {
     const { IMP } = window;
     IMP.init("imp31057650");
 
-    const productName = `${paymentDataAxios.item.products[0].proName} 외 ${
-      paymentDataAxios.item.products.length - 1
-    }개 상품`;
+    /** repceipt라는 테이블이 생겨서 새로 값을 받아야한다. */
+    const productName = `${
+      paymentDataAxios.item.productList[0].productName
+    } 외 ${paymentDataAxios.item.productList.length - 1}개 상품`;
 
     const paydata = {
       pg: "kcp.T0000",
       pay_method: "card",
       merchant_uid: "merchant_" + new Date().getTime(),
       name: productName,
-      amount: paymentDataAxios.item.totalPrice,
-      buyer_name: paymentDataAxios.item.payTo,
+      amount: paymentDataAxios?.item.totalPrice,
+      buyer_name: paymentDataAxios?.item.userName,
     };
     IMP.request_pay(paydata, callback);
   };
@@ -92,7 +96,7 @@ const Payment = () => {
 
       // 검증을 위한 서버 요청
       axios
-        .post(`http://192.168.0.7:8081/iamport/verifyIamport/${imp_uid}`)
+        .post(`http://localhost:8081/iamport/verifyIamport/${imp_uid}`)
         .then((response) => {
           // 서버에서 받은 응답을 검증
           console.log(response);
@@ -102,7 +106,7 @@ const Payment = () => {
             alert("결제 및 결제검증완료");
             //결제 성공 시 비즈니스 로직
             axios
-              .post(`http://192.168.0.7:8081/iamport/payOk`, {
+              .post(`http://localhost:8081/iamport/payOk`, {
                 impUid: imp_uid,
                 payNo: paymentDataAxios.item.payNo,
               })
@@ -148,9 +152,15 @@ const Payment = () => {
           {/** 여기가 상세내역이 들어오는 곳이다. */}
           <PaymentTable paymentData={paymentDataAxios} />
           <Divider sx={divider} />
-          <Button variant="contained" sx={payButton} onClick={onClickPayment}>
-            결제하기
-          </Button>
+          {paymentDataAxios?.item?.pay === true ? (
+            <Button variant="contained" sx={payButton} disabled>
+              결제하기
+            </Button>
+          ) : (
+            <Button variant="contained" sx={payButton} onClick={onClickPayment}>
+              결제하기
+            </Button>
+          )}
         </Paper>
       </Paper>
     </>

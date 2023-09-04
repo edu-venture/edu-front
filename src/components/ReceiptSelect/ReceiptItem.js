@@ -50,7 +50,7 @@ const ReceiptItem = ({
     console.log("삭제할 개별 아이디", [deletePayNo]);
     try {
       const response = await axios.post(
-        "http://192.168.0.7:8081/payment/admin/bill/delete",
+        "http://localhost:8081/payment/admin/bill/delete",
         { payNo: [deletePayNo] },
         {
           headers: {
@@ -84,7 +84,9 @@ const ReceiptItem = ({
           <Td>{element.payNo}</Td>
           <Td>{element.userName}</Td>
           <Td>{element.couNo}</Td>
-          <Td>{element.issDay}</Td>
+          <Td>
+            {element.issYear}.{element.issMonth}
+          </Td>
           <Td>{element.totalPrice}</Td>
           <Td>{element.parentTel}</Td>
           <Td>{element.payMethod || "N/A"}</Td>{" "}
