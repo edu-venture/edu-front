@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { chatData } from "../../../utils/chatData";
 import ChatContent from "./ChatContent";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
@@ -11,8 +10,7 @@ const ChatWrapper = styled.div`
   flex-direction: column;
 `;
 
-const ChatSection = ({ initialChatLog = chatData }) => {
-  const [chatLog, setChatLog] = useState(initialChatLog);
+const ChatSection = ({ chatLog, setChatLog, stompClient, lectureId }) => {
   const [inputMessage, setInputMessage] = useState("");
   const chatContentRef = useRef(null);
 
@@ -32,20 +30,22 @@ const ChatSection = ({ initialChatLog = chatData }) => {
     hour = hour % 12 || 12;
     hour = String(hour).padStart(2, "0");
 
-    setChatLog([
-      ...chatLog,
-      {
+    const chatMessage = {
         name: `${userName}`,
         message: inputMessage,
         time: `${ampm} ${hour}:${minute}`,
-      },
+    };
+
+    setChatLog([
+        ...chatLog,
+        chatMessage,
     ]);
     setInputMessage("");
-  };
 
-  useEffect(() => {
-    setChatLog(initialChatLog);
-  }, [initialChatLog]);
+    if(inputMessage && stompClient) {
+        stompClient.send(`/app/sendMsg/${lectureId}`, {}, JSON.stringify(chatMessage));
+    }
+  };
 
   useEffect(() => {
     if (chatContentRef.current) {

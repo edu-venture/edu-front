@@ -1,10 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { async } from "q";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ChannelContext } from "../../context/context";
 
 const Container = styled.div`
   width: 90%;
-  height: 660px;
+  height: 100%;
   margin: 63px auto 0 auto;
   padding: 25px 45px;
   background: #ececec;
@@ -37,6 +40,7 @@ const TitleText = styled.p`
   color: #fff;
 `;
 
+
 const InputField = styled.input`
   width: 1500px;
   height: 50px;
@@ -66,31 +70,111 @@ const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-const StreamingCreateItem = () => {
+const StreamingCreateItem = ({classList}) => {
+  const navigate = useNavigate();
+  const [lectureTitle, setLectureTitle] = useState(""); //강의명 상태관리
+  const [couNo, setCouNo] = useState(""); //선택된 couNo 상태 관리 
+  const { channelInfo, setChannelInfo} = useContext(ChannelContext);
+
+
+  const onClickCancel = () => {
+    navigate(-1);
+  }
+  
+  const onChangeCouNo = (e) => {
+    setCouNo(e.target.value);
+  }
+
+  const onChangeLectureTitle = (e) => {
+    setLectureTitle(e.target.value);
+  }
+
+  const isLectureTitleValid = (title) => {
+    const regex = /^[가-힣a-zA-Z0-9-]{3,20}$/;
+    return regex.test(title);
+  };
+  
+
+  useEffect(() => {
+    if (classList.length > 0) {
+      setCouNo(classList[0].couNo);
+    }
+  }, [classList]);
+
+  console.log(`반 번호: ${couNo}`);
+
+  const createChannel = async () => {
+    if (!isLectureTitleValid(lectureTitle)) {
+      alert('강의명은 3~20자의 한글, 영문, 숫자, 또는 "-" 로 이루어져야 합니다.');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8081/lecture/lecture', 
+      {
+        title: lectureTitle,
+        couNo: couNo,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+        }
+      });
+      console.log(response.data.item);
+      setChannelInfo(response.data.item);
+      sessionStorage.setItem('channelInfo', JSON.stringify(response.data.item));
+      navigate('/admin/streaming/setting');
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+  const deleteChannel = async () => {
+    const channelInfoFromSession = JSON.parse(sessionStorage.getItem('channelInfo'));
+    const channelId = channelInfoFromSession.channelId;
+    try {
+      const response = await axios.delete(`http://localhost:8081/lecture/lecture/${channelId}`, 
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+        }
+      });
+      console.log(response.data.item);
+      sessionStorage.removeItem('channelInfo'); 
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
   return (
-    <div>
       <Container>
         <h1>
           실시간 강의 <span style={{ fontWeight: "lighter" }}>생성</span>
         </h1>
         <InputBox>
-          <TitleText>반 (강사명)</TitleText>
-          <InputField placeholder="반을 선택하세요" />
+          <TitleText>반</TitleText>
+          <select value={couNo} onChange={onChangeCouNo}>
+            {
+              classList.map((classItem, index) => (
+                <option key={index} value={classItem.couNo}>{classItem.claName}</option>
+              ))
+            }
+          </select>
         </InputBox>
         <InputBox>
           <TitleText>강의명</TitleText>
-          <InputField placeholder="강의명을 입력하세요" />
+          <InputField 
+            placeholder="3~20자까지의 강의명을 입력해주세요(공백안됨)" 
+            value={lectureTitle} 
+            onChange={onChangeLectureTitle}
+          />
         </InputBox>
         <ButtonContainer>
-          <Link to="/admin/streaming">
-            <StyledButton>취소하기</StyledButton>
-          </Link>
-          <Link to="/admin/streaming/create/setting">
-            <StyledButton>생성하기</StyledButton>
-          </Link>
+          <StyledButton onClick={onClickCancel}>취소하기</StyledButton>
+          <StyledButton onClick={createChannel}>채널생성</StyledButton>
+          <StyledButton onClick={deleteChannel}>채널삭제</StyledButton>
         </ButtonContainer>
       </Container>
-    </div>
   );
 };
 

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useRef} from "react";
 import styled from "styled-components";
 import EmojiSection from "./EmojiSection";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import { useNavigate } from "react-router-dom";
+import Hls from "hls.js";
+import axios from "axios";
 
 const VideoEmojiWrapper = styled.div`
   width: 75%;
@@ -16,6 +18,11 @@ const VideoContainer = styled.div`
   background: #323232;
 `;
 
+const VideoPlayer = styled.video`
+  width: 100%;
+  height: 100%;
+`
+
 const EmojiContainer = styled.div`
   width: 100%;
   height: 25%;
@@ -24,29 +31,95 @@ const EmojiContainer = styled.div`
   justify-content: space-around;
 `;
 
-const VideoSection = ({ addEmojiMessage }) => {
+const StyledButton = styled.button`
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #fff;
+  background: red;
+  border-radius: 10px; 
+`;
+
+const VideoSection = ({ addEmojiMessage, streamingUrl, userType }) => {
   const 응원하기 = ["🍊", "🍎", "🥝", "🍈"];
   const 반응하기 = ["🎉", "😂", "👍🏻", "✋🏻"];
-
+  
+  const videoRef = useRef(null);
   const navigate = useNavigate();
+
+  console.log(`streamingUrl 배열 ${JSON.stringify(streamingUrl)}`);
+
+  useEffect(() => {
+    if (streamingUrl && streamingUrl.length > 0) {
+      const video = videoRef.current;
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(streamingUrl[0].url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play();
+        });
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = streamingUrl[0].url;
+        video.addEventListener("loadedmetadata", function () {
+          video.play();
+        });
+      }
+    }
+  }, [streamingUrl]);
+  
 
   const handleEmojiClick = (emoji, type) => {
     addEmojiMessage(emoji, type);
   };
 
+  const deleteChannel = async () => {
+    const channelInfoFromSession = JSON.parse(sessionStorage.getItem('channelInfo'));
+    const channelId = channelInfoFromSession.channelId;
+    try {
+      const response = await axios.delete(`http://localhost:8081/lecture/lecture/${channelId}`, 
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+        }
+      });
+      console.log(response.data.item);
+      sessionStorage.removeItem('channelInfo'); 
+      alert('방송이 정상적으로 종료되었습니다.');
+      navigate('/admin/streaming');
+    } catch(error) {
+      console.log(error);
+      alert('OBS인코더에서 방송 중지를 먼저 해주세요.')
+    }
+  }
+
   return (
     <VideoEmojiWrapper>
       <VideoContainer>
-        <ExpandCircleDownRoundedIcon
-          onClick={() => navigate(-1)}
-          sx={{
-            margin: "10px 0 0 10px",
-            fontSize: "50px",
-            color: "#ffffff",
-            cursor: "pointer",
-            transform: "rotate(90deg)",
-          }}
-        />
+        {userType === 'teacher' ? (
+            <StyledButton onClick={deleteChannel}>방송종료</StyledButton>
+          ) : (
+            <ExpandCircleDownRoundedIcon
+              onClick={() => navigate(-1)}
+              sx={{
+                margin: "10px 0 0 10px",
+                fontSize: "50px",
+                color: "#ffffff",
+                cursor: "pointer",
+                transform: "rotate(90deg)",
+              }}
+            />
+        )}
+        {streamingUrl && streamingUrl.length > 0 ? (
+          <VideoPlayer controls ref={videoRef} muted>
+            <source src={streamingUrl[0].url} type="application/x-mpegURL" />
+          </VideoPlayer>
+        ) : (
+          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#FFFFFF', fontSize: '1.5rem'}}>
+            <div>비디오를 불러오는 중...</div>
+          </div>
+        )}
       </VideoContainer>
       <EmojiContainer>
         <EmojiSection
