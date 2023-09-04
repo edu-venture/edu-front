@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
 import StreamingCreateItem from "../components/StreamingCreate/StreamingCreateItem";
 import Title from "../components/Title";
-import styled from "styled-components";
+import axios from "axios";
 
 const styles = {
   titleContainer: {
@@ -18,13 +19,37 @@ const styles = {
   },
 };
 
-const StreamingBoard = () => {
+const StreamingCreate = () => {
+  const [classList, setClassList] = useState([]);
+  const id = sessionStorage.getItem('id');
+
+  useEffect(() => {
+    const fetchClassList = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8081/course/course/${id}`, 
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`          
+          }
+        });
+        console.log(response.data.items);
+        setClassList(response.data.items);
+      }catch(error) {
+        console.log(error);
+      }
+    };
+
+    fetchClassList();
+  }, []);
+
+
   return (
     <div
       style={{
         width: "100vw",
-        height: "calc(100vh - 50px)",
-        overflow: "hidden",
+        // height: "calc(100vh - 50px)",
+        height: '100%',
+        // overflow: "",
         backgroundColor: "#5AC467",
         position: "relative",
       }}
@@ -36,9 +61,9 @@ const StreamingBoard = () => {
           color="#ffffff"
         />
       </div>
-      <StreamingCreateItem />
+      <StreamingCreateItem classList={classList} />
     </div>
   );
 };
 
-export default StreamingBoard;
+export default StreamingCreate;

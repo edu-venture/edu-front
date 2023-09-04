@@ -1,7 +1,7 @@
-import StreamingCreateItem from "../components/StreamingCreate/StreamingCreateItem";
+import React, { useContext } from "react";
 import StreamingSettingItem from "../components/StreamingCreate/StreamingSettingItem";
 import Title from "../components/Title";
-import styled from "styled-components";
+import { ChannelContext } from "../context/context";
 
 const styles = {
   titleContainer: {
@@ -19,7 +19,11 @@ const styles = {
   },
 };
 
-const StreamingBoard = () => {
+const StreamingSetting = () => {
+  const { channelInfo, setChannelInfo} = useContext(ChannelContext);
+  // const channelInfomation = JSON.parse(sessionStorage.getItem('channelInfo'));
+  console.log(`setting컴포넌트 채널정보 ${JSON.stringify(channelInfo)}`);
+
   return (
     <div
       style={{
@@ -37,9 +41,9 @@ const StreamingBoard = () => {
           color="#ffffff"
         />
       </div>
-      <StreamingSettingItem />
+      {channelInfo.channelId ? <StreamingSettingItem channelInfo={channelInfo} setChannelInfo={setChannelInfo}/> : null}
     </div>
   );
 };
 
-export default StreamingBoard;
+export default StreamingSetting;

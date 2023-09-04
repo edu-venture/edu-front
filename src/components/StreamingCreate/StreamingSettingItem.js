@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import StreamingSettingContent from "./StreamingSettingContent";
+import axios from "axios";
 
 const Container = styled.div`
   width: 90%;
@@ -38,7 +39,7 @@ const TitleText = styled.p`
   color: #fff;
 `;
 
-const InputField = styled.input`
+const LiveInfo = styled.p`
   width: 1500px;
   height: 50px;
   border-radius: 30px;
@@ -77,7 +78,47 @@ const TextBox = styled.div`
   justify-content: center;
 `;
 
-const StreamingSettingItem = () => {
+const StreamingSettingItem = ({channelInfo, setChannelInfo}) => {
+  const channelId = channelInfo.channelId;
+  const [liveInfo, setLiveInfo] = useState({}); //라이브방송 채널 정보
+  const [isCreating, setIsCreating] = useState(false); //채널 생성 여부
+
+  console.log(`settingItem컴포넌트 채널ID ${channelId}`);
+
+  const getLiveInfo = async () => {
+    const savedChannelInfo = JSON.parse(sessionStorage.getItem('channelInfo'));
+    if (savedChannelInfo) {
+      setChannelInfo(savedChannelInfo);
+    }
+
+    try {
+      console.log(`getLiveInfo함수 channelID ${channelId}`);
+      const response = await axios.get(
+        `http://localhost:8081/lecture/lecture/${channelId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+          }
+        }
+      );
+      console.log(response.data.item);
+      setLiveInfo(response.data.item);
+      console.log(`생성 여부 확인  liveInfo 상태값: ${JSON.stringify(liveInfo)}`);
+      setIsCreating(
+        response.data.item.cdnStatus === 'creating' || 
+        response.data.item.cdnStatus === undefined || 
+        response.data.item.cdnStatus === null
+      );
+      
+    } catch(error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getLiveInfo();
+  }, []);
+
   return (
     <div>
       <Container>
@@ -86,22 +127,25 @@ const StreamingSettingItem = () => {
         </h1>
         <InputBox>
           <TitleText>강의 생성</TitleText>
-          <InputField placeholder="강의가 생성 중입니다" readOnly={true} />
+          <LiveInfo>
+            {isCreating ? '강의가 생성 중입니다.' : '강의 생성 완료'}
+          </LiveInfo>
         </InputBox>
         <InputBox>
           <TitleText>스트림 URL</TitleText>
-          <InputField placeholder="스트림 URL 생성 중입니다" readOnly={true} />
+          <LiveInfo placeholder="스트림 URL 생성 중입니다" >{channelInfo.publishUrl}</LiveInfo>
         </InputBox>
         <InputBox>
           <TitleText>스트림 키</TitleText>
-          <InputField placeholder="스트림 키 생성 중입니다" readOnly={true} />
+          <LiveInfo placeholder="스트림 키 생성 중입니다" >{channelInfo.streamKey}</LiveInfo>
         </InputBox>
+        <StyledButton onClick={getLiveInfo}>강의 생성여부 확인</StyledButton>
         <TextBox>
           <p>
-            <b>스트림 URL과 스트림 키</b>가 활성화될 때까지 기다려주세요.
+            <b>강의</b>가 활성화될 때까지 기다려주세요.
           </p>
           <p>
-            스트림 URL과 스트림 키가 활성화되었다면 아래의 단계에 따라{" "}
+            강의가 생성 완료 되었다면 아래의 단계에 따라{" "}
             <b>OBS 인코더를 설정</b>합니다.
           </p>
         </TextBox>
@@ -111,7 +155,7 @@ const StreamingSettingItem = () => {
         <StreamingSettingContent />
         <ButtonContainer>
           <Link to="/streaming/:id">
-            <StyledButton>방송 시작 확인하기</StyledButton>
+            <StyledButton disabled={isCreating}>LIVE ON</StyledButton>
           </Link>
         </ButtonContainer>
       </Container>
