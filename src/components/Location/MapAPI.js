@@ -217,12 +217,7 @@ function MapAPI({ location }) {
     }
   }, [gps, map, marker]);
 
-  return (
-    <div
-      ref={mapRef}
-      style={{ width: "60vw", height: "60vh", border: "1px solid black" }}
-    />
-  );
+  return <div ref={mapRef} style={{ width: "1000px", height: "620px" }} />;
 }
 
 export default MapAPI;
