@@ -1,31 +1,85 @@
 import React from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
 import axios from "axios";
+
 const ListItem = styled.div`
   width: 100%;
-  height: 220px;
+  height: 200px;
   display: flex;
   align-items: center;
   background: #ffffff;
   margin: 20px auto;
   display: flex;
+  position: relative;
 `;
 
 const VideoFrame = styled.div`
-  width: 300px;
-  height: 180px;
-  margin: 0 50px 0 20px;
-  background-color: #323232;
+  width: 350px;
+  height: 150px;
+  margin: auto 30px;
   cursor: pointer;
-  border: 2px solid black;
+  display: flex;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  outline: 1px dotted #ececec;
+
+  img.blurred {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(7px);
+    z-index: 0;
+  }
+
+  img.original {
+    height: 100%;
+    margin: 0 auto;
+    z-index: 1;
+  }
 `;
 
-const TitleAndButtons = styled.div`
+const VideoDetailLink = styled(Link)`
+  font-size: 22px;
+`;
+
+const InfoContainer = styled.div`
+  width: 100%;
+`;
+
+const TeacherInfo = styled.div`
+  margin-top: 30px;
+  font-size: 18px;
+`;
+
+const ViewsAndDate = styled.div`
+  margin-top: 25px;
+  color: #323232;
+  font-size: 15px;
+`;
+
+// 수정 및 삭제 버튼의 스타일
+const ActionButtons = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: center; // 세로 중앙 정렬을 통해 글 제목과 버튼들이 동일한 선상에 있게 합니다.
+  gap: 5px;
+
+  button {
+    width: 75px;
+    height: 40px;
+    background-color: #ececec;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 15px;
+  }
 `;
 
 const AdminVodListItem = ({
@@ -45,15 +99,18 @@ const AdminVodListItem = ({
 
   const goToUpdate = () => {
     navigate(`/admin/video/update/${id}`);
-  }
+  };
 
   const onDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8081/vod/board/${id}`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
+      const response = await axios.delete(
+        `http://192.168.0.216:8081/vod/board/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
         }
-      });
+      );
       console.log("동영상 삭제 완료");
       console.log(response.data);
       handleDeleteView(id);
@@ -65,42 +122,28 @@ const AdminVodListItem = ({
   return (
     <ListItem>
       <VideoFrame onClick={goToDetail}>
-        <img src={thumbnail} alt="Video Thumbnail" style={{width: '100%', height: '100%'}}/>
+        <img className="original" src={thumbnail} alt="Video Thumbnail" />
+        <img
+          className="blurred"
+          src={thumbnail}
+          alt="Blurred Video Thumbnail"
+        />
       </VideoFrame>
-      <div style={{width: '100%'}}>
-        <TitleAndButtons>
-          {" "}
-          <Link to={`/video/detail/${id}`}>
-            <div style={{ fontSize: "25px" }}>{lectureName}</div>
-          </Link>
-        </TitleAndButtons>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <div>
-            <div style={{ marginTop: "40px", fontSize: "20px" }}>
-              {teacherName} 선생님
-            </div>
-            <div style={{ marginTop: "25px", color: "#323232" }}>
-              조회수 {viewCount}회 | {uploadDate.slice(0, 10)}
-            </div>
-          </div>
-          <div style={{marginTop: '100px'}}>
-            <Button
-                size="small"
-                onClick={goToUpdate} // TODO: 여기에 수정 함수를 추가합니다.
-                style={{ marginLeft: "10px" }}
-              >
-                수정
-              </Button>
-              <Button
-                size="small"
-                onClick={() => onDelete(id)} // TODO: 여기에 삭제 함수를 추가합니다.
-                style={{ marginLeft: "5px" }}
-              >
-                삭제
-              </Button>
-            </div>
-          </div>
-      </div>
+      <InfoContainer>
+        <VideoDetailLink to={`/video/detail/${id}`}>
+          {lectureName}
+        </VideoDetailLink>
+        <div>
+          <TeacherInfo>{teacherName} 선생님</TeacherInfo>
+          <ViewsAndDate>
+            조회수 {viewCount}회 | {uploadDate.slice(0, 10)}
+          </ViewsAndDate>
+        </div>
+        <ActionButtons>
+          <button onClick={goToUpdate}>수정</button>
+          <button onClick={() => onDelete(id)}>삭제</button>
+        </ActionButtons>
+      </InfoContainer>
     </ListItem>
   );
 };
