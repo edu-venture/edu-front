@@ -1,5 +1,5 @@
 // import { ncloudchat } from "ncloudchat";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 const ncloudchat = require("ncloudchat");
 
@@ -11,13 +11,13 @@ const MessagesWrapper = styled.div`
 const MessageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: ${(props) => (props.userType ? "flex-end" : "flex-start")};
+  align-items: ${(props) => (props.userId ? "flex-end" : "flex-start")};
   margin: 10px 30px 25px;
 `;
 
-const MessageText = styled.p`
-  background-color: ${(props) => (props.userType ? "#e4e4e4" : "#5ac467")};
-  color: ${(props) => (props.userType ? "#323232" : "#ffffff")};
+const MessageText = styled.div`
+  background-color: ${(props) => (props.userId ? "#e4e4e4" : "#5ac467")};
+  color: ${(props) => (props.userId ? "#323232" : "#ffffff")};
   border-radius: 20px;
   padding: 15px 20px;
   max-width: 60%;
@@ -69,85 +69,78 @@ const SendButton = styled.button`
   margin-left: 15px;
 `;
 
-// const formatTime = () => {
-//   const time = new Date();
-//   let hour = time.getHours();
-//   const minute = String(time.getMinutes()).padStart(2, "0");
-//   const ampm = hour >= 12 ? "오후" : "오전";
-//   hour = hour % 12 || 12;
-//   hour = String(hour).padStart(2, "0");
-
-//   return `${ampm} ${hour}:${minute}`;
-// };
-
-const MessengerChat = ({ chats, selectedUser }) => {
+const MessengerChat = ({ chats, selectedUser, user, channel_id }) => {
   const [inputText, setInputText] = useState("");
   const [messages, setMessages] = useState(chats);
-  const sortedMessages = messages.sort(
-    (a, b) => new Date(a.sended_at) - new Date(b.sended_at)
-  );
-  console.log("chat에 관한 data", chats);
+  const [nc, setNc] = useState(null); // nc를 상태로 관리
+
+  const messagesEndRef = useRef(null);
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   useEffect(() => {
     setMessages(chats);
   }, [chats]);
 
-  console.log("이건 chat", chats);
-  console.log("이건 selectedUser", selectedUser);
-  // const handleMessageSubmit = (e) => {
-  //   e.preventDefault();
+  const sortedMessages = messages.sort(
+    (a, b) => new Date(a.sended_at) - new Date(b.sended_at)
+  );
+  console.log("chat에 관한 data", chats);
+  console.log("user:", user);
+  console.log("chat:", chats);
+  console.log("selectedUser:", selectedUser);
+  console.log("userid:", user.id);
+  console.log("project_id", user.project_id);
+  console.log("channel_id:", channel_id);
 
-  //   const userMessage = {
-  //     userType: "이완재",
-  //     message: inputText,
-  //     sended_at: formatTime(),
-  //   };
-  //   setMessages([...messages, userMessage]);
-  //   setInputText("");
-  // };
+  useEffect(() => {
+    if (!nc) {
+      const chatInstance = new ncloudchat.Chat();
+      chatInstance.initialize(user.project_id);
+      setNc(chatInstance);
+    }
+
+    const connectAndSubscribe = async () => {
+      if (!nc) return;
+      try {
+        await nc.connect({
+          id: user.id,
+          name: user.name,
+        });
+        console.log(`아이디 접속 성공:${user.id}${user.name}`);
+        await nc.subscribe(channel_id);
+        console.log("채널아이디 구독성공:", channel_id);
+      } catch (error) {
+        console.error("접속 또는 구독 중 오류 발생:", error.message);
+      }
+    };
+
+    connectAndSubscribe();
+  }, [nc, user.id, user.name, channel_id]);
 
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
-    // nCloud 채팅 서비스 초기화
-    const nc = new ncloudchat.Chat();
-    nc.initialize("ea3a8bf5-e78c-4f9b-830d-e66bf1d4040b"); // 프로젝트 id로 초기화
-    // nCloud 채팅 서버에 연결
-    await nc.connect({
-      id: "522244b0-9bfb-4507-a310-270d89f11c1a",
-      name: "Admin",
-    });
 
-    // 특정 채널을 구독(채팅방에 참여)     /** */
-    await nc.subscribe("a0b43d8f-ea0a-49de-aa51-489cc558a3f4");
-    // 메시지 전송
-    await nc.sendMessage("a0b43d8f-ea0a-49de-aa51-489cc558a3f4", {
-      // 채널 id에 보내기
-      type: "text",
-      message: inputText,
-    });
+    if (!nc) {
+      console.error("nc가 초기화되지 않았습니다.");
+      return;
+    }
 
-    // 입력 상자 초기화
-    setInputText("");
-    //이게 원래코드
-    // const userMessage = {
-    //   userType: "user",
-    //   message: inputText,
-    //   sended_at: formatTime(),
-    // };
-    // setMessages([...messages, userMessage]);
-
-    // // 선택된 사용자에게 메시지 보내기
-
-    // console.log("내가 선택한 사용자의 id", messages.channel_id);
-    // // const USER_ID = "0cf0f5fa-78f2-4bcd-b510-2566f71c0c1f"; // 내 ID (이완재)
-    // await ncloudchat?.sendMessage(messages.channel_id, {
-    //   type: "text",
-    //   // mentions: [USER_ID],
-    //   message: messages,
-    // });
-
-    // setInputText("");
+    try {
+      await nc.sendMessage(channel_id, {
+        type: "text",
+        message: inputText,
+      });
+      setInputText("");
+    } catch (error) {
+      console.error("메시지 보내는거 실패했다.", error.message);
+    }
   };
 
+  console.log("입력한 메시지 값:", inputText);
   const formatSendedAt = (sendedAt) => {
     const date = new Date(sendedAt);
     let hour = date.getHours();
@@ -158,19 +151,19 @@ const MessengerChat = ({ chats, selectedUser }) => {
     return `${ampm} ${hour}:${minute}`;
   };
   console.log("이건 srotedMessages", sortedMessages);
+
   return (
     <div>
       <MessagesWrapper>
         {sortedMessages.map((message, index) => (
-          <MessageContainer
-            key={index}
-            userType={message.sender?.name === "Admin"}
-          >
-            <MessageText userType={message.sender?.name === "Admin"}>
+          <MessageContainer key={index} userId={message.sender.id === user.id}>
+            <MessageText userId={message.sender.id === user.id}>
               <div style={{ fontSize: "15px", fontWeight: "bolder" }}>
-                {message.sender?.name}
+                {message?.sender?.name}
               </div>
-              <div style={{ fontSize: "16px" }}>{message.content}</div>
+              <div ref={messagesEndRef} style={{ fontSize: "16px" }}>
+                {message?.content}
+              </div>
             </MessageText>
             <TimeStamp>{formatSendedAt(message?.sended_at)}</TimeStamp>
           </MessageContainer>
