@@ -1,7 +1,14 @@
 import styled from "styled-components";
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  width: 97%;
+`;
+
 const StyledTitle = styled.div`
-  width: ${({ customWidth }) => customWidth || "124px"};
+  width: 7%;
   height: ${({ customHeight }) => customHeight || "45px"};
   background-color: #7f7f7f;
   color: #ffffff;
@@ -9,20 +16,28 @@ const StyledTitle = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  margin-left: 30px;
-  margin-top: 20px;
 `;
 
 const StyledInput = styled.input`
-  margin-left: 30px;
-  margin-top: 20px;
-  width: ${({ inputWidth }) => inputWidth || "83%"};
-  height: ${({ inputHeight }) => inputHeight || "45px"};
+  margin-left: 20px;
+  width: 93%;
+  height: 45px;
   border-radius: 20px;
   border: none;
   font-size: 15px;
   white-space: pre-line;
-  text-align: center;
+  padding: 20px;
+`;
+
+const StyledTextArea = styled.textarea`
+  margin-left: 20px;
+  width: 93%;
+  height: 220px;
+  border-radius: 20px;
+  border: none;
+  font-size: 15px;
+  padding: 20px;
+  resize: none;
 `;
 
 const AdminVodCreateListItem = ({
@@ -34,21 +49,32 @@ const AdminVodCreateListItem = ({
   placeholder,
   value,
   onChange,
+  multiline = false,
 }) => {
   return (
-    <>
+    <Container>
       <StyledTitle customWidth={customWidth} customHeight={customHeight}>
         {contentName}
       </StyledTitle>
-      <StyledInput
-        inputWidth={inputWidth}
-        inputHeight={inputHeight}
-        type="text"
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </>
+      {multiline ? (
+        <StyledTextArea
+          inputWidth={inputWidth}
+          inputHeight={inputHeight}
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      ) : (
+        <StyledInput
+          inputWidth={inputWidth}
+          inputHeight={inputHeight}
+          type="text"
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      )}
+    </Container>
   );
 };
 
