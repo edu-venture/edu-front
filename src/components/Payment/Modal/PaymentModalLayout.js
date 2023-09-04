@@ -10,11 +10,14 @@ import axios from "axios";
 import PaymentRow from "./PaymentRow";
 
 const PaymentModalLayout = () => {
-  const [modalData, setModalData] = useState(null);
-
+  const [modalData, setModalData] = useState({});
   useEffect(() => {
     axios
-      .get(process.env.PUBLIC_URL + "/paymentModal.json")
+      .get(`http://192.168.0.7:8081/payment/student/bill-list`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+        },
+      })
       .then((response) => {
         setModalData(response.data);
       })
@@ -23,7 +26,7 @@ const PaymentModalLayout = () => {
       });
   }, []);
 
-  if (!modalData) return null;
+  console.log("여긴modalData", modalData);
 
   return (
     <TableContainer component={Paper}>
@@ -37,7 +40,8 @@ const PaymentModalLayout = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <PaymentRow key={modalData.name} element={modalData} />
+          {/** 모달 영수증의 완전 세부 내용 */}
+          <PaymentRow receipt={modalData} />
         </TableBody>
       </Table>
     </TableContainer>

@@ -9,9 +9,17 @@ const styles = {
   },
 };
 
-const MainLecture = () => {
+const getMonthWeek = () => {
+  const time = new Date();
+  const month = time.getMonth() + 1;
+  const today = time.getDate();
+  const firstDay = new Date(time.setDate(1)).getDay();
+  const week = Math.ceil((today + firstDay) / 7);
+  return `${month}월 ${week}주차`;
+};
+
+const MainLecture = ({ lectures, noticeContent }) => {
   const noticeTitle = "공지 사항";
-  const noticeContent = ["게시된 공지 사항이 없습니다."];
 
   return (
     <div
@@ -36,9 +44,13 @@ const MainLecture = () => {
       >
         <div>
           <div style={styles.titleContainer}>
-            <Title subtitle="7월 4주차" title="수강 강좌" color="#ffffff" />
+            <Title
+              subtitle={getMonthWeek()}
+              title="수강 강좌"
+              color="#ffffff"
+            />
           </div>
-          <LectureCalendar />
+          <LectureCalendar lectures={lectures} />
         </div>
         <LectureBox
           title={noticeTitle}

@@ -18,7 +18,7 @@ const DayBoxContainer = styled.div`
 `;
 
 const DateText = styled.p`
-  font-size: 15px;
+  font-size: 18px;
   text-align: left;
   color: #171a2b;
   padding: 15px;
@@ -29,11 +29,11 @@ const EventContainer = styled.div`
   background-color: #ffe600;
   border-radius: 30px;
   padding: 5px;
-  margin-top: 10px;
+  margin: 10px 0;
 `;
 
 const EventText = styled.p`
-  font-size: 15px;
+  font-size: 18px;
   margin: 10px;
   text-align: left;
   color: #171a2b;
@@ -46,11 +46,12 @@ const LectureDayBox = ({ date, day, event }) => {
         <DateText>
           {date}({day})
         </DateText>
-        {event && (
-          <EventContainer>
-            <EventText>{event}</EventText>
-          </EventContainer>
-        )}
+        {event &&
+          event.map((e, index) => (
+            <EventContainer key={index}>
+              <EventText>{e}</EventText>
+            </EventContainer>
+          ))}
       </DayBoxContainer>
     </DayBoxWrapper>
   );

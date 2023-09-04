@@ -1,12 +1,11 @@
 import React from "react";
 import LectureDayBox from "./LectureDayBox";
-import { weekData } from "../../utils/weekData";
 import styled from "styled-components";
 
 const CalendarContainer = styled.div`
   width: 80%;
-  height: 200px;
-  margin: 0 auto;
+  height: 220px;
+  margin: 20px auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,17 +13,46 @@ const CalendarContainer = styled.div`
   border-radius: 30px;
 `;
 
-const LectureCalendar = () => {
+const getWeekDates = () => {
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  const current = new Date();
+  const sundayTime = current.getTime() - 86400000 * current.getDay();
+  const sunday = new Date(sundayTime);
+
+  const week = [{ date: sunday.getDate(), day: days[sunday.getDay()] }];
+
+  for (let i = 1; i < 7; i++) {
+    sunday.setDate(sunday.getDate() + 1);
+    week.push({
+      date: sunday.getDate(),
+      day: days[sunday.getDay()],
+    });
+  }
+  return week;
+};
+
+const LectureCalendar = ({ lectures = [] }) => {
+  const weekDates = getWeekDates();
+
+  const getEventForDay = (day) => {
+    const lecturesForDay = lectures.filter(
+      (lecture) => lecture.timeWeek === day
+    );
+    return lecturesForDay.map((lecture) => lecture.timeTitle);
+  };
+
   return (
     <CalendarContainer>
-      {weekData.map((day, index) => (
-        <LectureDayBox
-          key={index}
-          date={day.date}
-          day={day.day}
-          event={day.event}
-        />
-      ))}
+      {weekDates.map((dayInfo, index) => {
+        return (
+          <LectureDayBox
+            key={index}
+            date={dayInfo.date}
+            day={dayInfo.day}
+            event={getEventForDay(dayInfo.day)}
+          />
+        );
+      })}
     </CalendarContainer>
   );
 };

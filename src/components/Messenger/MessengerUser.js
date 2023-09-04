@@ -1,15 +1,15 @@
 import { Box } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const messageBox = {
-  position: "relative",
-  backgroundColor: "#f2f2f2",
   width: "100%",
-  height: "12vh",
+  height: "10vh",
   display: "flex",
   alignItems: "center",
+  backgroundColor: "#f2f2f2",
   padding: "0px",
+  cursor: "pointer",
 };
 
 const clickedMessageBox = {
@@ -17,37 +17,48 @@ const clickedMessageBox = {
   backgroundColor: "#ffffff",
 };
 
+const textContainer = {
+  flex: 1,
+  display: "flex",
+  justifyContent: "left",
+  alignItems: "center",
+};
+
 const messageBoxDeco = {
-  position: "absolute",
-  left: "50px",
   backgroundColor: "#5ac467",
   borderRadius: "50%",
   width: "50px",
   height: "50px",
+  margin: "0px 30px",
 };
 
-const textContainer = {
-  flex: 1,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
+const MessengerUser = ({
+  isSelected,
+  channelInfo = {},
+  onSelect = () => {},
+}) => {
+  const navigate = useNavigate();
 
-const MessengerUser = ({ isSelected, onSelect, user, id }) => {
+  const handleClick = () => {
+    if (!channelInfo || !channelInfo.id) return; // userInfo나 userInfo.id가 없으면 아무것도 실행하지 않습니다.
+
+    if (isSelected) {
+      onSelect(null);
+      navigate("/messenger");
+    } else {
+      onSelect(channelInfo);
+      navigate(`/messenger/${channelInfo.id}`);
+    }
+  };
+
+  console.log("너가 해결의 열쇠다.", channelInfo);
+
   return (
-    <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={onSelect}>
-      <div className="messageBoxDeco" style={messageBoxDeco} />
+    <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={handleClick}>
       <Box sx={textContainer}>
-        <Link to={`/messenger/${id}`}>
-          <h3
-            style={{
-              color: "black",
-              margin: 0,
-            }}
-          >
-            {user}
-          </h3>
-        </Link>
+        <div className="messageBoxDeco" style={messageBoxDeco} />
+        <b>{channelInfo.name || ""}</b>{" "}
+        {/* userInfo.name이 없으면 빈 문자열을 출력합니다. */}
       </Box>
     </Box>
   );

@@ -21,8 +21,8 @@ const styles = (color, width) => ({
   },
 });
 
-const Title = ({ subtitle, title, color = "171a2b", width = 500 }) => {
-  const style = styles(color);
+const Title = ({ subtitle, title, color = "#171a2b", width = 500 }) => {
+  const style = styles(color, width);
 
   return (
     <p style={style.container}>
