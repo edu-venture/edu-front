@@ -31,8 +31,10 @@ const TotalPrice = styled.p`
 `;
 
 const ReceiptSelectUpdate = () => {
-  const [totalPrice, setTotalPrice] = useState(0);
+  // const [totalPrice, setTotalPrice] = useState(0);
+  /** 얘는 payNo에 따른 유저의 값을 기본값으로 표출하기 위해 받아오는 것  */
   const [userData, setUserData] = useState([]);
+  /** 얘는 payNo에 따른 유저의 값을 기존의 값과 다른 선택지를 제공하기 위해 제공 */
   const [allUserData, setAllUserData] = useState([]);
 
   const { payNo } = useParams();
@@ -41,7 +43,7 @@ const ReceiptSelectUpdate = () => {
   const allUserDataAxios = async () => {
     try {
       const resG = await axios.get(
-        "http://192.168.0.7:8081/payment/admin/bill-list",
+        "http://localhost:8081/payment/admin/bill-list",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -59,11 +61,11 @@ const ReceiptSelectUpdate = () => {
     allUserDataAxios();
   }, []);
 
-  /** payNo에 해당하는 유저 값 받아오기.  */
+  /** payNo에 해당하는 유저 값 받아오기. 여기에 토탈값도 같이 온다  */
   const getUserInfo = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.7:8081/payment/admin/${payNo}`,
+        `http://localhost:8081/payment/admin/${payNo}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -90,13 +92,18 @@ const ReceiptSelectUpdate = () => {
       <ReceiptWrapper>
         <div style={{ margin: "40px 20px 50px 20px" }}>
           <Title subtitle="EduVenture" title="수납 관리 수정"></Title>
-          <TotalPrice>총액 {numberWithCommas(totalPrice)}원</TotalPrice>
+          <TotalPrice>
+            총액{" "}
+            {userData.totalPrice ? numberWithCommas(userData.totalPrice) : "0"}
+            원
+          </TotalPrice>
         </div>
         {/** 여기가 반, 학생명, 청구년월 */}
         <ReceiptSelectUpdateList
-          setTotalPrice={setTotalPrice}
+          // setTotalPrice={setTotalPrice}
           userData={userData}
           allUserData={allUserData}
+          payNo={payNo}
         />
       </ReceiptWrapper>
     </Container>

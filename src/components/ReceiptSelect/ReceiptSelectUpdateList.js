@@ -4,7 +4,6 @@ import TextField from "@mui/material/TextField";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import ReceiptSelectUpdateItem from "./ReceiptSelectUpdateItem";
-import axios from "axios";
 
 const Container = styled.div`
   width: 100%;
@@ -31,13 +30,32 @@ const Wrapper = styled.div`
   margin-top: 20px;
 `;
 
-const ReceiptSelectUpdateList = ({ setTotalPrice, userData, allUserData }) => {
-  const [selectedClaName, setSelectedClaName] = useState(userData.claName);
-  const [selectedUserName, setSelectedUserName] = useState(userData.userName);
+const ReceiptSelectUpdateList = ({
+  setTotalPrice,
+  userData,
+  allUserData,
+  payNo,
+}) => {
+  const [selectedClaName, setSelectedClaName] = useState(userData?.claName);
+  const [selectedUserName, setSelectedUserName] = useState(userData?.userName);
 
-  console.log("Update 222222.", userData);
-  console.log("Update, allUser", allUserData);
+  console.log("UpdateList에서 payNo 유저정보", userData);
+  console.log("UpdateList에서 allUser 유저정보", allUserData);
+  // 초기 날짜 상태 설정
+  const [selectedDate, setSelectedDate] = useState(null);
+  useEffect(() => {
+    if (userData.issYear && userData.issMonth) {
+      setSelectedDate(new Date(`${userData.issYear}-${userData.issMonth}-01`));
+    }
+  }, [userData.issYear, userData.issMonth]);
 
+  const dataForm = {
+    // payTo: selectedUserName,
+    // couNo: selectedClaName,
+    payYn: "N",
+    issDate: selectedDate,
+  };
+  console.log("selectUpdateList의 dataForm", dataForm);
   return (
     <Wrapper>
       <Container>
@@ -45,12 +63,12 @@ const ReceiptSelectUpdateList = ({ setTotalPrice, userData, allUserData }) => {
           <InfoHead>반</InfoHead>
           <select
             type="text"
-            value={selectedClaName}
+            defaultValue={selectedClaName}
             onChange={(e) => setSelectedClaName(e.target.value)}
           >
             {allUserData &&
               allUserData?.items?.map((item) => (
-                <option key={item?.payNo} value={item?.claName}>
+                <option key={item?.payNo} value={item?.payNo}>
                   {item?.claName}
                 </option>
               ))}
@@ -59,12 +77,12 @@ const ReceiptSelectUpdateList = ({ setTotalPrice, userData, allUserData }) => {
         <PaymentInfo>
           <InfoHead>학생명</InfoHead>
           <select
-            value={selectedUserName}
+            defaultValue={selectedUserName}
             onChange={(e) => setSelectedUserName(e.target.value)}
           >
             {allUserData &&
               allUserData?.items?.map((item) => (
-                <option key={item?.payNo} value={item?.userName}>
+                <option key={item?.payNo} value={item?.payNo}>
                   {item?.userName}
                 </option>
               ))}
@@ -76,6 +94,8 @@ const ReceiptSelectUpdateList = ({ setTotalPrice, userData, allUserData }) => {
             <DatePicker
               views={["year", "month"]}
               inputFormat="yyyy-MM"
+              value={selectedDate}
+              onChange={(newDate) => setSelectedDate(newDate)}
               renderInput={(params) => (
                 <TextField {...params} variant="outlined" />
               )}
@@ -83,7 +103,12 @@ const ReceiptSelectUpdateList = ({ setTotalPrice, userData, allUserData }) => {
           </LocalizationProvider>
         </PaymentInfo>
       </Container>
-      <ReceiptSelectUpdateItem setTotalPrice={setTotalPrice} />
+      <ReceiptSelectUpdateItem
+        setTotalPrice={setTotalPrice}
+        userData={userData}
+        payNo={payNo}
+        dataForm={dataForm}
+      />
     </Wrapper>
   );
 };
