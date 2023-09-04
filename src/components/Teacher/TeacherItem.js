@@ -41,7 +41,6 @@ const TeacherItem = ({
   selectedIds,
   setSelectedIds,
   fetchUsers,
-  classData,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -59,22 +58,26 @@ const TeacherItem = ({
   const handleCloseModal = () => setIsOpen(false);
 
   const handleDelete = async () => {
-    try {
-      const response = await axios.post(
-        "http://192.168.0.7:8081/user/deleteselectusers",
-        { selectedUserIds: [id] },
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
-          },
+    const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
+
+    if (isConfirmed) {
+      try {
+        const response = await axios.post(
+          "http://192.168.0.216:8081/user/deleteselectusers",
+          { selectedUserIds: [id] },
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+            },
+          }
+        );
+        if (response.data && response.data.item) {
+          alert(response.data.item.msg);
+          fetchUsers();
         }
-      );
-      if (response.data && response.data.item) {
-        alert(response.data.item.msg);
-        fetchUsers();
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   };
 
@@ -95,9 +98,7 @@ const TeacherItem = ({
         {/* <Td>{group}</Td> */}
         <Td>
           {approval === "승인" ? (
-            <>
-              <Button onClick={handleOpenModal}>수정</Button>/
-            </>
+            <></>
           ) : (
             <>
               <Button onClick={handleOpenModal}>승인</Button>/
@@ -117,7 +118,6 @@ const TeacherItem = ({
           approval={approval}
           // group={group}
           fetchUsers={fetchUsers}
-          classData={classData}
         />
       )}
     </>

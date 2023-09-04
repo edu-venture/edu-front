@@ -31,48 +31,42 @@ const StudentUpdate = () => {
   const [busNum, setBusNum] = useState("");
   const [counsel, setCounsel] = useState("");
   const [significant, setSignificant] = useState("");
-  const [parentInfo, setParentInfo] = useState({});
+  const [parentId, setParentId] = useState("");
   const [parentName, setParentName] = useState("");
   const [parentTel, setParentTel] = useState("");
   const [parentEmail, setParentEmail] = useState("");
   const [birth, setBirth] = useState(new Date());
   const [school, setSchool] = useState("");
-  const [userJoinId, setUserJoinId] = useState("");
 
   const [courseList, setCourseList] = useState([]);
   const [couNo, setCouNo] = useState("");
   const [claName, setClaName] = useState("");
 
+  /** 반 목록 가져오기 함수 */
   const getCourseList = async () => {
     try {
-      console.log("과목리스트 가져온다");
       const response = await axios.get(
-        "http://192.168.0.220:8081/course/course-list"
+        "http://192.168.0.216:8081/course/course-list"
       );
-      console.log("응답에 리스트 담겨있나?", response.data.items);
-      if (response.data.items) {
-        setCourseList(response.data.items);
-        await getUserInfo(response.data.items);
-      }
-    } catch (e) {
-      console.log(e);
+      console.log("반 목록 왔다", response.data);
+      setCourseList(response.data.items);
+      await getUserInfo(response.data.items);
+    } catch (error) {
+      console.error("반 목록 안오는데?", error);
     }
   };
 
-  const getUserInfo = async (courseListFromServer) => {
+  /** 사용자 가져오기 함수 */
+  const getUserInfo = async () => {
     try {
-      const user = {
-        id: id,
-      };
-      const userresponse = await axios.post(
-        "http://192.168.0.220:8081/user/getuser",
-        user
+      const response = await axios.get(
+        `http://192.168.0.216:8081/user/user/${id}`
       );
-      const userData = userresponse.data.item;
-      console.log("여긴 학생이야~", userresponse);
-      console.log("userData 받아옴", userData);
+      console.log("사용자 왔다", response);
 
-      if (userresponse.data && userresponse.data.item) {
+      if (response.data && response.data.item) {
+        const userData = response.data.item;
+
         setStudentName(userData.userName);
         setStudentTel(userData.userTel);
         setStudentEmail(userData.userId);
@@ -83,34 +77,15 @@ const StudentUpdate = () => {
         setSignificant(userData.userSpecialNote);
         setBirth(userData.userBirth);
         setSchool(userData.userSchool);
-        setUserJoinId(userData.userJoinId);
-        setCouNo(userData.couNo);
-
-        const selectedCourse = courseListFromServer.find(
-          (course) => course.couNo === userData.couNo
-        );
-        console.log("같은 반 번호 찾음?", selectedCourse);
-
-        if (selectedCourse) {
-          setClaName(selectedCourse.claName);
-        }
-      }
-
-      if (userresponse.data.item.userJoinId) {
-        const parent = {
-          id: userresponse.data.item.userJoinId,
-        };
-        const parentresponse = await axios.post(
-          "http://192.168.0.220:8081/user/getstudent",
-          parent
-        );
-        console.log("여긴 부모야~", parentresponse);
-        if (parentresponse.data && parentresponse.data.item) {
-          setParentInfo(parentresponse.data.item);
-        }
+        setParentId(userData.parentDTO.id);
+        setParentName(userData.parentDTO.userName);
+        setParentTel(userData.parentDTO.userTel);
+        setParentEmail(userData.parentDTO.userId);
+        setCouNo(userData.courseDTO.couNo);
+        setClaName(userData.courseDTO.claName);
       }
     } catch (e) {
-      console.log(e);
+      console.log("사용자 안오는데?", e);
     }
   };
 
@@ -120,7 +95,7 @@ const StudentUpdate = () => {
 
   const cancelJoin = (e) => {
     e.preventDefault();
-    if (window.confirm("수정을 취소합니까?")) {
+    if (window.confirm("수정을 취소할까요?")) {
       navi(-1);
     }
   };
@@ -128,13 +103,10 @@ const StudentUpdate = () => {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      // mypage에 있는 couno를 여기
       const update = async () => {
         const userDTO = {
-          id: id,
+          couNo: couNo,
           userId: studentEmail,
-          userJoinId: userJoinId,
-          // userPw: studentTel.slice(-4),
           userName: studentName,
           userTel: studentTel,
           userBus: busNum,
@@ -145,23 +117,39 @@ const StudentUpdate = () => {
           userType: "student",
           userConsultContent: counsel,
           userSpecialNote: significant,
-          couNo: couNo,
         };
-        console.log("수정 요청할거임", userDTO);
+        const parentDTO = {
+          couNo: couNo,
+          userId: parentEmail,
+          userName: parentName,
+          userTel: parentTel,
+          userBus: busNum,
+          userAddress: address,
+          userAddressDetail: detailAddress,
+          userType: "parent",
+          userConsultContent: counsel,
+          userSpecialNote: significant,
+        };
+        const joinDTO = {
+          userDTO,
+          parentDTO,
+        };
         try {
-          await axios.put("http://192.168.0.220:8081/user/update", userDTO);
-          alert("학생 정보가 수정되었습니다.");
-          navi(-1);
+          await axios.put(
+            "http://192.168.0.216:8081/user/admin/update",
+            joinDTO
+          );
+          alert("정보가 수정되었습니다.");
+          navi("/admin/student");
         } catch (e) {
-          alert("알 수 없는 에러 발생");
-          console.log("완재야 여기가 문제다 지금" + e);
+          alert("수정을 실패하였습니다.");
+          console.log("수정 실패?", e);
         }
       };
       update();
     },
     [
       id,
-      userJoinId,
       studentEmail,
       studentTel,
       studentName,
@@ -179,15 +167,15 @@ const StudentUpdate = () => {
     ]
   );
 
-  // 주소창 클릭 이벤트
+  /** 주소창 클릭 이벤트 */
   const openAddressSearch = (e) => {
     e.preventDefault();
     loadKakaoMapScript(() => {
       new daum.Postcode({
         oncomplete: function (data) {
-          setAddress(data.address); // 주소 넣기
+          setAddress(data.address);
           if (document.querySelector("input[name=userAddressDetail]")) {
-            document.querySelector("input[name=userAddressDetail]").focus(); //상세입력 포커싱
+            document.querySelector("input[name=userAddressDetail]").focus();
           }
         },
       }).open();
@@ -222,6 +210,7 @@ const StudentUpdate = () => {
               name="studentName"
               value={studentName}
               onChange={(e) => setStudentName(e.target.value)}
+              readOnly={true}
             ></input>
 
             <label>생년월일</label>
@@ -266,7 +255,7 @@ const StudentUpdate = () => {
               type="text"
               id="parentName"
               name="parentName"
-              value={parentInfo.userName}
+              value={parentName}
               onChange={(e) => setParentName(e.target.value)}
               readOnly={true}
             ></input>
@@ -276,10 +265,9 @@ const StudentUpdate = () => {
               type="tel"
               id="parentTel"
               name="parentTel"
-              value={parentInfo.userTel}
+              value={parentTel}
               onChange={(e) => setParentTel(e.target.value)}
               placeholder="숫자만 입력하세요"
-              readOnly={true}
             ></input>
 
             <label>학부모 Email</label>
@@ -287,7 +275,7 @@ const StudentUpdate = () => {
               type="email"
               id="parentEmail"
               name="parentEmail"
-              value={parentInfo.userId}
+              value={parentEmail}
               readOnly={true}
             ></input>
 

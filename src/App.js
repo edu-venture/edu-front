@@ -23,6 +23,7 @@ import Join from "./pages/Join";
 import Notice from "./pages/Notice";
 import AdminVod from "./pages/AdminVod";
 import AdminVodCreate from "./pages/AdminVodCreate";
+import AdminVodUpdate from "./pages/AdminVodUpdate";
 import StudentUpdate from "./pages/StudentUpdate";
 import NoticeCreate from "./pages/NoticeCreate";
 import NoticeUpdate from "./pages/NoticeUpdate";
@@ -34,6 +35,13 @@ import StreamingSetting from "./pages/StreamingSetting";
 import ReceiptSelect from "./pages/ReceiptSelect";
 import ReceiptRegister from "./pages/ReceiptRegister";
 import ClassManagement from "./pages/ClassManagement";
+import ReceiptSelectUpdateList from "./components/ReceiptSelect/ReceiptSelectUpdateList";
+import QuizBoardList from "./pages/QuizBoardList";
+import QuizBoardInsert from "./pages/QuizBoardInsert";
+import QuizBoardEdit from "./pages/QuizBoardEdit";
+import QuizBoard from "./pages/QuizBoard";
+import GotoMyClassForStudent from "./pages/GotoMyClassForStudent";
+import GotoMyClassForTeacher from "./pages/GotoMyClassForTeacher";
 
 function App() {
   const userType = sessionStorage.getItem("userType");
@@ -87,6 +95,11 @@ function App() {
         <Route path="/video/detail/:id" element={<VODDetail />} />
         <Route path="/user/mypage" element={<MyPage />} />
         <Route path="/user/changePassword" element={<ChangePassword />} />
+        <Route path="/quizboard-list" element={<QuizBoardList />} />
+        <Route path="/insert-quizboard" element={<QuizBoardInsert />} />
+        <Route path="/edit-quizboard/:boardNo" element={<QuizBoardEdit />} />
+        <Route path="/quizboard/:boardNo" element={<QuizBoard />} />
+        <Route path="/matchClass" element={<GotoMyClassForStudent />} />
         <Route path="admin/*" element={<AdminRoutes />} />
       </Routes>
     </>
@@ -106,16 +119,21 @@ function AdminRoutes() {
       <Route path="streaming/create/setting" element={<StreamingSetting />} />
       <Route path="video" element={<AdminVod />} />
       <Route path="video/create" element={<AdminVodCreate />} />
+      <Route path="video/update/:id" element={<AdminVodUpdate />} />
       <Route path="notice" element={<Notice />} />
       <Route path="notice/create" element={<NoticeCreate />} />
-      <Route path="notice/update" element={<NoticeUpdate />} />
-      <Route path="notice/update/:id" element={<NoticeUpdate />} />
+      <Route path="notice/update/:noticeNo" element={<NoticeUpdate />} />
       <Route path="receipt" element={<ReceiptSelect />} />
+      <Route
+        path="receipt/update/:payNo"
+        element={<ReceiptSelectUpdateList />}
+      />
       <Route path="receipt/register" element={<ReceiptRegister />} />
       <Route path="messenger" element={<Messenger />} />
       <Route path="messenger/:id" element={<Messenger />} />
       <Route path="teacher" element={<Teacher />} />
       <Route path="classManagement" element={<ClassManagement />} />
+      <Route path="matchClass" element={<GotoMyClassForTeacher />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

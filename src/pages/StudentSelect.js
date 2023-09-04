@@ -39,7 +39,7 @@ const StudentSelect = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.7:8081/user/type-list/student"
+        "http://192.168.0.216:8081/user/type-list/student"
       );
       console.log("유저 목록 왔다", response.data);
       if (response.data && response.data.items) {
@@ -60,7 +60,7 @@ const StudentSelect = () => {
     async (e) => {
       try {
         const response = await axios.post(
-          "http://192.168.0.7:8081/user/deleteselectusers",
+          "http://192.168.0.216:8081/user/deleteselectusers",
           { selectedUserIds: selectedIds },
           {
             headers: {
@@ -78,23 +78,6 @@ const StudentSelect = () => {
     },
     [selectedIds]
   );
-
-  /** 반 목록 가져오기 함수 */
-  const classAxios = async () => {
-    try {
-      const classResponse = await axios.get(
-        "http://192.168.0.7:8081/course/course-list"
-      );
-      setClassData(classResponse.data.items);
-      console.log("반 리스트 잘 들어옴?", classResponse.data.items);
-    } catch (error) {
-      console.error("error", error);
-    }
-  };
-
-  useEffect(() => {
-    classAxios();
-  }, []);
 
   return (
     <div
