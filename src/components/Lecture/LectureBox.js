@@ -12,7 +12,7 @@ const BoxContainer = styled.div`
 
 const Title = styled.p`
   position: absolute;
-  top: 4%;
+  top: 3%;
   left: 4%;
   font-size: 30px;
   font-weight: 700;
@@ -21,10 +21,15 @@ const Title = styled.p`
 
 const Content = styled.p`
   position: absolute;
-  top: 33%;
+  top: 28%;
   left: 4%;
+  right: 4%;
+  bottom: 5%;
   font-size: 20px;
   color: #171a2b;
+  overflow-y: auto;
+  max-height: 60%;
+  width: 92%;
 `;
 
 const Span = styled.span`
@@ -38,7 +43,7 @@ const LectureBox = ({ title, content, $borderRadius }) => {
       <Title>{title}</Title>
       <Content>
         {content.map((line, index) => (
-          <Span key={index}>{line}</Span>
+          <Span key={index} dangerouslySetInnerHTML={{ __html: line }} />
         ))}
       </Content>
     </BoxContainer>

@@ -46,11 +46,12 @@ const LectureDayBox = ({ date, day, event }) => {
         <DateText>
           {date}({day})
         </DateText>
-        {event.map((e, index) => (
-          <EventContainer key={index}>
-            <EventText>{e}</EventText>
-          </EventContainer>
-        ))}
+        {event &&
+          event.map((e, index) => (
+            <EventContainer key={index}>
+              <EventText>{e}</EventText>
+            </EventContainer>
+          ))}
       </DayBoxContainer>
     </DayBoxWrapper>
   );
