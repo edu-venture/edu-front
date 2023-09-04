@@ -123,6 +123,12 @@ const UserHeader = ({ isLogin }) => {
           <MenuItems handleClose={handleLectureMenuClose} to="/video">
             수업 영상
           </MenuItems>
+          <MenuItems handleClose={handleLectureMenuClose} to="/quizboard-list">
+            퀴즈 풀기
+          </MenuItems>
+          <MenuItems handleClose={handleLectureMenuClose} to="/matchClass">
+            일대일 수업
+          </MenuItems>
         </Menu>
         <Menu
           anchorEl={userMenuAnchor}

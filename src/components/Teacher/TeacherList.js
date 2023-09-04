@@ -38,13 +38,7 @@ const Th = styled.th`
 
 const Tbody = styled.tbody``;
 
-const TeacherList = ({
-  selectedIds,
-  setSelectedIds,
-  userList,
-  fetchUsers,
-  classData,
-}) => {
+const TeacherList = ({ selectedIds, setSelectedIds, userList, fetchUsers }) => {
   return (
     <Container>
       <Table>
@@ -81,7 +75,6 @@ const TeacherList = ({
                   selectedIds={selectedIds}
                   setSelectedIds={setSelectedIds}
                   fetchUsers={fetchUsers}
-                  classData={classData}
                 />
               );
             })}

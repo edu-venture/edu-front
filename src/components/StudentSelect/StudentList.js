@@ -45,10 +45,6 @@ const StudentList = ({
   fetchUsers,
   classData,
 }) => {
-  console.log(
-    "여기가 지금 StudentList에서 확인하는 type-list student",
-    userList
-  );
   return (
     <Container>
       <Table>
@@ -66,37 +62,24 @@ const StudentList = ({
           </tr>
         </Thead>
         <Tbody>
-          {userList
-            .filter((user) => user.userType === "student")
-            .map((user) => {
-              const classInfo = classData.find(
-                (cla) => cla.couNo === user.couNo
-              );
-              const groupName = classInfo ? classInfo.claName : "미정";
-
-              const parentInfo = userList.find(
-                (par) => par.id === user.userJoinId
-              );
-              console.log("부모 정보 체크함?", parentInfo);
-              const parentTel = parentInfo ? parentInfo.userTel : "미정";
-
-              return (
-                <StudentItem
-                  key={user.id}
-                  id={user.id}
-                  name={user.userName}
-                  birth={user.userBirth}
-                  group={user?.courseDTO?.claName}
-                  contact={user.userTel}
-                  parentContact={user.parentDTO.userTel}
-                  bus={user.userBus}
-                  selectedIds={selectedIds}
-                  setSelectedIds={setSelectedIds}
-                  fetchUsers={fetchUsers}
-                  classData={classData}
-                />
-              );
-            })}
+          {userList.map((user) => {
+            return (
+              <StudentItem
+                key={user.id}
+                id={user.id}
+                name={user.userName}
+                birth={user.userBirth}
+                group={user?.courseDTO?.claName}
+                contact={user.userTel}
+                parentContact={user.parentDTO.userTel}
+                bus={user.userBus}
+                selectedIds={selectedIds}
+                setSelectedIds={setSelectedIds}
+                fetchUsers={fetchUsers}
+                classData={classData}
+              />
+            );
+          })}
         </Tbody>
       </Table>
     </Container>

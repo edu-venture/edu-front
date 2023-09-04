@@ -12,6 +12,8 @@ import React, { useState } from "react";
 
 const linkStyle = { textDecoration: "none", color: "inherit" };
 
+const userType = sessionStorage.getItem("userType");
+
 const NavigationTab = ({ label, to, onClick }) => (
   <Link to={to || "#"} style={linkStyle} onClick={onClick}>
     <Tab label={label} />
@@ -47,7 +49,11 @@ const HeaderTabs = ({
     >
       <NavigationTab label="원 생" to="/admin/student" />
       <NavigationTab label="수 업" onClick={handleClassMenuOpen} />
-      <NavigationTab label="수 납" to="/admin/receipt" />
+      {userType === "teacher" ? (
+        <></>
+      ) : (
+        <NavigationTab label="수 납" to="/admin/receipt" />
+      )}
       <NavigationTab label="메 신 저" to="/admin/messenger" />
       <NavigationTab
         label={`${userName ? `${userName} 님` : "Teacher"}`}
@@ -58,7 +64,6 @@ const HeaderTabs = ({
 };
 
 const AdminHeader = ({ isLogin }) => {
-  const userType = sessionStorage.getItem("userType");
   const [classMenuAnchor, setClassMenuAnchor] = useState(null);
   const [userMenuAnchor, setUserMenuAnchor] = useState(null);
   const [value, setValue] = useState(0);
@@ -124,6 +129,12 @@ const AdminHeader = ({ isLogin }) => {
           </MenuItems>
           <MenuItems handleClose={handleClassMenuClose} to="/admin/notice">
             수업 공지사항
+          </MenuItems>
+          <MenuItems handleClose={handleClassMenuClose} to="/quizboard-list">
+            퀴즈 관리
+          </MenuItems>
+          <MenuItems handleClose={handleClassMenuClose} to="/admin/matchClass">
+            일대일 수업
           </MenuItems>
         </Menu>
         <Menu

@@ -18,9 +18,8 @@ const getMonthWeek = () => {
   return `${month}월 ${week}주차`;
 };
 
-const MainLecture = () => {
+const MainLecture = ({ lectures, noticeContent }) => {
   const noticeTitle = "공지 사항";
-  const noticeContent = ["게시된 공지 사항이 없습니다."];
 
   return (
     <div
@@ -51,7 +50,7 @@ const MainLecture = () => {
               color="#ffffff"
             />
           </div>
-          <LectureCalendar />
+          <LectureCalendar lectures={lectures} />
         </div>
         <LectureBox
           title={noticeTitle}

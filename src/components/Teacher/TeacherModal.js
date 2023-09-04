@@ -135,7 +135,6 @@ const TeacherModal = ({
   approval,
   // group,
   fetchUsers,
-  classData,
 }) => {
   // const [selectedCouNo, setSelectedCouNo] = useState(group || "");
 
@@ -150,13 +149,12 @@ const TeacherModal = ({
       userId: email,
       userName: name,
       userTel: contact,
-      // couNo: selectedCouNo,
       userType: "teacher",
     };
 
     try {
       const response = await axios.put(
-        "http://192.168.0.7:8081/user/update",
+        "http://192.168.0.216:8081/user/update",
         userDTO
       );
 
@@ -168,7 +166,7 @@ const TeacherModal = ({
         onClose();
       }
     } catch (e) {
-      console.error(e);
+      console.error("선생님 승인 실패?", e);
       alert("승인을 실패하였습니다.");
       onClose();
     }
