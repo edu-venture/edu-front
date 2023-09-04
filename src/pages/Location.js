@@ -5,16 +5,100 @@ import Map from "../components/Location/Map";
 import axios from "axios";
 
 const LocationContainer = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: calc(100vh - 50px);
+  overflow: hidden;
   position: relative;
 `;
 
-const styles = {
-  titleContainer: {
-    padding: "20px 0px 20px 50px",
-  },
-};
+const TitleContainer = styled.div`
+  padding: 20px 0px 20px 50px;
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+`;
+
+const MapContainer = styled.div`
+  width: 1000px;
+  height: 620px;
+  position: relative;
+`;
+
+const MessageContainer = styled.div`
+  width: 450px;
+  height: 620px;
+  border: 4px solid #5ac467;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MessageTitle = styled.div`
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+const GentleReminder = styled.p`
+  text-align: center;
+  color: green;
+`;
+
+const FormTable = styled.table`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TextAreaContainer = styled.td`
+  display: flex;
+  justify-content: center;
+`;
+
+const Textarea = styled.textarea`
+  width: 400px;
+  height: 180px;
+  padding: 20px;
+  background-color: #ececec;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  resize: none;
+`;
+
+const SubmitButton = styled.button`
+  width: 95px;
+  height: 40px;
+  border-radius: 20px;
+  margin: 15px auto 0;
+  background-color: #5ac467;
+  color: #ffffff;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #ddd;
+  }
+`;
+
+const BusPhotoContainer = styled.div`
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const BusImage = styled.img`
+  width: 400px;
+  height: 220px;
+  border-radius: 20px;
+`;
 
 const Location = () => {
   const [cars, setCars] = useState([]);
@@ -29,7 +113,7 @@ const Location = () => {
   useEffect(() => {
     const userbusnumbertogetphoto = sessionStorage.getItem("userBus");
 
-    axios.get("http://192.168.0.220:8081/igiveyougps").then((response) => {
+    axios.get("http://192.168.0.216:8081/igiveyougps").then((response) => {
       setCars(response.data.items);
       setGps(
         response.data.items.find(
@@ -40,7 +124,7 @@ const Location = () => {
       return response.data.items; // 이 값을 반환하여 다음 .then에서 사용합니다.
     });
     axios
-      .get("http://192.168.0.220:8081/trytogetphotofromserver", {
+      .get("http://192.168.0.216:8081/trytogetphotofromserver", {
         params: {
           userBus: userbusnumbertogetphoto,
         },
@@ -71,11 +155,11 @@ const Location = () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.0.220:8081/sms/send",
+        "http://192.168.0.216:8081/sms/send",
         messageDto
       );
       console.log("Message sent successfully:", response.data);
-      alert("기사님께 문자를 보냈습니다!");
+      alert("기사님께 문자를 보냈습니다.");
       setContent("");
 
       // 여기에 성공 시 처리 로직을 추가할 수 있습니다.
@@ -87,123 +171,42 @@ const Location = () => {
 
   return (
     <LocationContainer>
-      <div style={styles.titleContainer}>
+      <TitleContainer>
         <Title subtitle="실시간" title="차량 위치" />
-      </div>
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            width: "100vw",
-            height: "100vh",
-            position: "relative",
-            left: "5%",
-            display: "flex",
-          }}
-        >
+      </TitleContainer>
+      <RowContainer>
+        <MapContainer>
           <Map carNumber={carNumber} />
-          <div
-            style={{
-              marginLeft: "6vw",
-              height: "60vh",
-              border: "4px solid green",
-              borderRadius: "30px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyItems: "center",
-              }}
-            >
-              <div
-                style={{
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  fontSize: "20px",
-                }}
-              >
-                기사님께 전할말
-              </div>
-              <form onSubmit={handleSubmit}>
-                <p style={{ textAlign: "center", color: "green" }}>
-                  매너를 지켜주세요. 기사님도 누군가의 가족이랍니다
-                </p>
-                <table
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyItems: "center",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <tr className="form-group" style={{ display: "block" }}>
-                    <td>
-                      <input
-                        style={{ display: "block" }}
-                        type="hidden"
-                        className="form-control"
-                        name="to"
-                        placeholder="핸드폰 번호를 입력하세요"
-                        value={gps.phonenumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                      />
-                    </td>
-                  </tr>
-                  <tr className="form-group">
-                    <td style={{ display: "flex", justifyContent: "center" }}>
-                      <textarea
-                        style={{ width: "100%", padding: "7px" }}
-                        className="form-control"
-                        id={"smscontent" + `${gps.carnumber}`}
-                        value={content} // 이 부분을 추가합니다.
-                        name="content"
-                        placeholder="To.든든한 기사님"
-                        cols="40"
-                        rows="10"
-                        onChange={(e) => setContent(e.target.value)}
-                      ></textarea>
-                    </td>
-                  </tr>
-                  <button
-                    style={{ width: "4vw", height: "2vh", marginTop: "5px" }}
-                    className="btn btn-default"
-                    type="submit"
-                  >
-                    발송
-                  </button>
-                </table>
-              </form>
-            </div>
-            <p></p>
-            <div
-              style={{
-                width: "23vw",
-                height: "27vh",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <img
-                style={{ width: "90%", height: "90%", borderRadius: "9px" }}
-                // src="https://www.hapt.co.kr/news/photo/202212/157569_27726_4728.png" alt=""/>
-                src={carPhotoPath}
-                alt=""
-              />
-              {/*<p>{carPhotoPath}</p>*/}
-              <p style={{ fontWeight: "bold" }}>
-                {gps.carnumber}번 버스의 마지막 등원사진
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+        </MapContainer>
+        <MessageContainer>
+          <MessageTitle>기사님께 전하는 메시지</MessageTitle>
+          <form onSubmit={handleSubmit}>
+            <GentleReminder>
+              매너를 지켜주세요. 기사님도 누군가의 가족이랍니다.
+            </GentleReminder>
+            <FormTable>
+              <TextAreaContainer>
+                <Textarea
+                  id={"smscontent" + `${gps.carnumber}`}
+                  value={content}
+                  name="content"
+                  placeholder="To. 든든한 기사님"
+                  cols="40"
+                  rows="10"
+                  onChange={(e) => setContent(e.target.value)}
+                />
+              </TextAreaContainer>
+              <SubmitButton type="submit">보내기</SubmitButton>
+            </FormTable>
+          </form>
+          <BusPhotoContainer>
+            <p>
+              <b>{gps.carnumber}번 버스</b> 등원 사진
+            </p>
+            <BusImage src={carPhotoPath} alt="" />
+          </BusPhotoContainer>
+        </MessageContainer>
+      </RowContainer>
     </LocationContainer>
   );
 };
