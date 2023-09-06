@@ -8,14 +8,13 @@ import DayDropDown from "../components/TimeTable/DayDropDown";
 
 const styles = {
   timeTableStyle: {
-    height: "1195px",
-    width: "1100px",
+    width: "90%",
+    height: "1200px",
     margin: "0 auto",
-    marginBottom: "50px",
     background: "#FFFFFF",
-    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.4)",
-    borderRadius: "20px",
+    boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
     position: "relative",
+    overflow: "hidden",
   },
 };
 
@@ -62,7 +61,7 @@ const TimeTable = () => {
   const fetchTeachers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8081/user/type-list/teacher"
+        "http://192.168.0.207:8081/user/type-list/teacher"
       );
       console.log("선생님 들어오니?", response);
       if (response.data && response.data.items) {
@@ -76,7 +75,9 @@ const TimeTable = () => {
   /** 반 정보 가져오는 함수 */
   const fetchCourses = async () => {
     try {
-      const response = await axios.get("http://localhost:8081/course/course-list");
+      const response = await axios.get(
+        "http://192.168.0.207:8081/course/course-list"
+      );
       console.log("반 정보 들어오니?", response);
       if (response.data && response.data.items) {
         setInfoCourses(response.data.items);
@@ -90,26 +91,19 @@ const TimeTable = () => {
   const fetchTimetable = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8081/timetable/getTimeTable-list`
+        `http://192.168.0.207:8081/timetable/getTimeTable-list`
       );
 
       console.log("시간표 들어옴?", response);
 
       if (response.data && response.data.items) {
         const timetableData = response.data.items;
-        console.log("timetableData==========",timetableData);
-
         const newCourses = Array(5)
           .fill()
           .map(() => Array(5).fill(null));
 
-          console.log("newCourses================",newCourses);
-
         timetableData.forEach((course) => {
           const timeIndex = times.indexOf(course.timeClass);
-
-          console.log("요일별 시간표 들어옴?", newCourses[timeIndex]);
-
           newCourses[timeIndex] = {
             timeNo: course.timeNo,
             timeWeek: course.timeWeek,
@@ -124,10 +118,6 @@ const TimeTable = () => {
         });
 
         setCourses(timetableData);
-        
-        console.log("timetableData===========================2222",timetableData);
-        console.log("newCourses===========================2222",newCourses);
-
         setFilteredCourses(newCourses[teachers.indexOf(selectedDay)]);
       }
     } catch (error) {
@@ -147,8 +137,6 @@ const TimeTable = () => {
       courses.filter((cour) => cour.timeWeek === selectedDay)
     );
   }, [courses, selectedDay]);
-
-  console.log("selectedDayCourses",selectedDayCourses);
 
   /** 강의 추가 함수 */
   const addCourse = async (courseName, timePlace) => {
@@ -172,16 +160,15 @@ const TimeTable = () => {
     });
 
     if (isDuplicate) {
-      console.log(
-        `Duplicate found: Day - ${selectedDay}, Time - ${selectedTime}, Teacher - ${currentTeacher}`
-      );
       alert("이미 등록된 시간이 포함되어 있습니다.");
       return; // 이 함수를 여기서 종료
     }
 
     const startPeriod = parseInt(selectedStartTime.replace("교시", ""));
     const endPeriod = parseInt(selectedEndTime.replace("교시", ""));
-    const selectedCouNo = infoCourses.find(course => course.claName === selectedCourseName)?.couNo;
+    const selectedCouNo = infoCourses.find(
+      (course) => course.claName === selectedCourseName
+    )?.couNo;
 
     for (let period = startPeriod; period <= endPeriod; period++) {
       const courseData = {
@@ -199,7 +186,7 @@ const TimeTable = () => {
 
       try {
         const response = await axios.post(
-          `http://localhost:8081/timetable/regist`,
+          `http://192.168.0.207:8081/timetable/regist`,
           courseData
         );
         console.log("과목 정보 데이터 들어옴?", courseData);
@@ -257,11 +244,11 @@ const TimeTable = () => {
         timeTeacher: selectedCourse.timeTeacher,
         timeTitle: selectedCourse.timeTitle,
         timePlace: selectedCourse.timePlace,
-        couNo: selectedCourse.couNo
+        couNo: selectedCourse.couNo,
       };
 
       const response = await axios.delete(
-        `http://localhost:8081/timetable/deleteTimeTable`,
+        `http://192.168.0.207:8081/timetable/deleteTimeTable`,
         { data: requestData }
       );
       if (response.data.statusCode === 0) {
@@ -278,7 +265,7 @@ const TimeTable = () => {
     }
   };
 
-  //반 이름 관리 핸들러 
+  //반 이름 관리 핸들러
   const handleCourseNameChange = (e) => {
     setSelectedCourseName(e.target.value);
   };
@@ -305,60 +292,63 @@ const TimeTable = () => {
     timeColor,
     timeWeek,
     timeTitle,
-    
     providedTeacherName
   ) => {
     //강사 이름 설정
     const teacherName = teachers[teacherIndex];
     setCurrentTeacher(teacherName.userName);
+    if (
+      sessionStorage.getItem("userName") === teacherName.userName ||
+      sessionStorage.getItem("userType") === "admin"
+    ) {
+      // 선생님의 id와 일치하는 반 정보를 찾기
+      const matchedCourse = infoCourses.filter(
+        (course) => course.userDTO.id === teacherName.id
+      );
 
-    // 선생님의 id와 일치하는 반 정보를 찾기
-    const matchedCourse = infoCourses.filter(course => course.userDTO.id === teacherName.id);
+      // 과목이 있는지 확인
+      if (timeNo === null) {
+        // 과목이 없으면 등록 모달 띄우기
+        setShowModal(true);
 
-    // 과목이 있는지 확인
-    if (timeNo === null) {
-      // 과목이 없으면 등록 모달 띄우기
-      setShowModal(true);
+        // 일치하는 반 정보가 있으면 해당 반의 claName과 couNo를 설정.
+        if (matchedCourse.length > 0) {
+          const courseNames = matchedCourse.map((course) => course.claName);
+          const courseNos = matchedCourse.map((course) => course.couNo);
 
-      // 일치하는 반 정보가 있으면 해당 반의 claName과 couNo를 설정.
-      if (matchedCourse.length > 0) {
-        const courseNames = matchedCourse.map(course => course.claName);
-        const courseNos = matchedCourse.map(course => course.couNo);
+          setCurrentCourse(courseNames);
+          setCurrentCouNo(courseNos);
 
-        setCurrentCourse(courseNames);
-        setCurrentCouNo(courseNos);
+          // 첫 번째 반 이름을 selectedCourseName으로 설정
+          setSelectedCourseName(courseNames[0]);
 
-        // 첫 번째 반 이름을 selectedCourseName으로 설정
-        setSelectedCourseName(courseNames[0]);
-
-        console.log("추가모달" , matchedCourse);
-      } else {
-        console.log("일치하는 정보가 없음")
+          console.log("추가 모달", matchedCourse);
+        } else {
+          console.log("일치하는 정보가 없습니다.");
+        }
+        return;
       }
-      return;
+
+      // 클릭된 과목의 정보를 selectedCourse에 설정
+      setSelectedCourse({
+        ...courses[teacherIndex][timeIndex],
+        timeNo: timeNo,
+        claName: claName,
+        timeColor: timeColor,
+        timePlace: timePlace,
+        timeTitle: timeTitle,
+        teacher: teacherIndex,
+        time: timeIndex,
+        timeWeek: timeWeek,
+        teacherName: providedTeacherName,
+        couNo: couNo,
+      });
+      // 삭제 모달 표시
+      setShowEditModal(true);
+    } else {
+      alert("등록 혹은 삭제 권한이 없습니다.");
     }
-
-    // 클릭된 과목의 정보를 selectedCourse에 설정
-    setSelectedCourse({
-      ...courses[teacherIndex][timeIndex],
-      timeNo: timeNo,
-      claName: claName,
-      timeColor: timeColor,
-      timePlace: timePlace,
-      timeTitle: timeTitle,
-      teacher: teacherIndex,
-      time: timeIndex,
-      timeWeek: timeWeek,
-      teacherName: providedTeacherName,
-      couNo: couNo
-    });
-
-    console.log("selectedCourse", selectedCourse);
-
-    // 삭제 모달 표시
-    setShowEditModal(true);
   };
-  
 
   // 드롭다운에서 요일을 선택하면 해당 상태값을 업데이트.
   const handleDayChange = (event) => {
@@ -379,11 +369,11 @@ const TimeTable = () => {
       </div>
       <div>
         <DayDropDown
-        selectedDay={selectedDay}
-        handleDayChange={handleDayChange}
-      />
+          selectedDay={selectedDay}
+          handleDayChange={handleDayChange}
+        />
       </div>
-      
+
       <div>
         <div style={styles.timeTableStyle}>
           {/* 시간표 부분 */}

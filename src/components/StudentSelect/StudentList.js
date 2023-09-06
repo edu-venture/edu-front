@@ -45,6 +45,7 @@ const StudentList = ({
   fetchUsers,
   classData,
 }) => {
+  const userType = sessionStorage.getItem("userType");
   return (
     <Container>
       <Table>
@@ -58,7 +59,7 @@ const StudentList = ({
             <Th>연락처</Th>
             <Th>학부모 연락처</Th>
             <Th>버스</Th>
-            <Th>수정 / 삭제</Th>
+            {userType === "teacher" ? <></> : <Th>수정 / 삭제</Th>}
           </tr>
         </Thead>
         <Tbody>

@@ -48,7 +48,7 @@ const MainIntro = () => {
     greeting = `${userName} 선생님 안녕하세요.`;
   } else {
     greeting = "간단한 상담을 원하시면 좌측 하단의 챗봇을";
-    additionalContent = "자세한 상담을 원하시면 메신저를 보내주세요.";
+    additionalContent = "자세한 상담을 원하시면 전화 상담을 주세요.";
   }
 
   return (

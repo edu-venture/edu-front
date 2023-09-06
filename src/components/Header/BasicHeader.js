@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Tabs, Tab, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 
 const linkStyle = { textDecoration: "none", color: "inherit" };
 
@@ -18,12 +18,16 @@ const HeaderTabs = ({ value, onChange }) => (
     onChange={onChange}
     TabIndicatorProps={{ style: { height: 0 } }}
   >
-    <NavigationTab label="메 신 저" to="/messenger" />
     <NavigationTab label="로 그 인" to="/login" />
   </Tabs>
 );
 
 const BasicHeader = () => {
+  const [tabValue, setTabValue] = useState(0);
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
   return (
     <AppBar
       position="sticky"
@@ -47,7 +51,7 @@ const BasicHeader = () => {
             EduVenture
           </Typography>
         </Link>
-        <HeaderTabs />
+        <HeaderTabs value={tabValue} onChange={handleTabChange} />
       </Toolbar>
     </AppBar>
   );
