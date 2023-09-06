@@ -104,7 +104,7 @@ const AdminVodListItem = ({
   const onDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `http://192.168.0.216:8081/vod/board/${id}`,
+        `http://192.168.0.207:8081/vod/board/${id}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -139,10 +139,15 @@ const AdminVodListItem = ({
             조회수 {viewCount}회 | {uploadDate.slice(0, 10)}
           </ViewsAndDate>
         </div>
-        <ActionButtons>
-          <button onClick={goToUpdate}>수정</button>
-          <button onClick={() => onDelete(id)}>삭제</button>
-        </ActionButtons>
+        {teacherName === sessionStorage.getItem("userName") ||
+        sessionStorage.getItem("userType") === "admin" ? (
+          <ActionButtons>
+            <button onClick={goToUpdate}>수정</button>
+            <button onClick={() => onDelete(id)}>삭제</button>
+          </ActionButtons>
+        ) : (
+          <></>
+        )}
       </InfoContainer>
     </ListItem>
   );
