@@ -43,6 +43,7 @@ const StudentItem = ({
   setSelectedIds,
   fetchUsers,
 }) => {
+  const userType = sessionStorage.getItem("userType");
   const navi = useNavigate();
 
   const getAge = (birthdate) => {
@@ -82,7 +83,7 @@ const StudentItem = ({
       const deleteUserAxios = async () => {
         try {
           const response = await axios.delete(
-            `http://192.168.0.7:8081/user/user/${id}`,
+            `http://192.168.0.207:8081/user/user/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(
@@ -123,12 +124,16 @@ const StudentItem = ({
         <Td>{contact}</Td>
         <Td>{parentContact}</Td>
         <Td>{bus}</Td>
-        <Td>
-          <Link to={`/admin/student/update/${id}`}>
-            <Button>수정</Button>
-          </Link>
-          /<Button onClick={handleDelete}>삭제</Button>
-        </Td>
+        {userType === "teacher" ? (
+          <></>
+        ) : (
+          <Td>
+            <Link to={`/admin/student/update/${id}`}>
+              <Button>수정</Button>
+            </Link>
+            /<Button onClick={handleDelete}>삭제</Button>
+          </Td>
+        )}
       </tr>
     </>
   );

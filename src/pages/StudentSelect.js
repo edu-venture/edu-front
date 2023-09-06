@@ -31,6 +31,7 @@ const styles = {
 };
 
 const StudentSelect = () => {
+  const userType = sessionStorage.getItem("userType");
   const [userList, setUserList] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [classData, setClassData] = useState([]);
@@ -39,7 +40,7 @@ const StudentSelect = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.216:8081/user/type-list/student"
+        "http://192.168.0.207:8081/user/type-list/student"
       );
       console.log("유저 목록 왔다", response.data);
       if (response.data && response.data.items) {
@@ -60,7 +61,7 @@ const StudentSelect = () => {
     async (e) => {
       try {
         const response = await axios.post(
-          "http://192.168.0.216:8081/user/deleteselectusers",
+          "http://192.168.0.207:8081/user/deleteselectusers",
           { selectedUserIds: selectedIds },
           {
             headers: {
@@ -92,12 +93,19 @@ const StudentSelect = () => {
       <div style={styles.titleContainer}>
         <Title subtitle="EduVenture" title="학생 조회" color="#171A2B" />
       </div>
-      <button style={styles.deleteButton} onClick={handleDelete}>
-        선택 삭제
-      </button>
-      <Link to="/admin/student/join">
-        <button style={styles.joinButton}>학생 등록</button>
-      </Link>
+      {userType === "teacher" ? (
+        <div style={{ height: "43px" }}></div>
+      ) : (
+        <>
+          <button style={styles.deleteButton} onClick={handleDelete}>
+            선택 삭제
+          </button>
+          <Link to="/admin/student/join">
+            <button style={styles.joinButton}>학생 등록</button>
+          </Link>
+        </>
+      )}
+
       <StudentList
         userList={userList}
         selectedIds={selectedIds}
