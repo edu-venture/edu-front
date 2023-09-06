@@ -6,6 +6,7 @@ import axios from "axios";
 import { ChannelContext } from "../context/context";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from 'sockjs-client';
+import { useNavigate } from "react-router";
 
 
 const MainContainer = styled.div`
@@ -20,6 +21,8 @@ const Streaming = () => {
   const [userType, setUserType] = useState(sessionStorage.getItem('userType'));
   const [stompClient, setStompClient] = useState(null);
   const [lectureId, setLectureId] = useState(0);
+  const [userList, setUserList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedChannelInfo = JSON.parse(sessionStorage.getItem('channelInfo'));
@@ -32,10 +35,10 @@ const Streaming = () => {
   useEffect(() => {
 
     const channelId = channelInfo.channelId;
-    const lectureId = channelInfo.lectureId;
-    
-    console.log(channelId, lectureId);
+
     const getStreamingUrl = async () => {
+      let currentLectureId = lectureId;
+
       const url = (userType === 'teacher' || userType === 'admin')
       ? `http://localhost:8081/live/url/${channelId}` 
       : 'http://localhost:8081/lecture/student/lecture';    
@@ -50,12 +53,71 @@ const Streaming = () => {
         );
         console.log(response.data);
         setStreamingUrl(response.data.items);
-        if(userType === 'student') {
-          setLectureId(response.data.item.lectureId);
+        if(userType === 'teacher' || userType === 'admin'){
+          currentLectureId = channelInfo.lectureId;
+          setLectureId(currentLectureId);
+        } else {
+          currentLectureId = response.data.item.lectureId;
+          setLectureId(currentLectureId);
         }
-        // if(response.data.errorMessage !== null) {
-        //   alert(response.data.errorMessage);
-        // }
+        
+        if(!stompClient) {
+          const socket = new SockJS('http://localhost:8081/ws');
+          const client = Stomp.over(socket);
+  
+          setStompClient(client);
+  
+          client.connect({}, (frame) => {
+            console.log('Connected: ' + frame);
+            client.subscribe(`/topic/lecture/${currentLectureId}`, (message) => {
+              const newMessage = JSON.parse(message.body);
+              setChatLog((prevChatLog) => [...prevChatLog, newMessage]);
+              setUserList(newMessage.userList);
+              console.log(`newMessage 객체 값: ${JSON.stringify(newMessage)}`);
+              console.log(`newMessage.exit 값: ${newMessage.exit}`);
+              console.log(`userType 값: ${userType}`);
+              if(userType === 'student' && newMessage.exit === true) {
+                console.log(`조건문 : newMessage 객체 값: ${JSON.stringify(newMessage)}`);
+                console.log(`조건문 : newMessage.exit 값: ${newMessage.exit}`);
+                console.log(`조건문 : userType 값: ${userType}`);
+                alert(chatLog.content);
+                navigate('/');
+              }
+            });
+            let token = sessionStorage.getItem('ACCESS_TOKEN');
+            client.send(`/app/sendMsg/${currentLectureId}/addUser`, {'Authorization': 'Bearer ' + token});
+          },
+          (error) => {
+            console.log(error);
+          });
+        }
+      
+        const handleBeforeUnload = () => {
+          if (stompClient !== null) {
+            let token = sessionStorage.getItem('ACCESS_TOKEN');
+            stompClient.send(`/app/sendMsg/${currentLectureId}/leave`, {
+              'Authorization': 'Bearer ' + token,
+            });
+            stompClient.disconnect();
+          }
+        };
+      
+        // beforeunload 이벤트 리스너 등록
+        window.addEventListener('beforeunload', handleBeforeUnload);
+      
+        return () => {
+          // cleanup 함수에서 beforeunload 이벤트 리스너 제거
+          window.removeEventListener('beforeunload', handleBeforeUnload);
+      
+          if (stompClient !== null) {
+            let token = sessionStorage.getItem('ACCESS_TOKEN');
+            stompClient.send(`/app/sendMsg/${currentLectureId}/leave`, {
+              'Authorization': 'Bearer ' + token,
+            });
+            stompClient.disconnect();
+          }
+        };
+
       } catch(error) {
         console.log(error);
         const message = userType === 'teacher' || userType === 'admin' 
@@ -72,23 +134,6 @@ const Streaming = () => {
       getStreamingUrl();
     }
 
-    const socket = new SockJS('http://localhost:8081/ws');
-    const client = Stomp.over(socket);
-
-    setStompClient(client);
-
-    client.connect({}, (frame) => {
-      console.log('Connected: ' + frame);
-      client.subscribe(`/topic/lecture/${lectureId}`, (message) => {
-        const newMessage = JSON.parse(message.body).message;
-        setChatLog((prevChatLog) => [...prevChatLog, newMessage]);
-      });
-    });
-
-    return () => {
-      client.disconnect();
-    };
-    
   }, [channelInfo]);
 
   const addEmojiMessage = (emoji, type) => {
@@ -103,21 +148,34 @@ const Streaming = () => {
     hour = hour % 12 || 12;
     hour = String(hour).padStart(2, "0");
 
-    setChatLog((prevChatLog) => [
-      ...prevChatLog,
-      {
-        name: userName,
-        message: message,
-        time: `${ampm} ${hour}: ${minute}`,
-      },
-    ]);
+     
+     
+      const chatMessage = {
+        sender: userName,
+        content: message,
+        time: `${ampm} ${hour}:${minute}`,
+      };
 
-    console.log(chatLog);
+      if (stompClient && stompClient.connected) {
+        let token = sessionStorage.getItem('ACCESS_TOKEN');
+        stompClient.send(`/app/sendMsg/${lectureId}`, {'Authorization': 'Bearer ' + token}, JSON.stringify(chatMessage));
+      } else {
+        console.error('WebSocket 연결이 되어 있지 않습니다.');
+      }
   };
 
   return (
     <MainContainer>
-      <VideoSection addEmojiMessage={addEmojiMessage} streamingUrl={streamingUrl} userType={userType}/>
+      <VideoSection 
+      addEmojiMessage={addEmojiMessage} 
+      streamingUrl={streamingUrl} 
+      userType={userType} 
+      chatLog={chatLog} 
+      stompClient={stompClient} 
+      lectureId={lectureId}
+      userList={userList}
+      navigate={navigate}
+      />
       <ChatSection chatLog={chatLog} setChatLog={setChatLog} stompClient={stompClient} lectureId={lectureId}/>
     </MainContainer>
   );

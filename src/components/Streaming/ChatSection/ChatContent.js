@@ -42,9 +42,9 @@ const ChatContent = forwardRef(({ chatLog }, ref) => (
     {chatLog.map((chat, index) => (
       <MessageContainer key={index}>
         <MessageBox>
-          <strong style={styles.senderName}>{chat.name}</strong>
+          <strong style={styles.senderName}>{chat.sender}</strong>
           <br />
-          <span style={styles.messageText}>{chat.message}</span>
+          <span style={styles.messageText}>{chat.content}</span>
           <span style={styles.timeStamp}>{chat.time}</span>
         </MessageBox>
       </MessageContainer>

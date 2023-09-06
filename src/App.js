@@ -42,6 +42,7 @@ import QuizBoardEdit from "./pages/QuizBoardEdit";
 import QuizBoard from "./pages/QuizBoard";
 import GotoMyClassForStudent from "./pages/GotoMyClassForStudent";
 import GotoMyClassForTeacher from "./pages/GotoMyClassForTeacher";
+import { ChannelProvider } from "./context/context";
 
 function App() {
   const userType = sessionStorage.getItem("userType");
@@ -78,7 +79,7 @@ function App() {
   };
 
   return (
-    <>
+    <ChannelProvider>
       {renderHeader()}
       <Routes>
         <Route path="/" element={<Main />} />
@@ -102,40 +103,42 @@ function App() {
         <Route path="/matchClass" element={<GotoMyClassForStudent />} />
         <Route path="admin/*" element={<AdminRoutes />} />
       </Routes>
-    </>
+    </ChannelProvider>
   );
 }
 
 function AdminRoutes() {
   return (
-    <Routes>
-      <Route path="join" element={<AdminJoin />} />
-      <Route path="student" element={<StudentSelect />} />
-      <Route path="student/join" element={<Join />} />
-      <Route path="student/update" element={<StudentUpdate />} />
-      <Route path="student/update/:id" element={<StudentUpdate />} />
-      <Route path="streaming" element={<StreamingBoard />} />
-      <Route path="streaming/create" element={<StreamingCreate />} />
-      <Route path="streaming/setting" element={<StreamingSetting />} />
-      <Route path="video" element={<AdminVod />} />
-      <Route path="video/create" element={<AdminVodCreate />} />
-      <Route path="video/update/:id" element={<AdminVodUpdate />} />
-      <Route path="notice" element={<Notice />} />
-      <Route path="notice/create" element={<NoticeCreate />} />
-      <Route path="notice/update/:noticeNo" element={<NoticeUpdate />} />
-      <Route path="receipt" element={<ReceiptSelect />} />
-      <Route
-        path="receipt/update/:payNo"
-        element={<ReceiptSelectUpdateList />}
-      />
-      <Route path="receipt/register" element={<ReceiptRegister />} />
-      <Route path="messenger" element={<Messenger />} />
-      <Route path="messenger/:id" element={<Messenger />} />
-      <Route path="teacher" element={<Teacher />} />
-      <Route path="classManagement" element={<ClassManagement />} />
-      <Route path="matchClass" element={<GotoMyClassForTeacher />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <ChannelProvider>
+      <Routes>
+        <Route path="join" element={<AdminJoin />} />
+        <Route path="student" element={<StudentSelect />} />
+        <Route path="student/join" element={<Join />} />
+        <Route path="student/update" element={<StudentUpdate />} />
+        <Route path="student/update/:id" element={<StudentUpdate />} />
+        <Route path="streaming" element={<StreamingBoard />} />
+        <Route path="streaming/create" element={<StreamingCreate />} />
+        <Route path="streaming/setting" element={<StreamingSetting />} />
+        <Route path="video" element={<AdminVod />} />
+        <Route path="video/create" element={<AdminVodCreate />} />
+        <Route path="video/update/:id" element={<AdminVodUpdate />} />
+        <Route path="notice" element={<Notice />} />
+        <Route path="notice/create" element={<NoticeCreate />} />
+        <Route path="notice/update/:noticeNo" element={<NoticeUpdate />} />
+        <Route path="receipt" element={<ReceiptSelect />} />
+        <Route
+          path="receipt/update/:payNo"
+          element={<ReceiptSelectUpdateList />}
+        />
+        <Route path="receipt/register" element={<ReceiptRegister />} />
+        <Route path="messenger" element={<Messenger />} />
+        <Route path="messenger/:id" element={<Messenger />} />
+        <Route path="teacher" element={<Teacher />} />
+        <Route path="classManagement" element={<ClassManagement />} />
+        <Route path="matchClass" element={<GotoMyClassForTeacher />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </ChannelProvider>
   );
 }
 

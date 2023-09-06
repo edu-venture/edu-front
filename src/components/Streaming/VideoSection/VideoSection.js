@@ -5,6 +5,7 @@ import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRou
 import { useNavigate } from "react-router-dom";
 import Hls from "hls.js";
 import axios from "axios";
+import ViewerList from "./ViewerList";
 
 const VideoEmojiWrapper = styled.div`
   width: 75%;
@@ -41,12 +42,12 @@ const StyledButton = styled.button`
   border-radius: 10px; 
 `;
 
-const VideoSection = ({ addEmojiMessage, streamingUrl, userType }) => {
+const VideoSection = ({ addEmojiMessage, streamingUrl, userType, chatLog, stompClient, lectureId, userList, navigate }) => {
   const 응원하기 = ["🍊", "🍎", "🥝", "🍈"];
   const 반응하기 = ["🎉", "😂", "👍🏻", "✋🏻"];
   
   const videoRef = useRef(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   console.log(`streamingUrl 배열 ${JSON.stringify(streamingUrl)}`);
 
@@ -69,6 +70,19 @@ const VideoSection = ({ addEmojiMessage, streamingUrl, userType }) => {
     }
   }, [streamingUrl]);
   
+  useEffect(() => {
+      // 컴포넌트가 언마운트될 때 실행되는 로직
+      return () => {
+        if (stompClient && stompClient.connected) {
+          console.log(stompClient);
+          let token = sessionStorage.getItem('ACCESS_TOKEN');
+          stompClient.send(`/app/sendMsg/${lectureId}/leave`, {
+            'Authorization': 'Bearer ' + token,
+          });
+          stompClient.disconnect();
+        }
+      };
+    }, [stompClient]);
 
   const handleEmojiClick = (emoji, type) => {
     addEmojiMessage(emoji, type);
@@ -77,8 +91,14 @@ const VideoSection = ({ addEmojiMessage, streamingUrl, userType }) => {
   const deleteChannel = async () => {
     const channelInfoFromSession = JSON.parse(sessionStorage.getItem('channelInfo'));
     const channelId = channelInfoFromSession.channelId;
+
     try {
-      const response = await axios.delete(`http://localhost:8081/lecture/lecture/${channelId}`, 
+      let token = sessionStorage.getItem('ACCESS_TOKEN');
+      stompClient.send(`/app/sendMsg/${lectureId}/exit`, {
+        'Authorization': 'Bearer ' + token,
+      });
+
+        const response = await axios.delete(`http://localhost:8081/lecture/lecture/${channelId}`, 
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`
@@ -87,7 +107,10 @@ const VideoSection = ({ addEmojiMessage, streamingUrl, userType }) => {
       console.log(response.data.item);
       sessionStorage.removeItem('channelInfo'); 
       alert('방송이 정상적으로 종료되었습니다.');
-      navigate('/admin/streaming');
+      setTimeout(() => {
+        navigate('/admin/streaming');
+      }, 1000);
+      
     } catch(error) {
       console.log(error);
       alert('OBS인코더에서 방송 중지를 먼저 해주세요.')
@@ -122,16 +145,22 @@ const VideoSection = ({ addEmojiMessage, streamingUrl, userType }) => {
         )}
       </VideoContainer>
       <EmojiContainer>
-        <EmojiSection
-          title="응 원 하 기"
-          emojis={응원하기}
-          onEmojiClick={(emoji) => handleEmojiClick(emoji, "응원하기")}
-        />
-        <EmojiSection
-          title="반 응 하 기"
-          emojis={반응하기}
-          onEmojiClick={(emoji) => handleEmojiClick(emoji, "반응하기")}
-        />
+        {
+          (userType === 'teacher' || userType === 'admin')
+          ? <ViewerList chatLog={chatLog} userList={userList}/>
+          : <>
+              <EmojiSection
+              title="응 원 하 기"
+              emojis={응원하기}
+              onEmojiClick={(emoji) => handleEmojiClick(emoji, "응원하기")}
+              />
+              <EmojiSection
+                title="반 응 하 기"
+                emojis={반응하기}
+                onEmojiClick={(emoji) => handleEmojiClick(emoji, "반응하기")}
+              />
+            </>
+        }  
       </EmojiContainer>
     </VideoEmojiWrapper>
   );
