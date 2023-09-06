@@ -31,19 +31,16 @@ const ChatSection = ({ chatLog, setChatLog, stompClient, lectureId }) => {
     hour = String(hour).padStart(2, "0");
 
     const chatMessage = {
-        name: `${userName}`,
-        message: inputMessage,
-        time: `${ampm} ${hour}:${minute}`,
+        sender: `${userName}`,
+        content: inputMessage,
+        time: `${ampm} ${hour}:${minute}`
     };
 
-    setChatLog([
-        ...chatLog,
-        chatMessage,
-    ]);
     setInputMessage("");
 
     if(inputMessage && stompClient) {
-        stompClient.send(`/app/sendMsg/${lectureId}`, {}, JSON.stringify(chatMessage));
+        let token = sessionStorage.getItem('ACCESS_TOKEN');
+        stompClient.send(`/app/sendMsg/${lectureId}`, {'Authorization': 'Bearer ' + token}, JSON.stringify(chatMessage));
     }
   };
 
