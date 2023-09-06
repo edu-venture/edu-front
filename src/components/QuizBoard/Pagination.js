@@ -57,6 +57,7 @@ const Pagination = ({
           {pageArr &&
             pageArr.map((num) => (
               <div
+                key={num}
                 style={{
                   marginLeft: "5px",
                   marginRight: "5px",
