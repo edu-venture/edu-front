@@ -78,7 +78,7 @@ const PaymentPersonInfo = ({ classData, studentData, setTotalPrice }) => {
   const classStudentAxios = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.7:8081/user/${dataForm.couNo}/user-list`,
+        `http://localhost:8081/user/${dataForm.couNo}/user-list`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -155,7 +155,11 @@ const PaymentPersonInfo = ({ classData, studentData, setTotalPrice }) => {
           </LocalizationProvider>
         </PaymentInfo>
       </Container>
-      <ReceiptDetail dataForm={dataForm} setTotalPrice={setTotalPrice} />
+      <ReceiptDetail
+        dataForm={dataForm}
+        setTotalPrice={setTotalPrice}
+        setInputUserId={setInputUserId}
+      />
     </Wrapper>
   );
 };

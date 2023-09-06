@@ -32,6 +32,7 @@ const Wrapper = styled.div`
 
 const ReceiptSelectUpdateList = ({
   setTotalPrice,
+  totalPrice,
   userData,
   allUserData,
   payNo,
@@ -44,10 +45,12 @@ const ReceiptSelectUpdateList = ({
   // 초기 날짜 상태 설정
   const [selectedDate, setSelectedDate] = useState(null);
   useEffect(() => {
-    if (userData.issYear && userData.issMonth) {
-      setSelectedDate(new Date(`${userData.issYear}-${userData.issMonth}-01`));
+    if (userData?.issYear && userData?.issMonth) {
+      setSelectedDate(
+        new Date(`${userData?.issYear}-${userData?.issMonth}-01`)
+      );
     }
-  }, [userData.issYear, userData.issMonth]);
+  }, [userData?.issYear, userData?.issMonth]);
 
   const dataForm = {
     // payTo: selectedUserName,
@@ -66,6 +69,7 @@ const ReceiptSelectUpdateList = ({
             defaultValue={selectedClaName}
             onChange={(e) => setSelectedClaName(e.target.value)}
           >
+            <option key={userData.payNo}>{userData.claName}</option>
             {allUserData &&
               allUserData?.items?.map((item) => (
                 <option key={item?.payNo} value={item?.payNo}>
@@ -80,6 +84,7 @@ const ReceiptSelectUpdateList = ({
             defaultValue={selectedUserName}
             onChange={(e) => setSelectedUserName(e.target.value)}
           >
+            <option key={userData.payNo}>{userData.userName}</option>
             {allUserData &&
               allUserData?.items?.map((item) => (
                 <option key={item?.payNo} value={item?.payNo}>
@@ -105,6 +110,7 @@ const ReceiptSelectUpdateList = ({
       </Container>
       <ReceiptSelectUpdateItem
         setTotalPrice={setTotalPrice}
+        totalPrice={totalPrice}
         userData={userData}
         payNo={payNo}
         dataForm={dataForm}

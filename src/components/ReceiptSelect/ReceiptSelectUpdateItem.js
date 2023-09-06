@@ -81,6 +81,7 @@ const ReceiptSelectUpdateItem = ({
   dataForm,
   userData,
   payNo,
+  totalPrice,
 }) => {
   console.log("수정url을 위한 payNo", payNo);
   const initialData =
@@ -112,11 +113,12 @@ const ReceiptSelectUpdateItem = ({
     const newFields = postData.filter((_, i) => i !== index);
     setPostData(newFields);
 
-    const totalPrice = newFields.reduce(
-      (sum, field) => sum + (Number(field?.price) || 0),
-      0
-    );
+    const totalPrice = calculateTotalPrice(newFields);
     setTotalPrice(totalPrice);
+  };
+
+  const calculateTotalPrice = (fields) => {
+    return fields.reduce((sum, field) => sum + (Number(field?.price) || 0), 0);
   };
 
   const changeHandler = (index, type, value) => {
@@ -125,10 +127,7 @@ const ReceiptSelectUpdateItem = ({
     setPostData(newFields);
 
     if (type === "price") {
-      const totalPrice = newFields.reduce(
-        (sum, field) => sum + (Number(field?.price) || 0),
-        0
-      );
+      const totalPrice = calculateTotalPrice(newFields);
       setTotalPrice(totalPrice);
     }
   };
@@ -160,6 +159,7 @@ const ReceiptSelectUpdateItem = ({
       setPostData(response?.data?.productList || []);
 
       if (response.status === 200) {
+        navigate(-1);
         console.log("이거 확인해보자 토탈값", response.data);
       } else {
         console.log("실패 후 데이터 확인", postDataForm);
