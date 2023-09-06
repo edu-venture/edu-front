@@ -38,7 +38,7 @@ const Main = () => {
   const getTimetable = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8081/timetable/student/list",
+        "http://223.130.161.116:80/timetable/student/list",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -56,11 +56,14 @@ const Main = () => {
 
   const getNotices = async () => {
     try {
-      const response = await axios.get("http://localhost:8081/notice/course", {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
-        },
-      });
+      const response = await axios.get(
+        "http://223.130.161.116:80/notice/course",
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
       console.log("공지사항 들어왔다", response);
       if (response.data && response.data.items) {
         setNotices(response.data.items);
@@ -130,7 +133,7 @@ const Main = () => {
   /** 유저의 반 정보 이름 받아오기 */
   const userMyInfoAxios = () => {
     axios
-      .get("http://localhost:8081/user/myInfo", {
+      .get("http://223.130.161.116:80/user/myInfo", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         },

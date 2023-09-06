@@ -82,7 +82,7 @@ const ReceiptSelect = () => {
   const getUserInfo = async () => {
     try {
       const resG = await axios.get(
-        "http://192.168.0.7:8081/payment/admin/bill-list",
+        "http://223.130.161.116:80/payment/admin/bill-list",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -144,7 +144,7 @@ const ReceiptSelect = () => {
     console.log("선택된 삭제 아이디들", selectedIds);
     try {
       const response = await axios.post(
-        "http://192.168.0.7:8081/payment/admin/bill/delete",
+        "http://223.130.161.116:80/payment/admin/bill/delete",
         { payNo: selectedIds },
         {
           headers: {

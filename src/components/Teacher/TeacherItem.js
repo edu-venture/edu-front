@@ -63,7 +63,7 @@ const TeacherItem = ({
     if (isConfirmed) {
       try {
         const response = await axios.post(
-          "http://192.168.0.216:8081/user/deleteselectusers",
+          "http://223.130.161.116:80/user/deleteselectusers",
           { selectedUserIds: [id] },
           {
             headers: {

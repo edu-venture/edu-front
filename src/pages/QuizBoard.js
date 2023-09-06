@@ -30,7 +30,7 @@ function QuizBoard() {
   const getCourseList = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.207:8081/course/course-list"
+        "http://223.130.161.116:80/course/course-list"
       );
       if (response.data && response.data.items) {
         setCourseList(response.data.items);
@@ -44,7 +44,7 @@ function QuizBoard() {
     const getUser = async () => {
       try {
         const responseuser = await axios.post(
-          `http://192.168.0.207:8081/user/getuserbytoken`,
+          `http://223.130.161.116:80/user/getuserbytoken`,
           {},
           {
             headers: {
@@ -61,7 +61,7 @@ function QuizBoard() {
           const getQuizHistory = async () => {
             try {
               const response = await axios.post(
-                "http://192.168.0.207:8081/quiz/getallquizhistory",
+                "http://223.130.161.116:80/quiz/getallquizhistory",
                 { boardNo: boardNo, id: responseuser.data.item.id }, // 요청 본문에 boardNo를 넣어서 보냅니다.
                 {
                   headers: {
@@ -89,7 +89,7 @@ function QuizBoard() {
     const getBoard = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.0.207:8081/quiz/board/${boardNo}`,
+          `http://223.130.161.116:80/quiz/board/${boardNo}`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -152,7 +152,7 @@ function QuizBoard() {
       const RegisterQuizHistory = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.207:8081/quiz/registerquizhistory",
+            "http://223.130.161.116:80/quiz/registerquizhistory",
             { boardNo: board.boardNo, id: user.id }, // 요청 본문에 boardNo를 넣어서 보냅니다.
             {
               headers: {
@@ -181,7 +181,7 @@ function QuizBoard() {
       const QuizAnswerSubmitOK = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.207:8081/quiz/answerright",
+            "http://223.130.161.116:80/quiz/answerright",
             { boardNo: board.boardNo }, // 요청 본문에 boardNo를 넣어서 보냅니다.
             {
               headers: {
@@ -206,10 +206,10 @@ function QuizBoard() {
       const getUser = async () => {
         try {
           const response = await axios.post(
-            `http://192.168.0.207:8081/user/getuserbytoken`,
+            `http://223.130.161.116:80/user/getuserbytoken`,
             {},
             {
-              // const response = await axios.post(`http://192.168.0.207:8081/quiz/board/${boardNo}`, {
+              // const response = await axios.post(`http://223.130.161.116:80/quiz/board/${boardNo}`, {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(
                   "ACCESS_TOKEN"
@@ -229,10 +229,10 @@ function QuizBoard() {
       const IncreaseUserScore = async () => {
         try {
           const response = await axios.post(
-            `http://192.168.0.207:8081/quiz/increaseuserscore`,
+            `http://223.130.161.116:80/quiz/increaseuserscore`,
             {},
             {
-              // const response = await axios.post(`http://192.168.0.207:8081/quiz/board/${boardNo}`, {
+              // const response = await axios.post(`http://223.130.161.116:80/quiz/board/${boardNo}`, {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(
                   "ACCESS_TOKEN"
@@ -254,7 +254,7 @@ function QuizBoard() {
       const QuizAnswerSubmitWrong = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.207:8081/quiz/answerwrong",
+            "http://223.130.161.116:80/quiz/answerwrong",
             { boardNo: board.boardNo }, // 요청 본문에 boardNo를 넣어서 보냅니다.
             {
               headers: {
@@ -280,7 +280,7 @@ function QuizBoard() {
       const getQuizHistory = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.207:8081/quiz/getallquizhistory",
+            "http://223.130.161.116:80/quiz/getallquizhistory",
             { boardNo: boardNo, id: userId }, // 요청 본문에 boardNo를 넣어서 보냅니다.
             {
               headers: {

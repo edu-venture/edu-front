@@ -19,7 +19,7 @@ const Messenger = () => {
 
   const userEmailAxios = () => {
     axios
-      .get("http://localhost:8081/user/myInfo", {
+      .get("http://223.130.161.116:80/user/myInfo", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         },

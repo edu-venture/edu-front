@@ -62,7 +62,7 @@ const ClassItem = ({
     try {
       console.log("삭제할 놈", couNo);
       const response = await axios.post(
-        "http://192.168.0.7:8081/course/course/delete",
+        "http://223.130.161.116:80/course/course/delete",
         { couNoList: JSON.stringify([couNo]) },
         {
           headers: {

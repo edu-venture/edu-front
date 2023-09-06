@@ -78,7 +78,7 @@ const PaymentPersonInfo = ({ classData, studentData, setTotalPrice }) => {
   const classStudentAxios = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8081/user/${dataForm.couNo}/user-list`,
+        `http://223.130.161.116:80/user/${dataForm.couNo}/user-list`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
