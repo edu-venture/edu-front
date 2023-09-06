@@ -28,13 +28,14 @@ const downArrowAnimation = {
 };
 
 const Main = () => {
+  const userType = sessionStorage.getItem("userType");
   const [lectures, setLectures] = useState([]);
   const [notices, setNotices] = useState([]);
 
   const getTimetable = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.216:8081/timetable/student/list",
+        "http://192.168.0.207:8081/timetable/student/list",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -53,7 +54,7 @@ const Main = () => {
   const getNotices = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.216:8081/notice/course",
+        "http://192.168.0.207:8081/notice/course",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -83,11 +84,11 @@ const Main = () => {
       })
     : ["게시된 공지 사항이 없습니다."];
 
-  const userType = sessionStorage.getItem("userType");
-
   useEffect(() => {
-    getTimetable();
-    getNotices();
+    if (userType === "student" || userType === "parent") {
+      getTimetable();
+      getNotices();
+    }
     AOS.refresh();
   }, []);
 

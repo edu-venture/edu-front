@@ -49,9 +49,7 @@ const HeaderTabs = ({
     >
       <NavigationTab label="원 생" to="/admin/student" />
       <NavigationTab label="수 업" onClick={handleClassMenuOpen} />
-      {userType === "teacher" ? (
-        <></>
-      ) : (
+      {userType !== "teacher" && (
         <NavigationTab label="수 납" to="/admin/receipt" />
       )}
       <NavigationTab label="메 신 저" to="/admin/messenger" />
@@ -142,20 +140,25 @@ const AdminHeader = ({ isLogin }) => {
           open={Boolean(userMenuAnchor)}
           onClose={handleUserMenuClose}
         >
-          {userType === "admin" && (
-            <>
-              <MenuItems handleClose={handleUserMenuClose} to="/admin/teacher">
-                선생님 관리
-              </MenuItems>
-              <MenuItems
-                handleClose={handleUserMenuClose}
-                to="/admin/classManagement"
-              >
-                반 관리
-              </MenuItems>
-            </>
-          )}
-          <MenuItems handleClose={handleLogout}>로그아웃</MenuItems>
+          {userType === "admin" && [
+            <MenuItems
+              handleClose={handleUserMenuClose}
+              to="/admin/teacher"
+              key="teacher-management"
+            >
+              선생님 관리
+            </MenuItems>,
+            <MenuItems
+              handleClose={handleUserMenuClose}
+              to="/admin/classManagement"
+              key="class-management"
+            >
+              반 관리
+            </MenuItems>,
+          ]}
+          <MenuItems handleClose={handleLogout} key="logout">
+            로그아웃
+          </MenuItems>
         </Menu>
       </Toolbar>
     </AppBar>
