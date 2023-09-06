@@ -1,26 +1,14 @@
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
-import React, {
-  Outlet,
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-  useReducer,
-  useRef,
-} from "react";
+import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 
 function QuizBoard() {
   const [selectedValue, setSelectedValue] = useState("");
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
-    console.log(selectedValue);
-    console.log(board.answer);
   };
 
   const { boardNo } = useParams();
-  const navi = useNavigate();
-  //const uploadFiles = [];
   const [board, setBoard] = useState(null);
   const [boardFileList, setBoardFileList] = useState(null);
   const [originFileList, setOriginFileList] = useState([]);
@@ -42,7 +30,7 @@ function QuizBoard() {
   const getCourseList = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.216:8081/course/course-list"
+        "http://192.168.0.207:8081/course/course-list"
       );
       if (response.data && response.data.items) {
         setCourseList(response.data.items);
@@ -56,7 +44,7 @@ function QuizBoard() {
     const getUser = async () => {
       try {
         const responseuser = await axios.post(
-          `http://192.168.0.216:8081/user/getuserbytoken`,
+          `http://192.168.0.207:8081/user/getuserbytoken`,
           {},
           {
             headers: {
@@ -65,22 +53,15 @@ function QuizBoard() {
           }
         );
 
-        console.log(responseuser);
         if (responseuser.data && responseuser.data.item) {
           setUser(responseuser.data.item);
           setUserScore(responseuser.data.item.userScore);
           setUserId(responseuser.data.item.id);
 
-          console.log(responseuser.data.item);
-          console.log("이것이 토큰으로 불러온 사람의 데이터이다.");
-
-          // 여기가 내가 푼 내역이 잇는지 보는것.
-          // 여기가 내가 푼 내역이 잇는지 보는것.
-          // 여기가 내가 푼 내역이 잇는지 보는것.
           const getQuizHistory = async () => {
             try {
               const response = await axios.post(
-                "http://192.168.0.216:8081/quiz/getallquizhistory",
+                "http://192.168.0.207:8081/quiz/getallquizhistory",
                 { boardNo: boardNo, id: responseuser.data.item.id }, // 요청 본문에 boardNo를 넣어서 보냅니다.
                 {
                   headers: {
@@ -90,14 +71,9 @@ function QuizBoard() {
                   },
                 }
               );
-              console.log(response);
               if (response.data && response.data.item) {
-                console.log("getUserQuizHistory한거 가져온다");
-                console.log(response.data.item);
                 setQuizHistory(response.data.item);
                 serUserQuizId(response.data.item.id);
-
-                //navi(`/quizboard/${boardNo}`);
               }
             } catch (e) {
               console.log(e);
@@ -106,22 +82,20 @@ function QuizBoard() {
           getQuizHistory();
         }
       } catch (e) {
-        console.log("토큰으로 사람 불러오는거 실패함");
-        console.log(e);
+        console.log("토큰으로 사람 불러오는거 실패함", e);
       }
     };
 
     const getBoard = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.0.216:8081/quiz/board/${boardNo}`,
+          `http://192.168.0.207:8081/quiz/board/${boardNo}`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
             },
           }
         );
-
         if (response.data && response.data.item.board) {
           setBoard(() => response.data.item.board);
           setClaName(() => response.data.item.board.claName);
@@ -178,7 +152,7 @@ function QuizBoard() {
       const RegisterQuizHistory = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.216:8081/quiz/registerquizhistory",
+            "http://192.168.0.207:8081/quiz/registerquizhistory",
             { boardNo: board.boardNo, id: user.id }, // 요청 본문에 boardNo를 넣어서 보냅니다.
             {
               headers: {
@@ -188,9 +162,7 @@ function QuizBoard() {
               },
             }
           );
-          console.log(response);
           if (response.data && response.data.item) {
-            console.log(response.data.item);
             setBoard(() => response.data.item);
             setClaName(() => response.data.item.claName);
             setGrossSample(() => response.data.item.grossSample);
@@ -209,7 +181,7 @@ function QuizBoard() {
       const QuizAnswerSubmitOK = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.216:8081/quiz/answerright",
+            "http://192.168.0.207:8081/quiz/answerright",
             { boardNo: board.boardNo }, // 요청 본문에 boardNo를 넣어서 보냅니다.
             {
               headers: {
@@ -219,9 +191,7 @@ function QuizBoard() {
               },
             }
           );
-          console.log(response);
           if (response.data && response.data.item) {
-            console.log(response.data.item);
             setBoard(() => response.data.item);
             setClaName(() => response.data.item.claName);
             setGrossSample(() => response.data.item.grossSample);
@@ -236,10 +206,10 @@ function QuizBoard() {
       const getUser = async () => {
         try {
           const response = await axios.post(
-            `http://192.168.0.216:8081/user/getuserbytoken`,
+            `http://192.168.0.207:8081/user/getuserbytoken`,
             {},
             {
-              // const response = await axios.post(`http://192.168.0.216:8081/quiz/board/${boardNo}`, {
+              // const response = await axios.post(`http://192.168.0.207:8081/quiz/board/${boardNo}`, {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(
                   "ACCESS_TOKEN"
@@ -248,26 +218,21 @@ function QuizBoard() {
             }
           );
 
-          console.log(response);
           if (response.data && response.data.item) {
             setUser(response.data.item);
             setUserScore(response.data.item.userScore);
-
-            console.log(response.data.item);
-            console.log("이것이 토큰으로 불러온 사람의 데이터이다.");
           }
         } catch (e) {
-          console.log("토큰으로 사람 불러오는거 실패함");
-          console.log(e);
+          console.log("토큰으로 사람 불러오는거 실패함", e);
         }
       };
       const IncreaseUserScore = async () => {
         try {
           const response = await axios.post(
-            `http://192.168.0.216:8081/quiz/increaseuserscore`,
+            `http://192.168.0.207:8081/quiz/increaseuserscore`,
             {},
             {
-              // const response = await axios.post(`http://192.168.0.216:8081/quiz/board/${boardNo}`, {
+              // const response = await axios.post(`http://192.168.0.207:8081/quiz/board/${boardNo}`, {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(
                   "ACCESS_TOKEN"
@@ -276,11 +241,8 @@ function QuizBoard() {
             }
           );
 
-          console.log(response);
           if (response.data && response.data.item) {
             setUser(response.data.item);
-            console.log(response.data.item);
-            console.log("이것이 토큰으로 불러온 사람의 데이터이다.");
           }
         } catch (e) {
           console.log(e);
@@ -292,7 +254,7 @@ function QuizBoard() {
       const QuizAnswerSubmitWrong = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.216:8081/quiz/answerwrong",
+            "http://192.168.0.207:8081/quiz/answerwrong",
             { boardNo: board.boardNo }, // 요청 본문에 boardNo를 넣어서 보냅니다.
             {
               headers: {
@@ -302,9 +264,7 @@ function QuizBoard() {
               },
             }
           );
-          console.log(response);
           if (response.data && response.data.item) {
-            console.log(response.data.item);
             setBoard(() => response.data.item);
             setClaName(() => response.data.item.claName);
             setGrossSample(() => response.data.item.grossSample);
@@ -320,7 +280,7 @@ function QuizBoard() {
       const getQuizHistory = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.216:8081/quiz/getallquizhistory",
+            "http://192.168.0.207:8081/quiz/getallquizhistory",
             { boardNo: boardNo, id: userId }, // 요청 본문에 boardNo를 넣어서 보냅니다.
             {
               headers: {
@@ -330,10 +290,7 @@ function QuizBoard() {
               },
             }
           );
-          console.log(response);
           if (response.data && response.data.item) {
-            console.log("getUserQuizHistory한거 가져온다");
-            console.log(response.data.item);
             setQuizHistory(response.data.item);
             serUserQuizId(response.data.item.id);
 
@@ -477,8 +434,9 @@ function QuizBoard() {
                       }}
                     >
                       {boardFileList &&
-                        boardFileList.map((boardFile) => (
+                        boardFileList.map((boardFile, index) => (
                           <div
+                            key={index}
                             style={{
                               height: "331px",
                               width: "600px",
@@ -515,21 +473,19 @@ function QuizBoard() {
                     >
                       내용
                     </td>
-                    {/*<td style={{textAlign: 'left'}}>*/}
-                    {/*    <textarea name="boardContent" id="boardContent" cols="40" rows="10"*/}
-                    {/*              value={board ? board.boardContent : ''} onChange={changeContent}></textarea>*/}
-                    {/*</td>*/}
-                    <div style={{ width: "600px" }}>
-                      <p
-                        style={{
-                          fontWeight: "bold",
-                          marginLeft: "10px",
-                          marginRight: "7px",
-                        }}
-                      >
-                        {board ? board.boardContent : ""}{" "}
-                      </p>
-                    </div>
+                    <td style={{ width: "600px" }}>
+                      <div style={{ width: "600px" }}>
+                        <p
+                          style={{
+                            fontWeight: "bold",
+                            marginLeft: "10px",
+                            marginRight: "7px",
+                          }}
+                        >
+                          {board ? board.boardContent : ""}{" "}
+                        </p>
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>

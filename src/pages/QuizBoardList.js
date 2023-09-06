@@ -21,7 +21,7 @@ const QuizBoardList = () => {
     const getUser = async () => {
       try {
         const response = await axios.post(
-          `http://192.168.0.216:8081/user/getuserbytoken`,
+          `http://192.168.0.207:8081/user/getuserbytoken`,
           {},
           {
             headers: {
@@ -30,24 +30,20 @@ const QuizBoardList = () => {
           }
         );
 
-        console.log(response);
         if (response.data && response.data.item) {
           setUser(response.data.item);
           setUserScore(response.data.item.userScore);
           setUserType(response.data.item.userType);
-          console.log(response.data.item);
-          console.log("이것이 토큰으로 불러온 사람의 데이터이다.");
         }
       } catch (e) {
-        console.log("토큰으로 사람 불러오는거 실패함");
-        console.log(e);
+        console.log("토큰으로 사람 불러오는거 실패함", e);
       }
     };
 
     const getBoardList = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.0.216:8081/quiz/board-list",
+          "http://192.168.0.207:8081/quiz/board-list",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -59,10 +55,6 @@ const QuizBoardList = () => {
             },
           }
         );
-        console.log(sessionStorage.getItem("userId"));
-
-        console.log(response);
-
         if (response.data && response.data.pageItems.content) {
           setBoardList(() => response.data.pageItems.content);
           setTotalPages(() => response.data.pageItems.totalPages);
@@ -88,7 +80,6 @@ const QuizBoardList = () => {
 
   const changeSearchCondition = (e) => {
     setSearchCondition(() => e.target.value);
-    console.log(boardList);
   };
 
   const changeSearchKeyword = (e) => {
@@ -103,7 +94,7 @@ const QuizBoardList = () => {
     const searchAxios = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.0.216:8081/quiz/board-list",
+          "http://192.168.0.207:8081/quiz/board-list",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -116,7 +107,6 @@ const QuizBoardList = () => {
           }
         );
 
-        console.log(response);
         if (response.data && response.data.pageItems.content) {
           setBoardList(() => response.data.pageItems.content);
           setTotalPages(() => response.data.pageItems.totalPages);
@@ -216,43 +206,39 @@ const QuizBoardList = () => {
                 height: "40px",
               }}
             >
-              <tr>
-                <td style={{ textAlign: "right" }}>
-                  <div style={{ marginRight: "10px" }}>
-                    <select
-                      name="searchCondition"
-                      value={searchCondition}
-                      onChange={changeSearchCondition}
-                      style={{ marginRight: "7px" }}
-                    >
-                      <option value="all">전체</option>
-                      <option value="title">제목</option>
-                      <option value="content">내용</option>
-                      <option value="writer">작성자</option>
-                    </select>
-                    <input
-                      type="text"
-                      name="searchKeyword"
-                      value={searchKeyword}
-                      onChange={changeSearchKeyword}
-                      style={{ marginRight: "7px" }}
-                    ></input>
-                    <button type="submit" id="btnSearch">
-                      검색
-                    </button>
-                  </div>
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td style={{ textAlign: "right" }}>
+                    <div style={{ marginRight: "10px" }}>
+                      <select
+                        name="searchCondition"
+                        value={searchCondition}
+                        onChange={changeSearchCondition}
+                        style={{ marginRight: "7px" }}
+                      >
+                        <option value="all">전체</option>
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
+                        <option value="writer">작성자</option>
+                      </select>
+                      <input
+                        type="text"
+                        name="searchKeyword"
+                        value={searchKeyword}
+                        onChange={changeSearchKeyword}
+                        style={{ marginRight: "7px" }}
+                      ></input>
+                      <button type="submit" id="btnSearch">
+                        검색
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </form>
-
           {/*여기까지 서치폼*/}
-          {/*여기까지 서치폼*/}
-          {/*여기까지 서치폼*/}
-          {/*여기까지 서치폼*/}
-
           <p></p>
-
           <table
             id="boardTable"
             style={{
@@ -338,13 +324,11 @@ const QuizBoardList = () => {
               </tr>
               {boardList &&
                 boardList.map((board) => (
-                  <>
-                    <QuizBoardListItem
-                      key={board.boardNo}
-                      userType={userType}
-                      board={board}
-                    ></QuizBoardListItem>
-                  </>
+                  <QuizBoardListItem
+                    key={board.boardNo}
+                    userType={userType}
+                    board={board}
+                  />
                 ))}
             </tbody>
           </table>
@@ -356,7 +340,7 @@ const QuizBoardList = () => {
           pageSize={pageSize}
           clickPrevNext={clickPrevNext}
           changePage={changePage}
-        ></Pagination>
+        />
         <br />
       </div>
     </div>
