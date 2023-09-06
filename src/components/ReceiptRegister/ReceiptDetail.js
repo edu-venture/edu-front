@@ -136,6 +136,7 @@ const ReceiptDetail = ({ setTotalPrice, dataForm, setInputUserId }) => {
       setPostData(response.data.productList || []);
       if (response.status === 200) {
         console.log(response.data);
+        navigate(-1);
       }
       setInputUserId("");
     } catch (error) {

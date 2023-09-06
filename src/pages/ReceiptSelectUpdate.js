@@ -93,7 +93,7 @@ const ReceiptSelectUpdate = () => {
           <Title subtitle="EduVenture" title="수납 관리 수정"></Title>
           <TotalPrice>
             총액
-            {userData?.totalPrice ? totalPrice : "0"}원
+            {userData?.totalPrice ? numberWithCommas(totalPrice) : "0"}원
           </TotalPrice>
         </div>
         {/** 여기가 반, 학생명, 청구년월 */}
