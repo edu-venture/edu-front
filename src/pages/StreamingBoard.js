@@ -1,6 +1,8 @@
 import Title from "../components/Title";
 import StreamingList from "../components/StreamingBoard/StreamingList";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const styles = {
   titleContainer: {
@@ -19,6 +21,28 @@ const styles = {
 };
 
 const StreamingBoard = () => {
+  const [liveData, setLiveData] = useState([]);
+
+  useEffect(() => {
+    const getLiveList = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:8081/lecture/lecture-list',
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+            },
+          }
+        );
+        console.log(response.data.items);
+        setLiveData(response.data.items);
+      } catch(error) {
+        console.log(error);
+      }
+    };
+    getLiveList();
+  }, []);
+
   return (
     <div
       style={{
@@ -35,7 +59,7 @@ const StreamingBoard = () => {
       <Link to="/admin/streaming/create">
         <button style={styles.styledButton}>강의 시작</button>
       </Link>
-      <StreamingList />
+      <StreamingList liveData={liveData} />
     </div>
   );
 };

@@ -20,16 +20,13 @@ const VideoFrame = styled.div`
   // cursor: pointer;
 `;
 
-const StreamingListItem = ({ lectureName, teacherName, viewer }) => {
-  // const navigate = useNavigate();
-
-  // const goToDetail = () => {
-  //   navigate(`/video/detail/${id}`);
-  // };
+const StreamingListItem = ({ id, liveThumb, lectureName, teacherName, viewer }) => {
 
   return (
-    <ListItem>
-      <VideoFrame />
+    <ListItem key={id}>
+      <VideoFrame>
+        <img src={liveThumb} />
+      </VideoFrame>
       <div>
         <div style={{ fontSize: "25px" }}>{lectureName}</div>
         <div style={{ marginTop: "40px", fontSize: "20px" }}>
