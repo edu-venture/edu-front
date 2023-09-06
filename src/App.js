@@ -35,7 +35,7 @@ import StreamingSetting from "./pages/StreamingSetting";
 import ReceiptSelect from "./pages/ReceiptSelect";
 import ReceiptRegister from "./pages/ReceiptRegister";
 import ClassManagement from "./pages/ClassManagement";
-import ReceiptSelectUpdateList from "./components/ReceiptSelect/ReceiptSelectUpdateList";
+import ReceiptSelectUpdate from "./pages/ReceiptSelectUpdate";
 import QuizBoardList from "./pages/QuizBoardList";
 import QuizBoardInsert from "./pages/QuizBoardInsert";
 import QuizBoardEdit from "./pages/QuizBoardEdit";
@@ -43,6 +43,7 @@ import QuizBoard from "./pages/QuizBoard";
 import GotoMyClassForStudent from "./pages/GotoMyClassForStudent";
 import GotoMyClassForTeacher from "./pages/GotoMyClassForTeacher";
 import { ChannelProvider } from "./context/context";
+import TimeTable from "./pages/TimeTable";
 
 function App() {
   const userType = sessionStorage.getItem("userType");
@@ -116,6 +117,7 @@ function AdminRoutes() {
         <Route path="student/join" element={<Join />} />
         <Route path="student/update" element={<StudentUpdate />} />
         <Route path="student/update/:id" element={<StudentUpdate />} />
+        <Route path="timetable" element={<TimeTable />} />
         <Route path="streaming" element={<StreamingBoard />} />
         <Route path="streaming/create" element={<StreamingCreate />} />
         <Route path="streaming/setting" element={<StreamingSetting />} />
@@ -126,10 +128,7 @@ function AdminRoutes() {
         <Route path="notice/create" element={<NoticeCreate />} />
         <Route path="notice/update/:noticeNo" element={<NoticeUpdate />} />
         <Route path="receipt" element={<ReceiptSelect />} />
-        <Route
-          path="receipt/update/:payNo"
-          element={<ReceiptSelectUpdateList />}
-        />
+        <Route path="receipt/update/:payNo" element={<ReceiptSelectUpdate />} />
         <Route path="receipt/register" element={<ReceiptRegister />} />
         <Route path="messenger" element={<Messenger />} />
         <Route path="messenger/:id" element={<Messenger />} />
