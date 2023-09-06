@@ -23,7 +23,7 @@ import Join from "./pages/Join";
 import Notice from "./pages/Notice";
 import AdminVod from "./pages/AdminVod";
 import AdminVodCreate from "./pages/AdminVodCreate";
-import AdminVodUpdate from "./pages/AdminVodUpdate";
+import AdminVODUpdate from "./pages/AdminVODUpdate";
 import StudentUpdate from "./pages/StudentUpdate";
 import NoticeCreate from "./pages/NoticeCreate";
 import NoticeUpdate from "./pages/NoticeUpdate";
@@ -123,7 +123,7 @@ function AdminRoutes() {
         <Route path="streaming/setting" element={<StreamingSetting />} />
         <Route path="video" element={<AdminVod />} />
         <Route path="video/create" element={<AdminVodCreate />} />
-        <Route path="video/update/:id" element={<AdminVodUpdate />} />
+        <Route path="video/update/:id" element={<AdminVODUpdate />} />
         <Route path="notice" element={<Notice />} />
         <Route path="notice/create" element={<NoticeCreate />} />
         <Route path="notice/update/:noticeNo" element={<NoticeUpdate />} />
