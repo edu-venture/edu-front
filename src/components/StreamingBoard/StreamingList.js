@@ -16,17 +16,17 @@ const Container = styled.div`
   overflow-y: auto;
 `;
 
-const StreamingList = () => {
+const StreamingList = ({liveData}) => {
   return (
     <Container>
-      {vodData.map((item, index) => (
+      {liveData.map((item, index) => (
         <StreamingListItem
           key={index}
           id={item.id}
-          lectureName={`[${item.className}] ${item.lectureName}`}
-          teacherName={item.teacherName}
-          viewer={item.viewCount}
-          uploadDate={item.uploadDate}
+          liveThumb={item.liveThumb}
+          lectureName={item.title}
+          teacherName={item.teacher}
+          viewer={item.userCount}
         />
       ))}
     </Container>
