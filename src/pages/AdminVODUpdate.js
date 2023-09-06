@@ -50,7 +50,7 @@ const ContentContainer = styled.div`
   align-items: center;
 `;
 
-const AdminVodUpdate = () => {
+const AdminVODUpdate = () => {
   const [postData, setPostData] = useState({});
   const [vodData, setVodData] = useState({
     title: "", // 수업 이름
@@ -87,7 +87,7 @@ const AdminVodUpdate = () => {
         thumbnail: response.data.item.board.originThumb,
         fileList: response.data.item.boardFileList,
       });
-      console.log("vodData에 수업 영상 데이터 잘 저장함?", vodData);
+      console.log("vodData에 수업 영상  데이터 잘 저장함?", vodData);
     } catch (error) {
       console.log(error);
     }
@@ -221,4 +221,4 @@ const AdminVodUpdate = () => {
   );
 };
 
-export default AdminVodUpdate;
+export default AdminVODUpdate;
