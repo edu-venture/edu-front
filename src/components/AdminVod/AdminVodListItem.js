@@ -104,7 +104,7 @@ const AdminVodListItem = ({
   const onDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `http://192.168.0.207:8081/vod/board/${id}`,
+        `http://223.130.161.116:80/vod/board/${id}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

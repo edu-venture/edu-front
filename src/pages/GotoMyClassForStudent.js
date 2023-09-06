@@ -27,10 +27,10 @@ function GotoMyClassForStudent() {
     const getUser = async () => {
       try {
         const responseuser = await axios.post(
-          `http://192.168.0.220:8081/user/getuserbytoken`,
+          `http://223.130.161.116:80/user/getuserbytoken`,
           {},
           {
-            // const response = await axios.post(`http://192.168.0.220:8081/quiz/board/${boardNo}`, {
+            // const response = await axios.post(`http://223.130.161.116:80/quiz/board/${boardNo}`, {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
             },
@@ -62,7 +62,7 @@ function GotoMyClassForStudent() {
           const getClasses = async () => {
             try {
               const response = await axios.post(
-                `http://192.168.0.220:8081/course/getcourse`,
+                `http://223.130.161.116:80/course/getcourse`,
                 { couNo: responseuser.data.item.courseDTO.couNo }, // 요청 본문에 boardNo를 넣어서 보냅니다.
                 {
                   headers: {
@@ -79,7 +79,7 @@ function GotoMyClassForStudent() {
               const getTeacher = async () => {
                 try {
                   const responseTeacher = await axios.post(
-                    `http://192.168.0.220:8081/user/getuser`,
+                    `http://223.130.161.116:80/user/getuser`,
                     { id: response.data.item.userDTO.id }, // 요청 본문에 boardNo를 넣어서 보냅니다.
                     {
                       headers: {

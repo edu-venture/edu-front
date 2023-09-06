@@ -46,7 +46,7 @@ const Payment = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8081/payment/student/bill",
+          "http://223.130.161.116:80/payment/student/bill",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -96,7 +96,7 @@ const Payment = () => {
 
       // 검증을 위한 서버 요청
       axios
-        .post(`http://localhost:8081/iamport/verifyIamport/${imp_uid}`)
+        .post(`http://223.130.161.116:80/iamport/verifyIamport/${imp_uid}`)
         .then((response) => {
           // 서버에서 받은 응답을 검증
           console.log(response);
@@ -106,7 +106,7 @@ const Payment = () => {
             alert("결제 및 결제검증완료");
             //결제 성공 시 비즈니스 로직
             axios
-              .post(`http://localhost:8081/iamport/payOk`, {
+              .post(`http://223.130.161.116:80/iamport/payOk`, {
                 impUid: imp_uid,
                 payNo: paymentDataAxios.item.payNo,
               })

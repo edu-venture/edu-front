@@ -71,7 +71,7 @@ const MyPage = () => {
     try {
       console.log("리스트 가져온다");
       const response = await axios.get(
-        "http://192.168.0.220:8081/course/course-list"
+        "http://223.130.161.116:80/course/course-list"
       );
       console.log("응답에 리스트 담겨있나?", response.data.items);
       if (response.data.items) {
@@ -89,7 +89,7 @@ const MyPage = () => {
         userId: sessionStorage.getItem("userId"),
       };
       const userresponse = await axios.post(
-        "http://192.168.0.220:8081/user/getuser",
+        "http://223.130.161.116:80/user/getuser",
         user
       );
 
@@ -131,7 +131,7 @@ const MyPage = () => {
           id: userresponse.data.item.userJoinId,
         };
         const studentresponse = await axios.post(
-          "http://192.168.0.220:8081/user/getstudent",
+          "http://223.130.161.116:80/user/getstudent",
           student
         );
 
@@ -180,7 +180,7 @@ const MyPage = () => {
 
         try {
           const response = await axios.put(
-            "http://192.168.0.220:8081/user/update",
+            "http://223.130.161.116:80/user/update",
             userDTO
           );
           console.log(response);

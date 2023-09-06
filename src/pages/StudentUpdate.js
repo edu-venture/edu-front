@@ -46,7 +46,7 @@ const StudentUpdate = () => {
   const getCourseList = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.216:8081/course/course-list"
+        "http://223.130.161.116:80/course/course-list"
       );
       console.log("반 목록 왔다", response.data);
       setCourseList(response.data.items);
@@ -60,7 +60,7 @@ const StudentUpdate = () => {
   const getUserInfo = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.216:8081/user/user/${id}`
+        `http://223.130.161.116:80/user/user/${id}`
       );
       console.log("사용자 왔다", response);
 
@@ -136,7 +136,7 @@ const StudentUpdate = () => {
         };
         try {
           await axios.put(
-            "http://192.168.0.216:8081/user/admin/update",
+            "http://223.130.161.116:80/user/admin/update",
             joinDTO
           );
           alert("정보가 수정되었습니다.");

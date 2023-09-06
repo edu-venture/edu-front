@@ -27,7 +27,7 @@ const StreamingBoard = () => {
     const getLiveList = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:8081/lecture/lecture-list',
+          "http://223.130.161.116:80/lecture/lecture-list",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -36,7 +36,7 @@ const StreamingBoard = () => {
         );
         console.log(response.data.items);
         setLiveData(response.data.items);
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
     };

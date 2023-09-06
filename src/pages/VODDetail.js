@@ -40,7 +40,7 @@ const VODDetail = () => {
     const fetchPostData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.0.207:8081/vod/board/${id}`,
+          `http://223.130.161.116:80/vod/board/${id}`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -61,7 +61,7 @@ const VODDetail = () => {
 
   const file = fileList && fileList[0];
   const fileUrl = file
-    ? `http://192.168.0.207:8081/storage/download/${file.vodSaveName}`
+    ? `http://223.130.161.116:80/storage/download/${file.vodSaveName}`
     : "#";
 
   return (

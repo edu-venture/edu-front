@@ -14,7 +14,7 @@ const InsertQuizBoard = () => {
       console.log("코스리스트갖고오는엑시오스 들어간다");
       // const response = await axios.get('/NoticeTest.json');
       const response = await axios.get(
-        "http://192.168.0.216:8081/course/course-list"
+        "http://223.130.161.116:80/course/course-list"
       );
       console.log(response);
       console.log("위에껀 리스폰스");
@@ -213,7 +213,7 @@ const InsertQuizBoard = () => {
     const insertBoardAxios = async () => {
       try {
         const response = await axios.post(
-          "http://192.168.0.216:8081/quiz/board",
+          "http://223.130.161.116:80/quiz/board",
           formDataObj,
           {
             headers: {

@@ -21,7 +21,7 @@ const NoticeList = () => {
   const getNoticeList = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.216:8081/notice/notice-list"
+        "http://223.130.161.116:80/notice/notice-list"
       );
       console.log("공지사항 들어왔다", response);
       if (response.data && response.data.items) {
@@ -35,7 +35,7 @@ const NoticeList = () => {
   const deleteNotice = async (noticeNo) => {
     try {
       await axios.delete(
-        `http://192.168.0.216:8081/notice/delete/${noticeNo}`,
+        `http://223.130.161.116:80/notice/delete/${noticeNo}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

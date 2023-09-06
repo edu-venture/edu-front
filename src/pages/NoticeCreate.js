@@ -120,7 +120,7 @@ const NoticeCreate = () => {
   const getCourseList = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.216:8081/course/course-list"
+        "http://223.130.161.116:80/course/course-list"
       );
       console.log("반 목록 가져왔다", response);
       if (response.data && response.data.items) {
@@ -148,7 +148,7 @@ const NoticeCreate = () => {
         };
         try {
           const response = await axios.post(
-            "http://192.168.0.216:8081/notice/createnotice",
+            "http://223.130.161.116:80/notice/createnotice",
             noticeDTO
           );
           if (response.data && response.data.statusCode === 200) {

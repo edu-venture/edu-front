@@ -103,7 +103,7 @@ const StreamingSettingItem = ({ channelInfo, setChannelInfo }) => {
     try {
       console.log(`getLiveInfo함수 channelID ${channelId}`);
       const response = await axios.get(
-        `http://192.168.0.207:8081/lecture/lecture/${channelId}`,
+        `http://223.130.161.116:80/lecture/lecture/${channelId}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

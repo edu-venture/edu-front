@@ -38,8 +38,8 @@ const Streaming = () => {
 
       const url =
         userType === "teacher" || userType === "admin"
-          ? `http://192.168.0.207:8081/live/url/${channelId}`
-          : "http://192.168.0.207:8081/lecture/student/lecture";
+          ? `http://223.130.161.116:80/live/url/${channelId}`
+          : "http://223.130.161.116:80/lecture/student/lecture";
       try {
         const response = await axios.get(url, {
           headers: {
@@ -57,7 +57,7 @@ const Streaming = () => {
         }
 
         if (!stompClient) {
-          const socket = new SockJS("http://192.168.0.207:8081/ws");
+          const socket = new SockJS("http://223.130.161.116:80/ws");
           const client = Stomp.over(socket);
 
           setStompClient(client);

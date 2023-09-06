@@ -13,7 +13,7 @@ const PaymentModalLayout = () => {
   const [modalData, setModalData] = useState({});
   useEffect(() => {
     axios
-      .get(`http://192.168.0.7:8081/payment/student/bill-list`, {
+      .get(`http://223.130.161.116:80/payment/student/bill-list`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         },

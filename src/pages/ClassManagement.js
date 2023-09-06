@@ -42,7 +42,7 @@ const ClassManagement = () => {
   const fetchClasses = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.7:8081/course/course-list",
+        "http://223.130.161.116:80/course/course-list",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -62,7 +62,7 @@ const ClassManagement = () => {
   const fetchTeachers = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.7:8081/user/type-list/teacher"
+        "http://223.130.161.116:80/user/type-list/teacher"
       );
       console.log("선생님 목록 왔다", response.data);
       if (response.data && response.data.items) {
@@ -85,7 +85,7 @@ const ClassManagement = () => {
       try {
         console.log("삭제할 놈들", selectedIds);
         const response = await axios.post(
-          "http://192.168.0.7:8081/course/course/delete",
+          "http://223.130.161.116:80/course/course/delete",
           { couNoList: JSON.stringify(selectedIds) },
           {
             headers: {

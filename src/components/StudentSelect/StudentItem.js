@@ -83,7 +83,7 @@ const StudentItem = ({
       const deleteUserAxios = async () => {
         try {
           const response = await axios.delete(
-            `http://192.168.0.207:8081/user/user/${id}`,
+            `http://223.130.161.116:80/user/user/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(

@@ -154,7 +154,7 @@ const TeacherModal = ({
 
     try {
       const response = await axios.put(
-        "http://192.168.0.216:8081/user/update",
+        "http://223.130.161.116:80/user/update",
         userDTO
       );
 

@@ -67,7 +67,7 @@ const AdminVodUpdate = () => {
   const fetchPostData = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.216:8081/vod/board/${id}`,
+        `http://223.130.161.116:80/vod/board/${id}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -150,7 +150,7 @@ const AdminVodUpdate = () => {
 
     try {
       const response = await axios.put(
-        `http://192.168.0.216:8081/vod/board/${id}`,
+        `http://223.130.161.116:80/vod/board/${id}`,
         formData,
         {
           headers: {

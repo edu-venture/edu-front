@@ -37,7 +37,7 @@ const Teacher = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.216:8081/user/admin/teacher-list"
+        "http://223.130.161.116:80/user/admin/teacher-list"
       );
       console.log("선생님 목록 왔다", response.data);
       if (response.data && response.data.items) {
@@ -58,7 +58,7 @@ const Teacher = () => {
     async (e) => {
       try {
         const response = await axios.post(
-          "http://192.168.0.216:8081/user/deleteselectusers",
+          "http://223.130.161.116:80/user/deleteselectusers",
           { selectedUserIds: selectedIds },
           {
             headers: {

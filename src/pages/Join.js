@@ -37,7 +37,7 @@ const Join = () => {
     try {
       // const response = await axios.get('/NoticeTest.json');
       const response = await axios.get(
-        "http://192.168.0.207:8081/course/course-list"
+        "http://223.130.161.116:80/course/course-list"
       );
       if (response.data && response.data.items) {
         setCourseList(response.data.items);
@@ -69,7 +69,7 @@ const Join = () => {
       const chk = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.207:8081/user/id-check",
+            "http://223.130.161.116:80/user/id-check",
             { userId: studentEmail }
           );
 
@@ -95,7 +95,7 @@ const Join = () => {
       const chk = async () => {
         try {
           const response = await axios.post(
-            "http://192.168.0.207:8081/user/id-check",
+            "http://223.130.161.116:80/user/id-check",
             { userId: parentEmail }
           );
 
@@ -214,7 +214,7 @@ const Join = () => {
         };
         try {
           const response = await axios.post(
-            "http://192.168.0.207:8081/user/join",
+            "http://223.130.161.116:80/user/join",
             joinDTO
           );
           console.log("뭐 보냄?", response);

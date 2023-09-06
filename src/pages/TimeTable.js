@@ -61,7 +61,7 @@ const TimeTable = () => {
   const fetchTeachers = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.207:8081/user/type-list/teacher"
+        "http://223.130.161.116:80/user/type-list/teacher"
       );
       console.log("선생님 들어오니?", response);
       if (response.data && response.data.items) {
@@ -76,7 +76,7 @@ const TimeTable = () => {
   const fetchCourses = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.0.207:8081/course/course-list"
+        "http://223.130.161.116:80/course/course-list"
       );
       console.log("반 정보 들어오니?", response);
       if (response.data && response.data.items) {
@@ -91,7 +91,7 @@ const TimeTable = () => {
   const fetchTimetable = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.207:8081/timetable/getTimeTable-list`
+        `http://223.130.161.116:80/timetable/getTimeTable-list`
       );
 
       console.log("시간표 들어옴?", response);
@@ -186,7 +186,7 @@ const TimeTable = () => {
 
       try {
         const response = await axios.post(
-          `http://192.168.0.207:8081/timetable/regist`,
+          `http://223.130.161.116:80/timetable/regist`,
           courseData
         );
         console.log("과목 정보 데이터 들어옴?", courseData);
@@ -248,7 +248,7 @@ const TimeTable = () => {
       };
 
       const response = await axios.delete(
-        `http://192.168.0.207:8081/timetable/deleteTimeTable`,
+        `http://223.130.161.116:80/timetable/deleteTimeTable`,
         { data: requestData }
       );
       if (response.data.statusCode === 0) {
