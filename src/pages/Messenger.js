@@ -15,6 +15,7 @@ const Messenger = () => {
   const [userEmail, setUserEmail] = useState([]);
   /** 얘는 nchat의 개별유저 조회 */
   const [user, setUser] = useState([]);
+  const [claName, setClaName] = useState([]);
 
   const userEmailAxios = () => {
     axios
@@ -23,12 +24,16 @@ const Messenger = () => {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         },
       })
-      .then((response) => setUserEmail(response.data.item.userId));
+      .then((response) => {
+        setClaName(response?.data?.item?.courseDTO?.claName);
+        setUserEmail(response?.data?.item?.userId);
+      });
   };
 
   useEffect(() => userEmailAxios(), []);
-
   console.log("자 너는 로그인한 유저의 이메일이다.", userEmail);
+  console.log("myInfo의 학생 해당 반:", claName);
+  /**얘를 활용해 로그인 유저가 속한 반만 렌더링되게 예외처리 하자. */
 
   /** 로그인한 유저의 ncloudChat 개별유저 조회 */
   useEffect(() => {
@@ -129,7 +134,12 @@ const Messenger = () => {
           background: "#f2f2f2",
         }}
       >
-        <MessengerUserList channel={channel} user={user} channel_id={id} />
+        <MessengerUserList
+          channel={channel}
+          user={user}
+          channel_id={id}
+          claName={claName}
+        />
       </Paper>
 
       <Paper sx={{ margin: 0, overflowY: "auto" }}>

@@ -36,6 +36,7 @@ const MessengerUser = ({
   isSelected,
   channelInfo = {},
   onSelect = () => {},
+  claName,
 }) => {
   const navigate = useNavigate();
 
@@ -50,18 +51,29 @@ const MessengerUser = ({
       navigate(`/messenger/${channelInfo.id}`);
     }
   };
-
   console.log("너가 해결의 열쇠다.", channelInfo);
-
-  return (
-    <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={handleClick}>
-      <Box sx={textContainer}>
-        <div className="messageBoxDeco" style={messageBoxDeco} />
-        <b>{channelInfo.name || ""}</b>{" "}
-        {/* userInfo.name이 없으면 빈 문자열을 출력합니다. */}
+  console.log("해결의 열쇠와 짝꿍", claName);
+  /** channelInfo와 DB에 저장되어 있는 학생의 반을 비교해서 표출 */
+  if (
+    channelInfo &&
+    (claName === channelInfo.name ||
+      channelInfo.name === "[ 공식 ] ✅ EduVenture")
+  ) {
+    return (
+      <Box
+        sx={isSelected ? clickedMessageBox : messageBox}
+        onClick={handleClick}
+      >
+        <Box sx={textContainer}>
+          <div className="messageBoxDeco" style={messageBoxDeco} />
+          <b>{channelInfo.name}</b>
+        </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
+
+  // channelInfo가 없거나 조건에 맞지 않는 경우에는 null 반환하여 메신저 박스 생성 방지
+  return null;
 };
 
 export default MessengerUser;

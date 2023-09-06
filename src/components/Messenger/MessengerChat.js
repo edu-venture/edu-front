@@ -25,7 +25,7 @@ const MessageText = styled.div`
 `;
 
 const TimeStamp = styled.div`
-  margin: -5px 5px;
+  margin: 10px 5px;
   font-size: 13px;
   color: #888;
 `;
