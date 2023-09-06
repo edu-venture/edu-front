@@ -63,17 +63,17 @@ const StudentList = ({
           </tr>
         </Thead>
         <Tbody>
-          {userList.map((user) => {
+          {userList?.map((user) => {
             return (
               <StudentItem
                 key={user.id}
-                id={user.id}
-                name={user.userName}
-                birth={user.userBirth}
+                id={user?.id}
+                name={user?.userName}
+                birth={user?.userBirth}
                 group={user?.courseDTO?.claName}
-                contact={user.userTel}
-                parentContact={user.parentDTO.userTel}
-                bus={user.userBus}
+                contact={user?.userTel}
+                parentContact={user?.parentDTO?.userTel}
+                bus={user?.userBus}
                 selectedIds={selectedIds}
                 setSelectedIds={setSelectedIds}
                 fetchUsers={fetchUsers}
