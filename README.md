@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+# 목차 Index
+- 기획배경
+- 멤버
+- UI/UX
+  - Figma
+- 커뮤니티
+- 문제해결
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 기획배경
 
-## Available Scripts
+# 멤버
+<div align="left">
+  <table>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/1three">
+          <img src="https://avatars.githubusercontent.com/u/78781975?v=4" alt="김한슬 프로필" width=120 height=120 />
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/leewanjae">
+          <img src="https://avatars.githubusercontent.com/u/78781975?v=4" alt="이완재 프로필" width=120 height=120 />
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/doohaJeon">
+          <img src="https://avatars.githubusercontent.com/u/78781975?v=4" alt="전두하 프로필" width=120 height=120 />
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/1three">
+          김한슬
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/leewanjae">
+          이완재
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/doohaJeon">
+          전두하
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
 
-In the project directory, you can run:
+# UI/UX
+- 메인
+- 스케줄 관리(출석, 시간표, 공지사항)
+- 스트리밍
+- VOD
+- 실시간 차량 위치
+- 퀴즈 관리
+- 메신저
+- 결제
+- 회원 관리(학생, 선생님)
+- 반 관리
 
-### `npm start`
+# 커뮤니티
+- Jira
+- git hub
+- source tree
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# 문제해결
