@@ -76,7 +76,7 @@ const CancelButton = styled.button`
   font-size: 1rem;
 `;
 
-const ReceiptDetail = ({ setTotalPrice, dataForm }) => {
+const ReceiptDetail = ({ setTotalPrice, dataForm, setInputUserId }) => {
   const [postData, setPostData] = useState([{ detail: "", price: "" }]);
 
   const navigate = useNavigate();
@@ -125,7 +125,7 @@ const ReceiptDetail = ({ setTotalPrice, dataForm }) => {
   const postAxios = async () => {
     try {
       const response = await axios.post(
-        "http://192.168.0.7:8081/payment/admin/bill",
+        "http://localhost:8081/payment/admin/bill",
         postDataForm,
         {
           headers: {
@@ -137,6 +137,7 @@ const ReceiptDetail = ({ setTotalPrice, dataForm }) => {
       if (response.status === 200) {
         console.log(response.data);
       }
+      setInputUserId("");
     } catch (error) {
       console.error("여기 포스트 Axios error", error);
     }

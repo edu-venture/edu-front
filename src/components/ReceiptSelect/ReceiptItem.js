@@ -89,8 +89,8 @@ const ReceiptItem = ({
           </Td>
           <Td>{element.totalPrice}</Td>
           <Td>{element.parentTel}</Td>
-          <Td>{element.payMethod || "N/A"}</Td>{" "}
-          <Td>{element.pay.toString()}</Td>
+          <Td>{element.payMethod || "N/A"}</Td>
+          <Td>{element.pay.toString() === "true" ? "완납" : "미납"}</Td>
           <Td>
             {/** 수정 버튼이 결제완료되었을 때 안보이는 로직*/}
             {element.pay ? (

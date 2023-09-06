@@ -31,12 +31,11 @@ const TotalPrice = styled.p`
 `;
 
 const ReceiptSelectUpdate = () => {
-  // const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(" ✏️ ");
   /** 얘는 payNo에 따른 유저의 값을 기본값으로 표출하기 위해 받아오는 것  */
   const [userData, setUserData] = useState([]);
   /** 얘는 payNo에 따른 유저의 값을 기존의 값과 다른 선택지를 제공하기 위해 제공 */
   const [allUserData, setAllUserData] = useState([]);
-
   const { payNo } = useParams();
 
   /** 수납관리 전체 리스트 데이터 */
@@ -93,17 +92,17 @@ const ReceiptSelectUpdate = () => {
         <div style={{ margin: "40px 20px 50px 20px" }}>
           <Title subtitle="EduVenture" title="수납 관리 수정"></Title>
           <TotalPrice>
-            총액{" "}
-            {userData.totalPrice ? numberWithCommas(userData.totalPrice) : "0"}
-            원
+            총액
+            {userData?.totalPrice ? totalPrice : "0"}원
           </TotalPrice>
         </div>
         {/** 여기가 반, 학생명, 청구년월 */}
         <ReceiptSelectUpdateList
-          // setTotalPrice={setTotalPrice}
           userData={userData}
           allUserData={allUserData}
           payNo={payNo}
+          setTotalPrice={setTotalPrice}
+          totalPrice={totalPrice}
         />
       </ReceiptWrapper>
     </Container>
