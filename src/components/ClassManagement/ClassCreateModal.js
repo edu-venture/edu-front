@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const ModalBackdrop = styled.div`
@@ -128,7 +128,7 @@ const ClassCreateModal = ({ isOpen, onClose, fetchClasses, teacherList }) => {
   const [claName, setClaName] = useState("");
   const [memo, setMemo] = useState("");
   const [selectedTeacherId, setSelectedTeacherId] = useState("");
-
+  const [nChatCreate, setNChatCreate] = useState("");
   if (!isOpen) {
     return null;
   }
@@ -142,7 +142,7 @@ const ClassCreateModal = ({ isOpen, onClose, fetchClasses, teacherList }) => {
     console.log("반 생성 요청 잘했어?", courseDTO);
     try {
       const response = await axios.post(
-        "http://192.168.0.7:8081/course/course",
+        "http://localhost:8081/course/course",
         courseDTO
       );
       console.log("반 생성 요청 잘했어?", response);
@@ -156,6 +156,30 @@ const ClassCreateModal = ({ isOpen, onClose, fetchClasses, teacherList }) => {
       console.error(e);
       alert("반 생성을 실패하였습니다.");
       onClose();
+    }
+    channelCreate();
+  };
+
+  const data = {
+    name: nChatCreate,
+    type: "PUBLIC",
+  };
+
+  const channelCreate = async () => {
+    try {
+      const response = await axios.post(
+        "https://dashboard-api.ncloudchat.naverncp.com/v1/api/channels",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-project-id": "ea3a8bf5-e78c-4f9b-830d-e66bf1d4040b",
+            "x-api-key": "3fdfbdf1fd786a1e6d1e5075db4e65d765001a0b610c65f1",
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -194,6 +218,13 @@ const ClassCreateModal = ({ isOpen, onClose, fetchClasses, teacherList }) => {
             <StyledInput
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
+            />
+          </InputContainer>
+          <InputContainer>
+            <LabelDiv>단톡방 생성</LabelDiv>
+            <StyledInput
+              value={nChatCreate}
+              onChange={(e) => setNChatCreate(e.target.value)}
             />
           </InputContainer>
         </ModalContent>
