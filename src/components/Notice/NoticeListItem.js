@@ -53,6 +53,7 @@ const ActionButtons = styled.div`
 
 const NoticeListItem = ({ notice, onDelete }) => {
   const { noticeNo, claName, noticeTitle, date, noticeContent } = notice;
+  const madeUser = notice.userDTO.userId;
 
   const deleteBoard = (e) => {
     e.preventDefault();
@@ -71,12 +72,16 @@ const NoticeListItem = ({ notice, onDelete }) => {
           <NoticeContent>{noticeContent}</NoticeContent>
           <DateContainer>{date}</DateContainer>
         </div>
-        <ActionButtons>
-          <button>
-            <Link to={`/admin/notice/update/${noticeNo}`}>수정</Link>
-          </button>
-          <button onClick={deleteBoard}>삭제</button>
-        </ActionButtons>
+        {madeUser === sessionStorage.getItem("userId") ? (
+          <ActionButtons>
+            <button>
+              <Link to={`/admin/notice/update/${noticeNo}`}>수정</Link>
+            </button>
+            <button onClick={deleteBoard}>삭제</button>
+          </ActionButtons>
+        ) : (
+          <></>
+        )}
       </InfoContainer>
     </ListItem>
   );
