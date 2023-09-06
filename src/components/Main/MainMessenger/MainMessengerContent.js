@@ -23,7 +23,7 @@ const messageBoxDeco = {
   height: "70px",
 };
 
-const MessengerContainer = () => {
+const MessengerContainer = ({ message }) => {
   return (
     <Box
       data-aos="fade-left"
@@ -45,7 +45,10 @@ const MessengerContainer = () => {
           fontSize: "20px",
         }}
       >
-        안녕하세요. 저희는 EduVenture입니다.
+        <span>
+          <b>{message.sender.name}</b>:
+        </span>
+        <span style={{ marginLeft: "20px" }}>{message.content}</span>
       </p>
     </Box>
   );
