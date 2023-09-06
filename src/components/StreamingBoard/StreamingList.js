@@ -1,5 +1,4 @@
 import React from "react";
-import vodData from "../../utils/vodData.json";
 import styled from "styled-components";
 import StreamingListItem from "./StreamingListItem";
 
@@ -16,7 +15,7 @@ const Container = styled.div`
   overflow-y: auto;
 `;
 
-const StreamingList = ({liveData}) => {
+const StreamingList = ({ liveData }) => {
   return (
     <Container>
       {liveData.map((item, index) => (

@@ -29,7 +29,7 @@ const CenteredImage = styled.img`
   width: 50%;
 `;
 
-const StreamingSettingContent = () => {
+const StreamingSettingContent = ({ publishUrl, streamKey }) => {
   return (
     <div>
       <TextBox>
@@ -84,10 +84,10 @@ const StreamingSettingContent = () => {
       <TextBox>
         <p>4-2. 서버와 스트림 키 항목에 아래의 정보를 복사해 붙여넣습니다.</p>
         <p>
-          <b>(서버)</b> 방송을 송출할 채널의 스트림 URL : 스트림 URL
+          <b>(서버)</b> 방송을 송출할 채널의 스트림 URL : {publishUrl}
         </p>
         <p>
-          <b>(스트림 키)</b> 방송을 송출할 채널의 스트림 키 : 스트림 키
+          <b>(스트림 키)</b> 방송을 송출할 채널의 스트림 키 : {streamKey}
         </p>
         <p>
           4-3. <b>적용</b> 버튼을 클릭합니다.

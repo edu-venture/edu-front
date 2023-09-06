@@ -15,17 +15,22 @@ const ListItem = styled.div`
 const VideoFrame = styled.div`
   width: 300px;
   height: 180px;
-  margin: 0 50px 0 20px;
+  margin: 0 40px 0 20px;
   background-color: #323232;
   // cursor: pointer;
 `;
 
-const StreamingListItem = ({ id, liveThumb, lectureName, teacherName, viewer }) => {
-
+const StreamingListItem = ({
+  id,
+  liveThumb,
+  lectureName,
+  teacherName,
+  viewer,
+}) => {
   return (
     <ListItem key={id}>
       <VideoFrame>
-        <img src={liveThumb} />
+        <img style={{ width: "300px", height: "180px" }} src={liveThumb} />
       </VideoFrame>
       <div>
         <div style={{ fontSize: "25px" }}>{lectureName}</div>

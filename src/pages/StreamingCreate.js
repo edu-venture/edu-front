@@ -21,20 +21,22 @@ const styles = {
 
 const StreamingCreate = () => {
   const [classList, setClassList] = useState([]);
-  const id = sessionStorage.getItem('id');
+  const id = sessionStorage.getItem("id");
 
   useEffect(() => {
     const fetchClassList = async () => {
       try {
-        const response = await axios.get(`http://localhost:8081/course/course/${id}`, 
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`          
+        const response = await axios.get(
+          `http://192.168.0.207:8081/course/course/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+            },
           }
-        });
+        );
         console.log(response.data.items);
         setClassList(response.data.items);
-      }catch(error) {
+      } catch (error) {
         console.log(error);
       }
     };
@@ -42,14 +44,12 @@ const StreamingCreate = () => {
     fetchClassList();
   }, []);
 
-
   return (
     <div
       style={{
         width: "100vw",
-        // height: "calc(100vh - 50px)",
-        height: '100%',
-        // overflow: "",
+        height: "calc(100vh - 50px)",
+        overflow: "hidden",
         backgroundColor: "#5AC467",
         position: "relative",
       }}
