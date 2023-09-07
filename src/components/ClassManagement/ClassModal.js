@@ -150,7 +150,7 @@ const ClassModal = ({
     };
     try {
       const response = await axios.put(
-        "http://223.130.161.116:80/course/course",
+        "https://eduventure.site:5443/course/course",
         courseDTO
       );
       console.log("반 수정 요청 잘했어?", response);

@@ -120,7 +120,7 @@ const NoticeCreate = () => {
   const getCourseList = async () => {
     try {
       const response = await axios.get(
-        "http://223.130.161.116:80/course/course-list"
+        "https://eduventure.site:5443/course/course-list"
       );
       console.log("반 목록 가져왔다", response);
       if (response.data && response.data.items) {
@@ -148,7 +148,7 @@ const NoticeCreate = () => {
         };
         try {
           const response = await axios.post(
-            "http://223.130.161.116:80/notice/createnotice",
+            "https://eduventure.site:5443/notice/createnotice",
             noticeDTO
           );
           if (response.data && response.data.statusCode === 200) {

@@ -154,7 +154,7 @@ const TeacherModal = ({
 
     try {
       const response = await axios.put(
-        "http://223.130.161.116:80/user/update",
+        "https://eduventure.site:5443/user/update",
         userDTO
       );
 

@@ -50,7 +50,7 @@ const ReceiptItem = ({
     console.log("삭제할 개별 아이디", [deletePayNo]);
     try {
       const response = await axios.post(
-        "http://223.130.161.116:80/payment/admin/bill/delete",
+        "https://eduventure.site:5443/payment/admin/bill/delete",
         { payNo: [deletePayNo] },
         {
           headers: {

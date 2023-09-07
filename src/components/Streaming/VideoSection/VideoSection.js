@@ -110,7 +110,7 @@ const VideoSection = ({
       });
 
       const response = await axios.delete(
-        `http://223.130.161.116:80/lecture/lecture/${channelId}`,
+        `https://eduventure.site:5443/lecture/lecture/${channelId}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

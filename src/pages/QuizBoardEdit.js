@@ -26,7 +26,7 @@ const QuizBoardEdit = () => {
       console.log("코스리스트갖고오는엑시오스 들어간다");
       // const response = await axios.get('/NoticeTest.json');
       const response = await axios.get(
-        "http://223.130.161.116:80/course/course-list"
+        "https://eduventure.site:5443/course/course-list"
       );
       console.log(response);
       console.log("위에껀 리스폰스");
@@ -44,7 +44,7 @@ const QuizBoardEdit = () => {
     const getBoard = async () => {
       try {
         const response = await axios.get(
-          `http://223.130.161.116:80/quiz/board/${boardNo}`,
+          `https://eduventure.site:5443/quiz/board/${boardNo}`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -102,7 +102,7 @@ const QuizBoardEdit = () => {
     const deleteBoardAxios = async () => {
       try {
         const response = await axios.delete(
-          `http://223.130.161.116:80/quiz/board/${boardNo}`,
+          `https://eduventure.site:5443/quiz/board/${boardNo}`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -324,7 +324,7 @@ const QuizBoardEdit = () => {
       const updateBoardAxios = async () => {
         try {
           const response = await axios.put(
-            "http://223.130.161.116:80/quiz/board",
+            "https://eduventure.site:5443/quiz/board",
             sendFormData,
             {
               headers: {

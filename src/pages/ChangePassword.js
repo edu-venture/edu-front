@@ -90,7 +90,7 @@ function ChangePassword() {
         };
         try {
           const response = await axios.put(
-            "http://223.130.161.116:80/user/updatepassword",
+            "https://eduventure.site:5443/user/updatepassword",
             userDTO
           );
           console.log(response);

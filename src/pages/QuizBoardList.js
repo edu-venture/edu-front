@@ -21,7 +21,7 @@ const QuizBoardList = () => {
     const getUser = async () => {
       try {
         const response = await axios.post(
-          `http://223.130.161.116:80/user/getuserbytoken`,
+          `https://eduventure.site:5443/user/getuserbytoken`,
           {},
           {
             headers: {
@@ -43,7 +43,7 @@ const QuizBoardList = () => {
     const getBoardList = async () => {
       try {
         const response = await axios.get(
-          "http://223.130.161.116:80/quiz/board-list",
+          "https://eduventure.site:5443/quiz/board-list",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -94,7 +94,7 @@ const QuizBoardList = () => {
     const searchAxios = async () => {
       try {
         const response = await axios.get(
-          "http://223.130.161.116:80/quiz/board-list",
+          "https://eduventure.site:5443/quiz/board-list",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

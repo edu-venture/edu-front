@@ -40,7 +40,7 @@ const StudentSelect = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://223.130.161.116:80/user/type-list/student"
+        "https://eduventure.site:5443/user/type-list/student"
       );
       console.log("유저 목록 왔다", response.data);
       if (response.data && response.data.items) {
@@ -61,7 +61,7 @@ const StudentSelect = () => {
     async (e) => {
       try {
         const response = await axios.post(
-          "http://223.130.161.116:80/user/deleteselectusers",
+          "https://eduventure.site:5443/user/deleteselectusers",
           { selectedUserIds: selectedIds },
           {
             headers: {

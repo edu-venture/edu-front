@@ -101,7 +101,7 @@ const AttendCard = ({ isAttend: initialAttend, reloadData }) => {
   const handleCheckIn = async () => {
     try {
       const response = await axios.get(
-        "http://223.130.161.116:80/attendance/enter",
+        "https://eduventure.site:5443/attendance/enter",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -122,7 +122,7 @@ const AttendCard = ({ isAttend: initialAttend, reloadData }) => {
   const handleCheckOut = async () => {
     try {
       const response = await axios.get(
-        "http://223.130.161.116:80/attendance/exit",
+        "https://eduventure.site:5443/attendance/exit",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

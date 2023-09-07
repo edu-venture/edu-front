@@ -34,7 +34,10 @@ const AdminJoin = () => {
       };
 
       try {
-        await axios.post("http://223.130.161.116:80/user/adminjoin", memberDTO);
+        await axios.post(
+          "https://eduventure.site:5443/user/adminjoin",
+          memberDTO
+        );
         alert("회원가입이 완료되었습니다.");
         navigate("/login");
       } catch (e) {

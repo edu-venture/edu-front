@@ -41,7 +41,7 @@ const ReceiptRegister = () => {
   const classAxios = async () => {
     try {
       const classResponse = await axios.get(
-        "http://223.130.161.116:80/course/course-list",
+        "https://eduventure.site:5443/course/course-list",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -65,7 +65,7 @@ const ReceiptRegister = () => {
   // const classStudentAxios = async () => {
   //   try {
   //     const classStudentResponse = await axios.get(
-  //       "http://223.130.161.116:80/user/user-list"
+  //       "https://eduventure.site:5443/user/user-list"
   //     );
 
   //     if (

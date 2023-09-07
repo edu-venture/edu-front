@@ -71,7 +71,7 @@ const MyPage = () => {
     try {
       console.log("리스트 가져온다");
       const response = await axios.get(
-        "http://223.130.161.116:80/course/course-list"
+        "https://eduventure.site:5443/course/course-list"
       );
       console.log("응답에 리스트 담겨있나?", response.data.items);
       if (response.data.items) {
@@ -89,7 +89,7 @@ const MyPage = () => {
         userId: sessionStorage.getItem("userId"),
       };
       const userresponse = await axios.post(
-        "http://223.130.161.116:80/user/getuser",
+        "https://eduventure.site:5443/user/getuser",
         user
       );
 
@@ -131,7 +131,7 @@ const MyPage = () => {
           id: userresponse.data.item.userJoinId,
         };
         const studentresponse = await axios.post(
-          "http://223.130.161.116:80/user/getstudent",
+          "https://eduventure.site:5443/user/getstudent",
           student
         );
 
@@ -180,7 +180,7 @@ const MyPage = () => {
 
         try {
           const response = await axios.put(
-            "http://223.130.161.116:80/user/update",
+            "https://eduventure.site:5443/user/update",
             userDTO
           );
           console.log(response);

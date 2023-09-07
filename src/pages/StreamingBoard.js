@@ -27,7 +27,7 @@ const StreamingBoard = () => {
     const getLiveList = async () => {
       try {
         const response = await axios.get(
-          "http://223.130.161.116:80/lecture/lecture-list",
+          "https://eduventure.site:5443/lecture/lecture-list",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

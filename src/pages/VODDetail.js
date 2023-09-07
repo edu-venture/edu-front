@@ -16,18 +16,6 @@ const styles = {
   titleContainer: {
     padding: "20px 0px 20px 50px",
   },
-  downloadButton: {
-    padding: "10px 20px",
-    backgroundColor: "#5AC467",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    textDecoration: "none",
-    fontSize: "14px",
-    display: "inline-block",
-    margin: "10px 0",
-  },
 };
 
 const VODDetail = () => {
@@ -40,7 +28,7 @@ const VODDetail = () => {
     const fetchPostData = async () => {
       try {
         const response = await axios.get(
-          `http://223.130.161.116:80/vod/board/${id}`,
+          `https://eduventure.site:5443/vod/board/${id}`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -60,9 +48,6 @@ const VODDetail = () => {
   }, [id]);
 
   const file = fileList && fileList[0];
-  const fileUrl = file
-    ? `http://223.130.161.116:80/storage/download/${file.vodSaveName}`
-    : "#";
 
   return (
     <div style={styles.container}>
@@ -74,18 +59,7 @@ const VODDetail = () => {
         />
       </div>
       <div>
-        <VODSection videoDetail={postData} />
-        <div style={{ textAlign: "center" }}>
-          {file && (
-            <a
-              href={fileUrl}
-              download={file.vodSaveName}
-              style={styles.downloadButton}
-            >
-              강의 자료 다운로드 | {file.vodOriginName}
-            </a>
-          )}
-        </div>
+        <VODSection videoDetail={postData} file={file} />
         <ChatSection
           commentsList={commentsList}
           setCommentsList={setCommentsList}

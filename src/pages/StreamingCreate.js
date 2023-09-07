@@ -27,7 +27,7 @@ const StreamingCreate = () => {
     const fetchClassList = async () => {
       try {
         const response = await axios.get(
-          `http://223.130.161.116:80/course/course/${id}`,
+          `https://eduventure.site:5443/course/course/${id}`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

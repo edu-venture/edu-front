@@ -19,10 +19,10 @@ function GotoMyClassForTeacher() {
     const getUser = async () => {
       try {
         const responseuser = await axios.post(
-          `http://223.130.161.116:80/user/getuserbytoken`,
+          `https://eduventure.site:5443/user/getuserbytoken`,
           {},
           {
-            // const response = await axios.post(`http://223.130.161.116:80/quiz/board/${boardNo}`, {
+            // const response = await axios.post(`https://eduventure.site:5443/quiz/board/${boardNo}`, {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
             },
@@ -43,7 +43,7 @@ function GotoMyClassForTeacher() {
           const getClasses = async () => {
             try {
               const response = await axios.get(
-                `http://223.130.161.116:80/course/course/${responseuser.data.item.id}`,
+                `https://eduventure.site:5443/course/course/${responseuser.data.item.id}`,
                 {}, // 요청 본문에 boardNo를 넣어서 보냅니다.
                 {
                   headers: {
