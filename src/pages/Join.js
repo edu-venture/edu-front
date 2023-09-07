@@ -37,7 +37,7 @@ const Join = () => {
     try {
       // const response = await axios.get('/NoticeTest.json');
       const response = await axios.get(
-        "http://223.130.161.116:80/course/course-list"
+        "https://eduventure.site:5443/course/course-list"
       );
       if (response.data && response.data.items) {
         setCourseList(response.data.items);
@@ -69,7 +69,7 @@ const Join = () => {
       const chk = async () => {
         try {
           const response = await axios.post(
-            "http://223.130.161.116:80/user/id-check",
+            "https://eduventure.site:5443/user/id-check",
             { userId: studentEmail }
           );
 
@@ -95,7 +95,7 @@ const Join = () => {
       const chk = async () => {
         try {
           const response = await axios.post(
-            "http://223.130.161.116:80/user/id-check",
+            "https://eduventure.site:5443/user/id-check",
             { userId: parentEmail }
           );
 
@@ -214,7 +214,7 @@ const Join = () => {
         };
         try {
           const response = await axios.post(
-            "http://223.130.161.116:80/user/join",
+            "https://eduventure.site:5443/user/join",
             joinDTO
           );
           console.log("뭐 보냄?", response);

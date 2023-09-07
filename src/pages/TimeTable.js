@@ -61,7 +61,7 @@ const TimeTable = () => {
   const fetchTeachers = async () => {
     try {
       const response = await axios.get(
-        "http://223.130.161.116:80/user/type-list/teacher"
+        "https://eduventure.site:5443/user/type-list/teacher"
       );
       console.log("선생님 들어오니?", response);
       if (response.data && response.data.items) {
@@ -76,7 +76,7 @@ const TimeTable = () => {
   const fetchCourses = async () => {
     try {
       const response = await axios.get(
-        "http://223.130.161.116:80/course/course-list"
+        "https://eduventure.site:5443/course/course-list"
       );
       console.log("반 정보 들어오니?", response);
       if (response.data && response.data.items) {
@@ -91,7 +91,7 @@ const TimeTable = () => {
   const fetchTimetable = async () => {
     try {
       const response = await axios.get(
-        `http://223.130.161.116:80/timetable/getTimeTable-list`
+        `https://eduventure.site:5443/timetable/getTimeTable-list`
       );
 
       console.log("시간표 들어옴?", response);
@@ -186,7 +186,7 @@ const TimeTable = () => {
 
       try {
         const response = await axios.post(
-          `http://223.130.161.116:80/timetable/regist`,
+          `https://eduventure.site:5443/timetable/regist`,
           courseData
         );
         console.log("과목 정보 데이터 들어옴?", courseData);
@@ -248,7 +248,7 @@ const TimeTable = () => {
       };
 
       const response = await axios.delete(
-        `http://223.130.161.116:80/timetable/deleteTimeTable`,
+        `https://eduventure.site:5443/timetable/deleteTimeTable`,
         { data: requestData }
       );
       if (response.data.statusCode === 0) {

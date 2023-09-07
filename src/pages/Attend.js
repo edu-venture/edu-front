@@ -21,7 +21,7 @@ const Attend = () => {
   const getIsAttend = async () => {
     try {
       const response = await axios.get(
-        "http://223.130.161.116:80/attendance/main",
+        "https://eduventure.site:5443/attendance/main",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -41,7 +41,7 @@ const Attend = () => {
   const getAttendance = async () => {
     try {
       const response = await axios.get(
-        "http://223.130.161.116:80/attendance/attend",
+        "https://eduventure.site:5443/attendance/attend",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

@@ -52,7 +52,7 @@ const UserListItem = ({ user, reloadUserList, handleCheckboxChange }) => {
           id: userJoinId,
         };
         const studentresponse = await axios.post(
-          "http://223.130.161.116:80/user/getstudent",
+          "https://eduventure.site:5443/user/getstudent",
           student
         );
 
@@ -72,7 +72,7 @@ const UserListItem = ({ user, reloadUserList, handleCheckboxChange }) => {
       const deleteUserAxios = async () => {
         try {
           const response = await axios.delete(
-            `http://223.130.161.116:80/user/user/${id}`,
+            `https://eduventure.site:5443/user/user/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(

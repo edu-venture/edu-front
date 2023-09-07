@@ -125,7 +125,7 @@ const ReceiptDetail = ({ setTotalPrice, dataForm, setInputUserId }) => {
   const postAxios = async () => {
     try {
       const response = await axios.post(
-        "http://223.130.161.116:80/payment/admin/bill",
+        "https://eduventure.site:5443/payment/admin/bill",
         postDataForm,
         {
           headers: {

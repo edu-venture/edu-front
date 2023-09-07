@@ -67,7 +67,7 @@ const VODBoard = () => {
     const getVODList = async () => {
       try {
         const response = await axios.get(
-          "http://223.130.161.116:80/vod/board-list",
+          "https://eduventure.site:5443/vod/board-list",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,

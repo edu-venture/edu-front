@@ -113,7 +113,7 @@ const Location = () => {
   useEffect(() => {
     const userbusnumbertogetphoto = sessionStorage.getItem("userBus");
 
-    axios.get("http://223.130.161.116:80/igiveyougps").then((response) => {
+    axios.get("https://eduventure.site:5443/igiveyougps").then((response) => {
       setCars(response.data.items);
       setGps(
         response.data.items.find(
@@ -124,7 +124,7 @@ const Location = () => {
       return response.data.items; // 이 값을 반환하여 다음 .then에서 사용합니다.
     });
     axios
-      .get("http://223.130.161.116:80/trytogetphotofromserver", {
+      .get("https://eduventure.site:5443/trytogetphotofromserver", {
         params: {
           userBus: userbusnumbertogetphoto,
         },
@@ -155,7 +155,7 @@ const Location = () => {
 
     try {
       const response = await axios.post(
-        "http://223.130.161.116:80/sms/send",
+        "https://eduventure.site:5443/sms/send",
         messageDto
       );
       console.log("Message sent successfully:", response.data);

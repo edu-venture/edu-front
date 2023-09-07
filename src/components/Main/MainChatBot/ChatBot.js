@@ -25,7 +25,7 @@ const ChatBot = () => {
     const newRoomId = Math.floor(Math.random() * 1000000).toString();
     setRoomId(newRoomId);
 
-    let socket = new SockJS("http://223.130.161.116:80/ws");
+    let socket = new SockJS("https://eduventure.site:5443/ws");
     const newStompClient = Stomp.over(() => socket);
     setStompClient(newStompClient);
 

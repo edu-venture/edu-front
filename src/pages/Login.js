@@ -19,7 +19,7 @@ const Login = ({ setIsLogin }) => {
         let response;
         try {
           response = await axios.post(
-            "http://223.130.161.116:80/user/login",
+            "https://eduventure.site:5443/user/login",
             user
           );
           console.log();
@@ -38,7 +38,7 @@ const Login = ({ setIsLogin }) => {
               };
 
               const studentresponse = await axios.post(
-                "http://223.130.161.116:80/user/getstudent",
+                "https://eduventure.site:5443/user/getstudent",
                 student
               );
 

@@ -114,7 +114,7 @@ const NoticeUpdate = () => {
   const getCourseList = async () => {
     try {
       const response = await axios.get(
-        "http://223.130.161.116:80/course/course-list"
+        "https://eduventure.site:5443/course/course-list"
       );
       console.log("반 목록 왔다", response);
       if (response.data && response.data.items) {
@@ -130,7 +130,7 @@ const NoticeUpdate = () => {
     try {
       console.log("noticeNo?", noticeNo);
       const response = await axios.get(
-        `http://223.130.161.116:80/notice/getnotice/${noticeNo}`
+        `https://eduventure.site:5443/notice/getnotice/${noticeNo}`
       );
       console.log("개별 공지사항 왔다", response);
       if (response.data && response.data.item) {
@@ -165,7 +165,7 @@ const NoticeUpdate = () => {
         };
         try {
           const response = await axios.put(
-            "http://223.130.161.116:80/notice/noticeupdate",
+            "https://eduventure.site:5443/notice/noticeupdate",
             noticeDTO,
             {
               headers: {

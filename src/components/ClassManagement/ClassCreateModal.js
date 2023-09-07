@@ -142,7 +142,7 @@ const ClassCreateModal = ({ isOpen, onClose, fetchClasses, teacherList }) => {
     console.log("반 생성 요청 잘했어?", courseDTO);
     try {
       const response = await axios.post(
-        "http://223.130.161.116:80/course/course",
+        "https://eduventure.site:5443/course/course",
         courseDTO
       );
       console.log("반 생성 요청 잘했어?", response);

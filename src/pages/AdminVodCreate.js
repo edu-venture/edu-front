@@ -115,7 +115,7 @@ const AdminVodCreate = () => {
 
     try {
       const response = await axios.post(
-        "http://223.130.161.116:80/vod/board",
+        "https://eduventure.site:5443/vod/board",
         formData,
         {
           headers: {

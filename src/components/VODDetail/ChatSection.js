@@ -159,7 +159,7 @@ const ChatSection = ({ commentsList, setCommentsList, id }) => {
   const onClickAddComment = async (commentId, commentContent) => {
     try {
       const response = await axios.post(
-        "http://223.130.161.116:80/vod/comment",
+        "https://eduventure.site:5443/vod/comment",
         {
           vodNo: id,
           vodCmtParentNo: commentId || 0,

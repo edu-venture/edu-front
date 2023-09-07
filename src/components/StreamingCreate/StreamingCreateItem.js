@@ -112,7 +112,7 @@ const StreamingCreateItem = ({ classList }) => {
 
     try {
       const response = await axios.post(
-        "http://223.130.161.116:80/lecture/lecture",
+        "https://eduventure.site:5443/lecture/lecture",
         {
           title: lectureTitle,
           couNo: couNo,

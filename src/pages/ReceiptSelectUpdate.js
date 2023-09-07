@@ -42,7 +42,7 @@ const ReceiptSelectUpdate = () => {
   const allUserDataAxios = async () => {
     try {
       const resG = await axios.get(
-        "http://223.130.161.116:80/payment/admin/bill-list",
+        "https://eduventure.site:5443/payment/admin/bill-list",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -64,7 +64,7 @@ const ReceiptSelectUpdate = () => {
   const getUserInfo = async () => {
     try {
       const response = await axios.get(
-        `http://223.130.161.116:80/payment/admin/${payNo}`,
+        `https://eduventure.site:5443/payment/admin/${payNo}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
