@@ -67,7 +67,7 @@ const AdminVODUpdate = () => {
   const fetchPostData = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.216:8081/vod/board/${id}`,
+        `https://eduventure.site:5443/vod/board/${id}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -150,7 +150,7 @@ const AdminVODUpdate = () => {
 
     try {
       const response = await axios.put(
-        `http://192.168.0.216:8081/vod/board/${id}`,
+        `https://eduventure.site:5443/vod/board/${id}`,
         formData,
         {
           headers: {
