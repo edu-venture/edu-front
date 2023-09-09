@@ -1,25 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>EduVenture: 학원 통합 관리 프로그램</title>
-  <style>
-    body {
-        line-height: 1.8;
-    }
-    h1, h2, h3 {
-        line-height: 1.5;
-    }
-    p {
-        line-height: 2.1;
-    }
-    li {
-        line-height: 2.2;
-    }
-</style>
-</head>
-
-<body>
-
 <h1 align="center">
   에듀벤처: 학원 통합 관리 프로그램<br/>
   <span style="font-weight:lighter;font-size:25px">EduVenture: Integrated academy management program</span><br/>
