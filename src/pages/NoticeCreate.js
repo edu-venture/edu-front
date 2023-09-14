@@ -120,7 +120,7 @@ const NoticeCreate = () => {
   const getCourseList = async () => {
     try {
       const response = await axios.get(
-        "https://eduventure.site:5443/course/course-list"
+        "http://192.168.0.59:8081/course/course-list"
       );
       console.log("반 목록 가져왔다", response);
       if (response.data && response.data.items) {
@@ -148,8 +148,15 @@ const NoticeCreate = () => {
         };
         try {
           const response = await axios.post(
-            "https://eduventure.site:5443/notice/createnotice",
-            noticeDTO
+            "http://192.168.0.59:8081/notice/createnotice",
+            noticeDTO,
+            {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem(
+                  "ACCESS_TOKEN"
+                )}`,
+              },
+            }
           );
           if (response.data && response.data.statusCode === 200) {
             console.log("공지사항 등록 완료", response);

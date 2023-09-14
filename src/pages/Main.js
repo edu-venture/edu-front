@@ -35,10 +35,30 @@ const Main = () => {
   const [mainUserClaInfo, setMainUserClaInfo] = useState([]);
   const [mainMessage, setMainMessage] = useState([]);
   const [resultChannelId, setResultChannelId] = useState([]);
+  const [liveData, setLiveData] = useState([]);
+
+  const getLiveList = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.0.59:8081/lecture/lecture-list",
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
+      console.log("라이브?", response.data.items);
+      setLiveData(response.data.items[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getTimetable = async () => {
     try {
       const response = await axios.get(
         "https://eduventure.site:5443/timetable/student/list",
+        "http://192.168.0.59:8081/timetable/student/list",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -58,6 +78,7 @@ const Main = () => {
     try {
       const response = await axios.get(
         "https://eduventure.site:5443/notice/course",
+        "http://192.168.0.59:8081/notice/course",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -91,6 +112,7 @@ const Main = () => {
     if (userType === "student" || userType === "parent") {
       getTimetable();
       getNotices();
+      getLiveList();
     }
     AOS.refresh();
   }, []);
@@ -134,6 +156,7 @@ const Main = () => {
   const userMyInfoAxios = () => {
     axios
       .get("https://eduventure.site:5443/user/myInfo", {
+      .get("http://192.168.0.59:8081/user/myInfo", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         },
@@ -198,7 +221,7 @@ const Main = () => {
           <>
             <MainLecture lectures={lectures} noticeContent={noticeContent} />
             <MainMessenger mainMessage={mainMessage} />
-            <MainStreaming />
+            <MainStreaming Thumnail={liveData.liveThumb} />
           </>
         ) : (userType === "admin") | (userType === "teacher") ? (
           <MainMessenger mainMessage={mainMessage} />
