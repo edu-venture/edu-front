@@ -3,27 +3,27 @@ import Box from "@mui/material/Box";
 const messageBox = {
   position: "relative",
   backgroundColor: "#f2f2f2",
-  width: "60vw",
-  height: "13vh",
+  width: "1000px",
+  height: "110px",
   left: "20vw",
-  borderRadius: "50px",
+  borderRadius: "60px",
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-start",
   padding: "0 20px",
-  margin: "20px 0",
+  margin: "0 0 30px 0",
 };
 
 const messageBoxDeco = {
   position: "absolute",
-  left: "20px",
+  left: "30px",
   backgroundColor: "#5ac467",
   borderRadius: "50%",
   width: "70px",
   height: "70px",
 };
 
-const MessengerContainer = () => {
+const MessengerContainer = ({ message }) => {
   return (
     <Box
       data-aos="fade-left"
@@ -40,11 +40,15 @@ const MessengerContainer = () => {
         style={{
           color: "black",
           position: "relative",
-          left: "90px",
+          left: "110px",
           width: "50vw",
+          fontSize: "20px",
         }}
       >
-        안녕하세요 저희는 EduVenture입니다.
+        <span>
+          <b>{message.sender.name}</b>:
+        </span>
+        <span style={{ marginLeft: "20px" }}>{message.content}</span>
       </p>
     </Box>
   );

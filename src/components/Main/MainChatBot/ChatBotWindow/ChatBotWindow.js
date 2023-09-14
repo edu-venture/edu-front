@@ -76,7 +76,7 @@ const ChatBotWindow = ({ onClose, stompClient, roomId, connected }) => {
       );
 
       return () => {
-        subscription.unsubsribe();
+        subscription.unsubscribe();
       };
     }
   }, [stompClient, connected, roomId]);

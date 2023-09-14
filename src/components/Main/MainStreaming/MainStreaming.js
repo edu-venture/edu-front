@@ -15,11 +15,11 @@ const streamingContainer = {
   backgroundColor: "#171A2B",
 };
 
-const MainStreaming = () => {
+const MainStreaming = ({ Thumnail }) => {
   return (
     <Paper className="streamingContainer" elevation={0} sx={streamingContainer}>
       <MainStreamingTitle />
-      <MainStreamingArea />
+      <MainStreamingArea Thumnail={Thumnail} />
     </Paper>
   );
 };

@@ -1,6 +1,6 @@
 import { Paper } from "@mui/material";
 
-const StreamingArea = () => {
+const StreamingArea = ({ Thumnail }) => {
   return (
     <Paper
       className="whiteBox"
@@ -9,7 +9,7 @@ const StreamingArea = () => {
         position: "absolute",
         bottom: 0,
         width: "90vw",
-        height: "75vh",
+        height: "80vh",
         backgroundColor: "#f2f2f2",
         borderRadius: "30px 30px 0px 0px",
         display: "flex",
@@ -17,15 +17,27 @@ const StreamingArea = () => {
         justifyContent: "center",
       }}
     >
-      <Paper
-        className="streamingBox"
-        sx={{
-          width: "50vw",
-          height: "60vh",
-          backgroundColor: "#323232",
-          borderRadius: "0px",
-        }}
-      ></Paper>
+      {Thumnail ? (
+        <img
+          style={{
+            width: "50vw",
+            height: "60vh",
+          }}
+          src={Thumnail}
+        ></img>
+      ) : (
+        <>
+          <Paper
+            className="streamingBox"
+            sx={{
+              width: "50vw",
+              height: "60vh",
+              backgroundColor: "#323232",
+              borderRadius: "0px",
+            }}
+          ></Paper>
+        </>
+      )}
     </Paper>
   );
 };

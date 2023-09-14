@@ -3,12 +3,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const messageBox = {
-  position: "relative", // <--- Add this
-  backgroundColor: "#f2f2f2",
-  width: "100vw",
-  height: "12vh",
+  width: "100%",
+  height: "10vh",
   display: "flex",
   alignItems: "center",
+  backgroundColor: "#f2f2f2",
   padding: "0px",
   cursor: "pointer",
 };
@@ -18,43 +17,63 @@ const clickedMessageBox = {
   backgroundColor: "#ffffff",
 };
 
+const textContainer = {
+  flex: 1,
+  display: "flex",
+  justifyContent: "left",
+  alignItems: "center",
+};
+
 const messageBoxDeco = {
-  position: "relative",
   backgroundColor: "#5ac467",
   borderRadius: "50%",
   width: "50px",
   height: "50px",
-  left: "-30px",
+  margin: "0px 30px",
 };
 
-const textContainer = {
-  flex: 1,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const MessengerUser = ({ isSelected, user, id, onSelect }) => {
+const MessengerUser = ({
+  isSelected,
+  channelInfo = {},
+  onSelect = () => {},
+  claName,
+}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
+    if (!channelInfo || !channelInfo.id) return; // userInfo나 userInfo.id가 없으면 아무것도 실행하지 않습니다.
+
     if (isSelected) {
       onSelect(null);
       navigate("/messenger");
     } else {
-      onSelect(id);
-      navigate(`/messenger/${id}`);
+      onSelect(channelInfo);
+      navigate(`/messenger/${channelInfo.id}`);
     }
   };
-
-  return (
-    <Box sx={isSelected ? clickedMessageBox : messageBox} onClick={handleClick}>
-      <Box sx={textContainer}>
-        <div className="messageBoxDeco" style={messageBoxDeco} />
-        <h3 style={{ color: "black", margin: 0 }}>{user}</h3>
+  console.log("너가 해결의 열쇠다.", channelInfo);
+  console.log("해결의 열쇠와 짝꿍", claName);
+  /** channelInfo와 DB에 저장되어 있는 학생의 반을 비교해서 표출 */
+  if (
+    channelInfo &&
+    (claName === channelInfo.name ||
+      channelInfo.name === "[ 공식 ] ✅ EduVenture")
+  ) {
+    return (
+      <Box
+        sx={isSelected ? clickedMessageBox : messageBox}
+        onClick={handleClick}
+      >
+        <Box sx={textContainer}>
+          <div className="messageBoxDeco" style={messageBoxDeco} />
+          <b>{channelInfo.name}</b>
+        </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
+
+  // channelInfo가 없거나 조건에 맞지 않는 경우에는 null 반환하여 메신저 박스 생성 방지
+  return null;
 };
 
 export default MessengerUser;

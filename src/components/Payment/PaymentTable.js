@@ -7,7 +7,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import paymentData from "../../utils/paymentData.json";
 
 const tableContainerStyle = {
   flexGrow: 1,
@@ -18,38 +17,46 @@ const tableContentStyle = {
   paddingBottom: "20px",
 };
 
-const PaymentTable = () => (
-  <TableContainer sx={tableContainerStyle}>
-    <Table aria-label="simple table">
-      <TableHead>
-        <TableRow>
-          <TableCell
-            align="left"
-            sx={{
-              borderBottom: "none",
-              pl: 15,
-              fontWeight: 700,
-              fontSize: "1.2rem",
-            }}
-          >
-            상세 내역
-          </TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {Object.entries(paymentData).map(([key, value], index) => (
-          <TableRow key={index}>
-            <TableCell align="left" sx={{ ...tableContentStyle, pl: 15 }}>
-              {key}
-            </TableCell>
-            <TableCell align="right" sx={{ ...tableContentStyle, pr: 15 }}>
-              {value.amount.toLocaleString("ko-KR")}
+const PaymentTable = ({ paymentData }) => {
+  console.log("유저단에서 넘어온 납부서 데이터이다.", paymentData);
+
+  return (
+    <TableContainer sx={tableContainerStyle}>
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell
+              align="left"
+              sx={{
+                borderBottom: "none",
+                pl: 15,
+                fontWeight: 700,
+                fontSize: "1.2rem",
+              }}
+            >
+              상세 내역
             </TableCell>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-);
+        </TableHead>
+        <TableBody>
+          {paymentData?.item?.productList?.map((paymentItem, index) => {
+            return (
+              <TableRow key={index}>
+                <TableCell align="left" sx={{ ...tableContentStyle, pl: 15 }}>
+                  <div key={paymentItem?.id}>{paymentItem?.productName}</div>
+                </TableCell>
+                <TableCell align="right" sx={{ ...tableContentStyle, pr: 15 }}>
+                  <div key={paymentItem?.id}>
+                    {paymentItem?.productPrice.toLocaleString("ko-KR")}
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
 export default PaymentTable;
