@@ -140,6 +140,10 @@
 에듀벤쳐는 2달이라는 짧은 기간 동안 다양한 기능을 구현하며, 혁신적인 교육 플랫폼을 개발하는 데 주력하였습니다. 이번 프로젝트에서 우리는 아래와 같은 주요 기능들을 개발하였습니다.
 </p>
 <h3>메인 화면</h3>
+<p align="center">
+  <img src="https://github.com/edu-venture/edu-front/assets/124972698/4f699bef-9262-4e48-80a0-cbe2fb712d66"
+ width=“200px” height=“400px”>
+</p>
 <ul>
   <li><strong>통합 정보 제공:</strong> 수강 강좌, 메신저, 현재 진행 중인 스트리밍 등의 정보 제공</li>
 </ul>
