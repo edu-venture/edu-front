@@ -1,34 +1,26 @@
-<center>
-  <h1>
-    <i>Edu-Venture</i><br>
-    에듀벤처 : 학원 통합 관리 프로그램<br>
-  </h1>
-  <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/32c49812-8e66-40d9-873b-5af349118968"/>
-</center>
+<h1 align="center">
+  🍀 <i>EduVenture : 에듀벤처</i> 📗<br>
+  학원 통합 관리 프로그램<br>
+</h1>
+<img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/32c49812-8e66-40d9-873b-5af349118968"/>
 
 <br>
 
-## 목차
+# ✨ 목차
 
-1. [소개](#1-소개)
+1. [소개](#👋🏻-소개)
+2. [기획 배경](#📝-기획-배경)
+3. [기능](#📦-기능-화면)
+4. [UI/UX - Figma](#🎞️-uiux---figma)
+5. [커뮤니티](#📢-커뮤니티)
+6. [문제 상황 및 해결](#👿-문제-상황-및-해결)
+7. [프론트엔드 멤버](#👥-프론트엔드-멤버)
 
-2. [기획 배경](#2-기획-배경)
+<br><br>
 
-3. [기능](#3-기능-화면)
+# 👋🏻 소개
 
-4. [UI/UX - Figma](#4-uiux---figma)
-
-5. [커뮤니티](#5-커뮤니티)
-
-6. [문제 상황 및 해결](#6-문제-상황-및-해결)
-
-7. [프론트엔드 멤버](#7-프론트엔드-멤버)
-
-<br>
-
-## 1. 소개
-
-_EduVenture(이하 에듀벤처)는 2023년 8월 2일부터 9월 11일까지 약 **7주간** 진행된 프로젝트입니다._<br>
+EduVenture(이하 에듀벤처)는 2023년 8월 2일부터 9월 11일까지 약 **7주간** 진행된 프로젝트입니다.<br>
 
 ```
 `팀 에듀라`
@@ -37,71 +29,63 @@ _EduVenture(이하 에듀벤처)는 2023년 8월 2일부터 9월 11일까지 약
   백엔드 : 강호현, 이정우
 ```
 
-<br>
+<br><br>
 
-## 2. 기획 배경
+# 📝 기획 배경
+
+에듀벤처는 학원과 그 관리자들에게 제공하는 <u>B2B 서비스</u>이자,<br>
+학생과 학부모가 사용하는 <u>B2C 플랫폼</u>으로<br><br>
+_**하나의 플랫폼에서 학원의 모든 것을 제공받을 수 있는 서비스**_
+를 기획하였습니다.
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/eacc5b58-9820-4dc3-8c07-9e224dba48d6"/>
 </p>
 
-_에듀벤처는 학원과 그 관리자들에게 제공하는 <u>B2B 서비스</u>이자,<br>
-학생과 학부모가 사용하는 <u>B2C 플랫폼</u>으로<br><br>
-**하나의 플랫폼에서 모든 서비스를 제공받을 수 있는 서비스**를 기획하였습니다._
+<br><br>
 
-<br>
+# 📦 기능 (화면)
 
-## 3. 기능 (화면)
+## 🌟 메인 화면
 
-### 3-1. 메인 화면
-
-_**통합 정보 제공**<br>
-학생의 주간 시간표와 메신저 알림 여부, 현재 진행 중인 스트리밍 동영상_
+**통합 정보 제공**<br>
+_학생의 주간 시간표와 메신저 알림 여부, 현재 진행 중인 스트리밍 동영상에 대한 정보 제공_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/2b999297-27ee-41e6-b06f-e398211131b6"/>
 </p>
 
----
+## 🌟 챗봇
 
-### 3-2. 챗봇
-
-_**자동 상담 및 FAQ**<br>
-학원에 대한 기본적인 질문에 자동으로 답변을 제공_
+**자동 상담 및 FAQ**<br>
+_학원에 대한 기본적인 질문에 자동으로 답변을 제공_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/dcbd5fc1-da87-441e-94b1-3591ff59379b"/>
 </p>
 
----
+## 🌟 메신저
 
-### 3-3. 메신저
-
-_**다기능 채팅**<br>
-학원 관리자, 선생님, 학부모, 학생간의 소통을 위한 메신저 기능_
+**다기능 채팅**<br>
+_학원 관리자, 선생님, 학부모, 학생간의 소통을 위한 메신저 기능_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/19812e8d-700e-4c98-80da-65ab762ff963"/>
 </p>
 
----
+## 🌟 실시간 스트리밍 수업
 
-### 3-4. 실시간 스트리밍 수업
-
-_**통합 스트리밍 플랫폼**<br>
-OBS 프로그램과 함께 자체 플랫폼 내에서 실시간 스트리밍 수업을 운영_
+**통합 스트리밍 플랫폼**<br>
+_OBS 프로그램과 함께 자체 플랫폼 내에서 실시간 스트리밍 수업을 운영_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/3fc6fdb6-f521-4f5c-9ae1-f9e52fb9c2c2"/>
 </p>
 
----
+## 🌟 차량 관리
 
-### 3-5. 차량 관리
-
-_**실시간 차량 추적**<br>
-학생은 내가 타는 차량의 위치를,<br>
-학부모는 자녀가 타는 차량 위치를 확인_
+**실시간 차량 추적**<br>
+_학생은 내가 타는 차량의 위치를, 학부모는 자녀가 타는 차량 위치를 확인_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/256adf0a-5b30-46c5-b51a-29dc5ff286de"/>
@@ -109,84 +93,72 @@ _**실시간 차량 추적**<br>
 
 <br>
 
-_**실시간 모니터링**<br>
-버스 기사님의 촬영을 통해 차량 내부 상황 모니터링_
+**실시간 모니터링**<br>
+_버스 기사님의 촬영을 통해 차량 내부 상황 모니터링_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/c58514f4-a36a-411c-9d79-a2159f89cc85"/>
 </p>
 
----
+## 🌟 결제 관리
 
-### 3-6. 결제 관리
-
-_**결제 시스템**<br>
-관리자의 납부서 발부, 사용자의 수납, 영수증 관리 기능_
+**결제 시스템**<br>
+_관리자의 납부서 발부, 사용자의 수납, 영수증 관리 기능_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/ec13732a-9ed8-4f92-8386-88b6fcf4b208"/>
 </p>
 
----
+## ⭐️ 학생 관리
 
-### 3-7. 학생 관리
-
-_**안전한 회원 관리 시스템**<br>
-(학원 상담을 통한) 관리자 단에서만 회원가입 가능_
+**안전한 회원 관리 시스템**<br>
+_관리자 단에서만 사용자(학부모, 학생) 회원가입 가능_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/2940e891-47a4-47fb-b36c-eeeb9f07bfd9"/>
 </p>
 
----
+## ⭐️ 시간표 관리
 
-### 3-8. 시간표 관리
-
-_**다양한 기준에 따른 시간표**<br>
-선생님, 시간대, 반별 시간표 생성_
+**다양한 기준에 따른 시간표**<br>
+_선생님, 시간대, 반별 시간표 생성 및 관리_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/44a3ff99-8e6b-4836-89b3-90ee3b30807e"/>
 </p>
 
----
+## ⭐️ 퀴즈 게시판
 
-### 3-9. 퀴즈 게시판
-
-_**게임 형태의 퀴즈**<br>
-즐거운 학습 내용 복습을 위한 퀴즈 게시판_
+**게임 형태의 퀴즈**<br>
+_즐거운 학습 내용 복습을 위한 퀴즈 게시판_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/79ad4b3f-986e-4a33-a319-26ddb638e13d"/>
 </p>
 
----
+## ⭐️ 수업 영상 게시판
 
-### 3-10. 수업 영상 게시판
-
-_**수업 자료 공유**<br>
-스트리밍 종료 후 영상 게시판에 자동 저장_
+**수업 자료 공유**<br>
+_스트리밍 종료 후 영상 게시판에 자동 저장_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/ff3b252a-05e5-4eea-8b8b-4378e7e5a0d9"/>
 </p>
 
----
+## ⭐️ 마이페이지 및 비밀번호 수정
 
-### 3-11. 마이페이지 및 비밀번호 수정
-
-_**개인정보 관리**<br>
-개인정보 및 비밀번호 변경_
+**개인정보 관리**<br>
+_개인정보 및 비밀번호 변경_
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/182fba2f-8683-4abe-82ea-15d039f3f6e9"/>
 </p>
 
-<br>
+<br><br>
 
-## 4. UI/UX - Figma
+# 🎞️ UI/UX - Figma
 
-_에듀벤처 **와이어프레임** 보기 - [Figma](https://url.kr/gmhsu2)_
+에듀벤처의 **와이어프레임** 보러 가기 → [Figma](https://url.kr/gmhsu2)
 
 <p align="center">
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/da5bad74-0bfe-4f0f-bc3b-898c439527be"/>
@@ -195,30 +167,30 @@ _에듀벤처 **와이어프레임** 보기 - [Figma](https://url.kr/gmhsu2)_
   <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/e6d6f591-57b0-497a-978d-b753342c1dc1"/>
 </p>
 
-<br>
+<br><br>
 
-## 5. 커뮤니티
+# 📢 커뮤니티
 
-_에듀라 팀은 `Jira`, `GitHub`, 그리고 `SourceTree`와 같은 협업 플랫폼을 활용해<br>
-커뮤니티 활동을 진행하였습니다._
+에듀라 팀은 `Jira`, `GitHub`, 그리고 `SourceTree`와 같은 협업 플랫폼을 활용해
+소통하였습니다.
 
 <p align="center">
-  <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/e12ec6ec-3545-498c-9170-12b5de1651d4"/>
+  <img width="900" src="https://github.com/edu-venture/edu-front/assets/94810322/e12ec6ec-3545-498c-9170-12b5de1651d4"/>
 </p>
 <p align="center">
-  <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/d0d3aa75-8db7-41e6-8e25-5dbc179c0071"/>
+  <img width="900" src="https://github.com/edu-venture/edu-front/assets/94810322/d0d3aa75-8db7-41e6-8e25-5dbc179c0071"/>
 </p>
 <p align="center">
-  <img width="1000" src="https://github.com/edu-venture/edu-front/assets/94810322/9b0237e3-df5b-4e43-bee0-2e4f08a24369"/>
+  <img width="900" src="https://github.com/edu-venture/edu-front/assets/94810322/9b0237e3-df5b-4e43-bee0-2e4f08a24369"/>
 </p>
 
-<br>
+<br><br>
 
-## 6. 문제 상황 및 해결
+# 👿 문제 상황 및 해결
 
-### 6-1. 메인 화면
+## 🔮 메인 화면
 
-_**동적인** 메인 화면 디자인의 어려움_<br>
+`동적인 메인 화면` UI/UX 설계의 어려움<br>
 
 ```
 문제 : 인터렉티브한 메인 화면 디자인과 스크롤 타이밍에 따른 AOS 적용 시점의 어려움
@@ -226,11 +198,9 @@ _**동적인** 메인 화면 디자인의 어려움_<br>
       이를 통해 타이밍 조절 및 디자인 개선
 ```
 
-<br>
+## 🔮 메신저
 
-### 6-2. 메신저
-
-_채팅방 **자동 생성**의 어려움_<br>
+`채팅방 자동 생성`의 어려움<br>
 
 ```
 문제 : Naver Ncloud Chat API 활용 시,
@@ -238,33 +208,27 @@ _채팅방 **자동 생성**의 어려움_<br>
 해결 : 사용자 식별 및 분류 시스템 개발을 통해 복잡성 해소 및 데이터의 일관성 보장
 ```
 
-<br>
+## 🔮 실시간 스트리밍 수업
 
-### 6-3. 실시간 스트리밍 수업
-
-_**전역 상태 관리**의 어려움_<br>
+`전역 상태 관리`의 어려움<br>
 
 ```
 문제 : 스트리밍 생성 시 전역 상태 관리 복잡
 해결 : 전역 상태 관리 라이브러리를 도입해 상태를 공유하고 관리를 용이화
 ```
 
-<br>
+## 🔮 결제 관리
 
-### 6-4. 결제 관리
-
-_결제 관리 **로직**의 복잡함_<br>
+`결제 관리 로직`의 복잡함<br>
 
 ```
 문제 : 납부서를 만들고 영수증을 발행하는 과정에서 정보 관리의 어려움
 해결 : 단계별 예외 사항 처리와 효율적인 정보 교환 구현
 ```
 
-<br>
+## 🔮 학생 관리
 
-### 6-5. 학생 관리
-
-_비동기 처리 중 **순차적인 실행**에 어려움_<br>
+비동기 처리 중 `순차적인 실행`에 어려움<br>
 
 ```
 문제 : Axios를 이용한 비동기 처리 중, 순차적인 실행의 동기화 문제 발생
@@ -272,9 +236,7 @@ _비동기 처리 중 **순차적인 실행**에 어려움_<br>
       (2) 로직 세분화를 통해 체계적으로 비동기 처리, 사용자 인터페이스 안정성 강화
 ```
 
-<br>
-
-### 6-6. 시간표 관리
+## 🔮 시간표 관리
 
 _시간표 생성 및 **코드 관리의 복잡성**_<br>
 
@@ -283,11 +245,11 @@ _시간표 생성 및 **코드 관리의 복잡성**_<br>
 해결 : 컴포넌트화를 통해 가독성과 재사용성 향상
 ```
 
-<br>
+<br><br>
 
-## 7. 프론트엔드 멤버
+# 👥 프론트엔드 멤버
 
-### 7-1. 프론트엔드 팀
+## 🖥️ 프론트엔드 팀
 
 _**프론트엔드 팀**은 아래와 같은 역할을 수행하였습니다._
 
@@ -312,21 +274,6 @@ _**프론트엔드 팀**은 아래와 같은 역할을 수행하였습니다._
     </tr>
     <tr>
       <td align="center">
-        챗봇, 수업 영상 게시판,<br>
-        학생 / 선생님 / 반 관리,<br>
-        수업 공지사항, 마이페이지
-      </td>
-      <td align="center">
-        메인 화면,<br>
-        메신저, 결제 관리
-      </td>
-      <td align="center">
-        실시간 스트리밍 수업,<br>
-        수업 영상 게시판
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
         <a href="https://github.com/1three">
           김한슬
         </a>
@@ -342,22 +289,39 @@ _**프론트엔드 팀**은 아래와 같은 역할을 수행하였습니다._
         </a>
       </td>
     </tr>
+    <tr>
+      <td align="center">
+        챗봇, 수업 영상 게시판,<br>
+        학생 / 선생님 / 반 관리,<br>
+        수업 공지사항, 마이페이지
+      </td>
+      <td align="center">
+        메인 화면,<br>
+        메신저, 결제 관리
+      </td>
+      <td align="center">
+        실시간 스트리밍 수업,<br>
+        수업 영상 게시판
+      </td>
+    </tr>
   </table>
 </div>
 
-_**김한슬 (Three Kim)**_
+<br>
+
+🐿️ _**김한슬 (Three)**_
 
 **프로젝트 매니저 & 프론트엔드 개발자 & UI/UX 디자인**<br>
 프로젝트의 전반적인 관리와 팀원들의 업무 조율<br>
 프론트엔드 코드 리뷰 및 리팩토링, UI/UX 디자인
 
-_**이완재 (GGmj)**_
+🐯 _**이완재 (GGmj)**_
 
 **주요 프론트엔드 개발자 & UI/UX 디자인**<br>
 팀 내 프론트엔드 개발의 핵심 멤버<br>
 프로젝트의 전반적인 코드 구조와 관리를 담당하고, UX 디자인 업무 겸임<br>
 
-_**전두하 (Dooha)**_
+🐶 _**전두하 (Dooha)**_
 
 **주요 프론트엔드 개발자**<br>
 팀 내 프론트엔드 개발의 주요 멤버<br>
@@ -365,12 +329,10 @@ _**전두하 (Dooha)**_
 
 <br>
 
----
+## 🎱 풀스택 팀
 
-### 7-2. 풀스택 팀
-
-_**풀스택 팀**은 프로젝트의 프론트엔드와 함께 백엔드 개발, DB 설계 등<br>
-전반적인 스택을 다루는 역할 수행하였습니다._
+**풀스택 팀**은 프로젝트의 프론트엔드와 함께 백엔드 개발, DB 설계 등
+전반적인 스택을 다뤘습니다.
 
 <div align="left">
   <table>
@@ -393,17 +355,6 @@ _**풀스택 팀**은 프로젝트의 프론트엔드와 함께 백엔드 개발
     </tr>
     <tr>
       <td align="center">
-        관리자 공지사항
-      </td>
-      <td align="center">
-        차량 관리, 안드로이드 앱
-      </td>
-      <td align="center">
-        관리자 시간표
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
         <a href="https://github.com/minje0">
           김민제
         </a>
@@ -417,6 +368,17 @@ _**풀스택 팀**은 프로젝트의 프론트엔드와 함께 백엔드 개발
         <a href="https://github.com/henji07">
           조현진
         </a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        관리자 공지사항
+      </td>
+      <td align="center">
+        차량 관리, 안드로이드 앱
+      </td>
+      <td align="center">
+        관리자 시간표
       </td>
     </tr>
   </table>
